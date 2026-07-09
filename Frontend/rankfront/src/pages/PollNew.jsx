@@ -46,19 +46,22 @@ export default function PollNew() {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold text-white">Yeni Anket</h1>
+      <h1 className="mb-6 font-display text-3xl font-extrabold text-white">Yeni Anket</h1>
 
-      <label className="mb-1 block text-sm font-medium text-slate-300">Anket başlığı</label>
+      <label className="mb-1 block text-sm font-semibold text-stone-300">Anket başlığı</label>
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         maxLength={255}
         placeholder="Örn: Gelmiş geçmiş en iyi oyun hangisi?"
-        className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white placeholder-slate-500 outline-none focus:border-red-500"
+        className="input-dark"
       />
 
-      <p className="mb-2 mt-6 text-sm font-medium text-slate-300">
-        Seçenekler ({selectedIds.length} seçildi)
+      <p className="mb-2 mt-6 text-sm font-semibold text-stone-300">
+        Seçenekler{' '}
+        <span className={selectedIds.length > 0 ? 'text-orange-400' : ''}>
+          ({selectedIds.length} seçildi)
+        </span>
       </p>
       <div className="grid gap-2 sm:grid-cols-2">
         {items.map((item) => {
@@ -68,14 +71,19 @@ export default function PollNew() {
               type="button"
               key={item.itemId}
               onClick={() => toggle(item.itemId)}
-              className={`flex items-center gap-3 rounded-lg border p-2 text-left transition ${
+              className={`flex items-center gap-3 rounded-xl border p-2 text-left transition duration-200 ${
                 active
-                  ? 'border-red-500 bg-red-500/10'
-                  : 'border-slate-800 bg-slate-900 hover:border-slate-600'
+                  ? 'border-orange-500 bg-orange-500/10 shadow-md shadow-orange-950/40'
+                  : 'border-stone-800 bg-stone-900/70 hover:-translate-y-0.5 hover:border-stone-600'
               }`}
             >
-              <img src={item.imageUrl} alt="" className="h-10 w-14 rounded object-cover" />
-              <span className="text-sm text-slate-200">{item.name}</span>
+              <img
+                src={item.imageUrl}
+                alt=""
+                className={`h-10 w-14 rounded-lg object-cover transition ${active ? '' : 'saturate-[.8]'}`}
+              />
+              <span className="flex-1 text-sm text-stone-200">{item.name}</span>
+              {active && <span className="pr-1 text-orange-400">✓</span>}
             </button>
           )
         })}
@@ -83,11 +91,7 @@ export default function PollNew() {
 
       {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="mt-6 w-full rounded-lg bg-red-600 py-2.5 font-semibold text-white transition hover:bg-red-500 disabled:opacity-50"
-      >
+      <button type="submit" disabled={submitting} className="btn-fire mt-6 w-full py-2.5">
         {submitting ? 'Oluşturuluyor...' : 'Anketi Oluştur'}
       </button>
     </form>

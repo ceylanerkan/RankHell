@@ -14,11 +14,8 @@ export default function Polls() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Anketler</h1>
-        <Link
-          to="/polls/new"
-          className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-500"
-        >
+        <h1 className="font-display text-3xl font-extrabold text-white">Anketler</h1>
+        <Link to="/polls/new" className="btn-fire px-4 py-2 text-sm">
           + Yeni Anket
         </Link>
       </div>
@@ -31,17 +28,25 @@ export default function Polls() {
         <EmptyState message="Henüz hiç anket yok. İlkini sen oluştur!" />
       ) : (
         <div className="space-y-3">
-          {polls.map((poll) => (
+          {polls.map((poll, i) => (
             <Link
               key={poll.pollId}
               to={`/polls/${poll.pollId}`}
-              className="block rounded-xl border border-slate-800 bg-slate-900 p-4 transition hover:border-red-500/50"
+              className="group card-dark flex animate-rise items-center justify-between gap-4 p-4 transition duration-200 hover:translate-x-1 hover:border-orange-500/50"
+              style={{ animationDelay: `${i * 50}ms` }}
             >
-              <h2 className="font-semibold text-slate-100">{poll.title}</h2>
-              <p className="mt-1 text-sm text-slate-400">
-                @{poll.creator.username} · {poll.itemCount} seçenek ·{' '}
-                {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
-              </p>
+              <div>
+                <h2 className="font-display font-bold text-stone-100 transition group-hover:text-orange-300">
+                  {poll.title}
+                </h2>
+                <p className="mt-1 text-sm text-stone-400">
+                  @{poll.creator.username} · {poll.itemCount} seçenek ·{' '}
+                  {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
+                </p>
+              </div>
+              <span className="text-lg text-stone-600 transition duration-200 group-hover:translate-x-1 group-hover:text-orange-400">
+                →
+              </span>
             </Link>
           ))}
         </div>

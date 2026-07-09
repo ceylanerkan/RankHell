@@ -1,1 +1,99 @@
 @import "tailwindcss";
+
+/* ─── RankHell Teması ────────────────────────────────────────────
+   Kimlik: "cehennem sıralaması" — sıcak kömür zemin + ateş degradesi.
+   Yüzeyler: stone (sıcak gri) · Vurgu: red → orange → amber
+   Fontlar: Bricolage Grotesque (başlık) + Space Grotesk (gövde)
+──────────────────────────────────────────────────────────────── */
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Space Grotesk", ui-sans-serif, sans-serif;
+
+  --animate-rise: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-flicker: flicker 2.4s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+
+  /* Sayfa/kart girişi: aşağıdan yükselerek belirir */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Alev titremesi (logo, yükleme durumu) */
+  @keyframes flicker {
+    0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
+    30%      { transform: scale(1.1) rotate(2deg); opacity: 0.85; }
+    55%      { transform: scale(0.94) rotate(-3deg); opacity: 1; }
+    80%      { transform: scale(1.06) rotate(2deg); opacity: 0.9; }
+  }
+
+  /* Dekoratif öğeler için yavaş süzülme */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-14px); }
+  }
+}
+
+@layer base {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #57534e transparent;
+  }
+
+  /* Zemin: kömür rengi + köşelerde köz parıltısı + çok ince diyagonal doku */
+  body {
+    @apply bg-stone-950 text-stone-200 antialiased;
+    background-image:
+      radial-gradient(55rem 34rem at 82% -12%, rgb(249 115 22 / 0.09), transparent 65%),
+      radial-gradient(45rem 30rem at -12% 108%, rgb(220 38 38 / 0.08), transparent 65%),
+      repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.013) 0 1px, transparent 1px 22px);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: #f59e0b;
+    color: #1c1917;
+  }
+
+  :focus-visible {
+    outline: 2px solid #f97316;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Birincil CTA: ateş degradesi. Tüm ana butonlar bunu kullanır. */
+  .btn-fire {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 px-4 py-2 font-bold text-white shadow-lg shadow-orange-950/50 transition duration-200 hover:-translate-y-0.5 hover:shadow-orange-600/30 hover:brightness-110 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:brightness-100;
+  }
+
+  /* İkincil buton: çerçeveli, hover'da közlenir */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-semibold text-stone-200 ring-1 ring-stone-700 transition duration-200 hover:-translate-y-0.5 hover:bg-stone-900 hover:text-white hover:ring-orange-500/60;
+  }
+
+  /* Ateş degradeli vurgu yazısı (logo, başlık vurguları) */
+  .text-fire {
+    @apply bg-gradient-to-r from-red-500 via-orange-400 to-amber-400 bg-clip-text text-transparent;
+  }
+
+  /* Form alanları */
+  .input-dark {
+    @apply w-full rounded-xl border border-stone-700 bg-stone-950/70 px-3 py-2 text-white placeholder-stone-500 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20;
+  }
+
+  /* Kart yüzeyi */
+  .card-dark {
+    @apply rounded-2xl border border-stone-800 bg-stone-900/70 backdrop-blur;
+  }
+}

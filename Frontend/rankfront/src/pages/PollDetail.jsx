@@ -20,8 +20,8 @@ export default function PollDetail() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white">{poll.title}</h1>
-      <p className="mt-1 mb-6 text-sm text-slate-400">
+      <h1 className="font-display text-3xl font-extrabold text-white">{poll.title}</h1>
+      <p className="mt-1 mb-6 text-sm text-stone-400">
         @{poll.creator.username} · {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
       </p>
 
@@ -30,11 +30,13 @@ export default function PollDetail() {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2">
           {ranked.map((item, i) => (
-            <ItemCard key={item.itemId} item={item} rank={i + 1} />
+            <div key={item.itemId} className="animate-rise" style={{ animationDelay: `${i * 60}ms` }}>
+              <ItemCard item={item} rank={i + 1} />
+            </div>
           ))}
         </div>
       )}
-      <p className="mt-4 text-sm text-slate-500">
+      <p className="mt-4 text-sm text-stone-500">
         Sıralama, seçeneklerin genel puanına göredir. Oy vermek için bir seçeneğe tıkla.
       </p>
     </div>

@@ -1,9 +1,12 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { getSession, logout } from '../api/client'
+import Flame from './Flame'
 
 const linkClass = ({ isActive }) =>
-  `rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-    isActive ? 'bg-red-500/15 text-red-400' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+  `rounded-lg px-3 py-1.5 text-sm font-semibold transition ${
+    isActive
+      ? 'bg-orange-500/10 text-orange-300 ring-1 ring-orange-500/30'
+      : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
   }`
 
 export default function Navbar() {
@@ -16,10 +19,15 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+    <header className="sticky top-0 z-10 border-b border-stone-800/80 bg-stone-950/80 backdrop-blur-md">
+      {/* Lav çizgisi: markanın ateş degradesi */}
+      <div className="h-0.5 bg-gradient-to-r from-red-600 via-orange-500 to-amber-400" />
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link to="/" className="text-xl font-black tracking-tight text-white">
-          Rank<span className="text-red-500">Hell</span>
+        <Link to="/" className="group flex items-center gap-2">
+          <Flame className="h-6 w-6 animate-flicker" />
+          <span className="font-display text-xl font-extrabold tracking-tight text-white">
+            Rank<span className="text-fire">Hell</span>
+          </span>
         </Link>
 
         <div className="flex items-center gap-1">
@@ -34,7 +42,7 @@ export default function Navbar() {
               <NavLink to="/profile" className={linkClass}>@{session.username}</NavLink>
               <button
                 onClick={handleLogout}
-                className="rounded-lg px-3 py-1.5 text-sm text-slate-400 transition hover:bg-slate-800 hover:text-white"
+                className="rounded-lg px-3 py-1.5 text-sm text-stone-400 transition hover:bg-stone-800/80 hover:text-white"
               >
                 Çıkış
               </button>
@@ -42,10 +50,7 @@ export default function Navbar() {
           ) : (
             <>
               <NavLink to="/login" className={linkClass}>Giriş</NavLink>
-              <Link
-                to="/register"
-                className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-red-500"
-              >
+              <Link to="/register" className="btn-fire px-3.5 py-1.5 text-sm">
                 Kayıt Ol
               </Link>
             </>

@@ -16,8 +16,12 @@ export default function StarRating({ value = 0, onRate, size = 'text-2xl' }) {
           onClick={() => onRate?.(star)}
           onMouseEnter={() => onRate && setHovered(star)}
           className={`${size} leading-none transition-transform ${
-            onRate ? 'cursor-pointer hover:scale-125' : 'cursor-default'
-          } ${star <= shown ? 'text-amber-400' : 'text-slate-600'}`}
+            onRate ? 'cursor-pointer hover:-rotate-12 hover:scale-125' : 'cursor-default'
+          } ${
+            star <= shown
+              ? 'text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]'
+              : 'text-stone-700'
+          }`}
           aria-label={`${star} yıldız`}
         >
           ★
