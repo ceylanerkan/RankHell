@@ -46,7 +46,7 @@ export default function PollNew() {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl">
-      <h1 className="mb-6 font-display text-3xl font-extrabold text-white">Yeni Anket</h1>
+      <h1 className="title-ember mb-6 font-display text-3xl font-extrabold text-white">Yeni Anket</h1>
 
       <label className="mb-1 block text-sm font-semibold text-stone-300">Anket başlığı</label>
       <input
@@ -71,7 +71,7 @@ export default function PollNew() {
               type="button"
               key={item.itemId}
               onClick={() => toggle(item.itemId)}
-              className={`flex items-center gap-3 rounded-xl border p-2 text-left transition duration-200 ${
+              className={`flex items-center gap-3 rounded-md border p-2 text-left transition duration-200 ${
                 active
                   ? 'border-orange-500 bg-orange-500/10 shadow-md shadow-orange-950/40'
                   : 'border-stone-800 bg-stone-900/70 hover:-translate-y-0.5 hover:border-stone-600'
@@ -80,7 +80,7 @@ export default function PollNew() {
               <img
                 src={item.imageUrl}
                 alt=""
-                className={`h-10 w-14 rounded-lg object-cover transition ${active ? '' : 'saturate-[.8]'}`}
+                className={`h-10 w-14 rounded object-cover transition ${active ? '' : 'saturate-[.8]'}`}
               />
               <span className="flex-1 text-sm text-stone-200">{item.name}</span>
               {active && <span className="pr-1 text-orange-400">✓</span>}

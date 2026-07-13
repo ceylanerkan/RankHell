@@ -27,7 +27,7 @@ export default function Items() {
 
   return (
     <div>
-      <h1 className="mb-4 font-display text-3xl font-extrabold text-white">Keşfet</h1>
+      <h1 className="title-ember mb-4 font-display text-3xl font-extrabold text-white">Keşfet</h1>
 
       <div className="mb-6 flex flex-wrap gap-2">
         <button className={filterClass(selected === null)} onClick={() => setSelected(null)}>
@@ -51,7 +51,7 @@ export default function Items() {
       ) : items.length === 0 ? (
         <EmptyState message="Bu kategoride henüz item yok." />
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => (
             <div key={item.itemId} className="animate-rise" style={{ animationDelay: `${i * 50}ms` }}>
               <ItemCard item={item} />

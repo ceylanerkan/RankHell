@@ -16,7 +16,7 @@ export default function ItemCard({ item, rank }) {
   return (
     <Link
       to={`/items/${item.itemId}`}
-      className="group card-dark relative block overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-orange-500/50 hover:shadow-xl hover:shadow-orange-950/50"
+      className="group card-dark relative flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-orange-500/50 hover:shadow-xl hover:shadow-orange-950/50"
     >
       {/* Hover'da beliren ateş çizgisi */}
       <div className="absolute inset-x-0 top-0 z-10 h-0.5 bg-gradient-to-r from-red-600 via-orange-500 to-amber-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -29,14 +29,14 @@ export default function ItemCard({ item, rank }) {
         />
         {rank != null && (
           <span
-            className={`absolute left-2 top-2 -rotate-6 rounded-lg px-2.5 py-1 font-display text-sm font-extrabold transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110 ${rankBadgeClass(rank)}`}
+            className={`absolute left-2 top-2 -rotate-6 rounded px-2.5 py-1 font-display text-sm font-extrabold transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110 ${rankBadgeClass(rank)}`}
           >
             #{rank}
           </span>
         )}
       </div>
 
-      <div className="p-4">
+      <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-display font-bold text-stone-100 transition group-hover:text-orange-300">
             {item.name}
@@ -46,7 +46,7 @@ export default function ItemCard({ item, rank }) {
           </span>
         </div>
         <p className="mt-1 line-clamp-2 text-sm text-stone-400">{item.description}</p>
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-auto flex items-center justify-between pt-3">
           <div className="flex flex-wrap gap-1.5">
             {item.categories?.map((c) => (
               <CategoryBadge key={c.categoryId} name={c.name} />

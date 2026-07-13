@@ -14,7 +14,7 @@ export default function Polls() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-display text-3xl font-extrabold text-white">Anketler</h1>
+        <h1 className="title-ember font-display text-3xl font-extrabold text-white">Anketler</h1>
         <Link to="/polls/new" className="btn-fire px-4 py-2 text-sm">
           + Yeni Anket
         </Link>

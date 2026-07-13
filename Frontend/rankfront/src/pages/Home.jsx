@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div>
-      <section className="relative mb-12 overflow-hidden rounded-3xl border border-orange-500/20 bg-gradient-to-br from-stone-900 via-stone-950 to-red-950/60 p-8 sm:p-12">
+      <section className="relative mb-12 overflow-hidden rounded-md border border-black bg-gradient-to-br from-stone-900 via-stone-950 to-red-950/60 p-8 sm:p-12">
         {/* Dekor katmanı: köz parıltıları, hayalet #1 ve süzülen madalyalar */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
           <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-orange-600/20 blur-3xl" />
@@ -62,7 +62,7 @@ export default function Home() {
       </section>
 
       <div className="mb-5 flex items-center justify-between">
-        <h2 className="font-display text-2xl font-extrabold text-white">🏆 Liderlik Tablosu</h2>
+        <h2 className="title-ember font-display text-2xl font-extrabold text-white">Liderlik Tablosu</h2>
         <Link to="/items" className="text-sm font-semibold text-orange-400 transition hover:text-orange-300 hover:underline">
           Tümünü gör →
         </Link>
@@ -75,12 +75,30 @@ export default function Home() {
       ) : items.length === 0 ? (
         <EmptyState message="Henüz puanlanmış bir şey yok. İlk oyu sen ver!" />
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1">
           {items.map((item, i) => (
-            <div key={item.itemId} className="animate-rise" style={{ animationDelay: `${i * 70}ms` }}>
+            <div
+              key={item.itemId}
+              className="w-72 shrink-0 snap-start animate-rise sm:w-80"
+              style={{ animationDelay: `${i * 70}ms` }}
+            >
               <ItemCard item={item} rank={i + 1} />
             </div>
           ))}
+          {/* Şeridin sonu: devamı için liste sayfasına yönlendiren kart */}
+          <Link
+            to="/items"
+            className="group card-dark flex w-72 shrink-0 snap-start flex-col items-center justify-center gap-3 p-6 text-center transition duration-300 hover:-translate-y-1 hover:border-orange-500/50 hover:shadow-xl hover:shadow-orange-950/50 sm:w-80"
+          >
+            <span className="font-display text-lg font-extrabold text-white">
+              Daha fazlası mı lazım?
+            </span>
+            <span className="text-sm text-stone-400">Tüm sıralamayı liste sayfasında keşfet.</span>
+            <span className="btn-fire mt-1">
+              Tümünü gör
+              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </span>
+          </Link>
         </div>
       )}
     </div>

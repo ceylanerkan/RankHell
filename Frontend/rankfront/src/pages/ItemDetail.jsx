@@ -38,10 +38,10 @@ export default function ItemDetail() {
         <img
           src={item.imageUrl}
           alt={item.name}
-          className="aspect-video w-full rounded-2xl object-cover ring-1 ring-stone-800"
+          className="aspect-video w-full rounded-md object-cover ring-1 ring-stone-800"
         />
         {/* Görselin altındaki köz parıltısı */}
-        <div aria-hidden="true" className="absolute -inset-2 -z-10 rounded-3xl bg-orange-600/10 blur-2xl" />
+        <div aria-hidden="true" className="absolute -inset-2 -z-10 rounded-md bg-orange-600/10 blur-2xl" />
       </div>
 
       <div>

@@ -15,7 +15,7 @@ export function Loading({ label = 'Yükleniyor...' }) {
 
 export function ErrorState({ message = 'Bir şeyler ters gitti.' }) {
   return (
-    <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-10 text-center">
+    <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-10 text-center">
       <p className="font-display text-lg font-bold text-red-400">💀 Hata</p>
       <p className="mt-1 text-sm text-stone-300">{message}</p>
     </div>
@@ -24,7 +24,7 @@ export function ErrorState({ message = 'Bir şeyler ters gitti.' }) {
 
 export function EmptyState({ message = 'Henüz burada bir şey yok.' }) {
   return (
-    <div className="rounded-2xl border border-dashed border-stone-700 px-4 py-12 text-center text-stone-400">
+    <div className="rounded-md border border-dashed border-orange-500/25 bg-orange-500/[0.03] px-4 py-12 text-center text-stone-400">
       <span className="mb-2 block text-3xl">👻</span>
       {message}
     </div>

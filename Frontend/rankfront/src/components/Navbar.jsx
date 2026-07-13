@@ -3,10 +3,10 @@ import { getSession, logout } from '../api/client'
 import Flame from './Flame'
 
 const linkClass = ({ isActive }) =>
-  `rounded-lg px-3 py-1.5 text-sm font-semibold transition ${
+  `relative px-3 py-2 font-display text-base font-semibold transition ${
     isActive
-      ? 'bg-orange-500/10 text-orange-300 ring-1 ring-orange-500/30'
-      : 'text-stone-300 hover:bg-stone-800/80 hover:text-white'
+      ? 'text-amber-300 after:absolute after:inset-x-3 after:bottom-0 after:h-px after:rounded-full after:bg-gradient-to-r after:from-red-500 after:via-orange-400 after:to-amber-400 after:shadow-[0_0_8px_rgba(249,115,22,0.8)]'
+      : 'text-stone-400 hover:text-stone-100'
   }`
 
 export default function Navbar() {
@@ -22,10 +22,10 @@ export default function Navbar() {
     <header className="sticky top-0 z-10 border-b border-stone-800/80 bg-stone-950/80 backdrop-blur-md">
       {/* Lav çizgisi: markanın ateş degradesi */}
       <div className="h-0.5 bg-gradient-to-r from-red-600 via-orange-500 to-amber-400" />
-      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+      <nav className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-6 py-4">
         <Link to="/" className="group flex items-center gap-2">
-          <Flame className="h-6 w-6 animate-flicker" />
-          <span className="font-display text-xl font-extrabold tracking-tight text-white">
+          <Flame className="h-7 w-7 animate-flicker" />
+          <span className="font-display text-2xl font-extrabold tracking-tight text-white">
             Rank<span className="text-fire">Hell</span>
           </span>
         </Link>
@@ -42,7 +42,7 @@ export default function Navbar() {
               <NavLink to="/profile" className={linkClass}>@{session.username}</NavLink>
               <button
                 onClick={handleLogout}
-                className="rounded-lg px-3 py-1.5 text-sm text-stone-400 transition hover:bg-stone-800/80 hover:text-white"
+                className="px-3 py-2 font-display text-base text-stone-400 transition hover:text-stone-100"
               >
                 Çıkış
               </button>
@@ -50,7 +50,7 @@ export default function Navbar() {
           ) : (
             <>
               <NavLink to="/login" className={linkClass}>Giriş</NavLink>
-              <Link to="/register" className="btn-fire px-3.5 py-1.5 text-sm">
+              <Link to="/register" className="btn-fire px-4 py-2 font-display text-base">
                 Kayıt Ol
               </Link>
             </>
