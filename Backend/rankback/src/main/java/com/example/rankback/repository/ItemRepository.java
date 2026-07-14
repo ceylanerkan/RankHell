@@ -20,6 +20,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
         throw new UnsupportedOperationException("findAll() without pagination is strictly forbidden. Use findAll(Pageable) instead.");
     }
 
-    @Query("SELECT i FROM Item i JOIN i.itemCategories ic WHERE ic.category.categoryId = :categoryId")
+    @Query("SELECT ic.item FROM ItemCategory ic WHERE ic.category.categoryId = :categoryId")
     Page<Item> findByCategoryId(@Param("categoryId") Integer categoryId, Pageable pageable);
 }

@@ -10,6 +10,8 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "Items")
 @SQLRestriction("is_deleted = false")
 public class Item {
