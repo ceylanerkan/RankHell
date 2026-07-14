@@ -2,11 +2,11 @@
 // Backend API hazır olduğunda bu dosya silinecek, client.js fetch'e geçecek.
 
 export const categories = [
-  { categoryId: 1, name: 'Film' },
-  { categoryId: 2, name: 'Dizi' },
-  { categoryId: 3, name: 'Oyun' },
-  { categoryId: 4, name: 'Yemek' },
-  { categoryId: 5, name: 'Müzik' },
+  { categoryId: 1, name: 'Film', emoji: '🎬', tagline: 'Kült mü, klişe mi?' },
+  { categoryId: 2, name: 'Dizi', emoji: '📺', tagline: 'Final hak etti mi?' },
+  { categoryId: 3, name: 'Oyun', emoji: '🎮', tagline: 'Efsane mi, hype mı?' },
+  { categoryId: 4, name: 'Yemek', emoji: '🍔', tagline: 'Damak kavgası burada' },
+  { categoryId: 5, name: 'Müzik', emoji: '🎵', tagline: 'Kulaklar jüri' },
 ]
 
 export const items = [
@@ -83,6 +83,20 @@ export const items = [
     categories: [{ categoryId: 4, name: 'Yemek' }],
   },
 ]
+
+// Günün sıralaması — bugün en çok oy toplayan item'lar (vitrin verisi).
+// delta: dünkü sıraya göre değişim (+n / -n / 0), 'yeni' = listeye yeni girdi.
+export const dailyRanking = {
+  date: '2026-07-14',
+  title: 'Günün Sıralaması',
+  entries: [
+    { itemId: 2, votesToday: 128, delta: 0 },
+    { itemId: 7, votesToday: 97, delta: 2 },
+    { itemId: 1, votesToday: 84, delta: -1 },
+    { itemId: 4, votesToday: 61, delta: 'yeni' },
+    { itemId: 6, votesToday: 45, delta: -2 },
+  ],
+}
 
 export const users = [
   { userId: 1, username: 'arda', email: 'arda@rankhell.dev', role: 'USER', createdAt: '2026-06-01T10:00:00' },

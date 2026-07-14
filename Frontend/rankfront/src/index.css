@@ -1,19 +1,64 @@
 @import "tailwindcss";
 
-/* ─── RankHell Teması ────────────────────────────────────────────
-   Kimlik: "cehennem sıralaması" — sıcak kömür zemin + ateş degradesi.
-   Yüzeyler: stone (sıcak gri) · Vurgu: red → orange → amber
+/* ─── RankHell Teması: "Gamified Neon Fire" ─────────────────────
+   Kimlik: "neon arcade cehennemi" — kömür karası zemin + neon ateş.
+   Yüzeyler: night/coal (kömür) · Başrol: ember (neon turuncu-kızıl)
+   İkincil: plasma (elektrik moru) · Siber aksan: zap (turkuaz — az kullan!)
+   Başarı/S-Tier: acid (asit yeşili)
    Fontlar: Bricolage Grotesque (başlık) + Space Grotesk (gövde)
 ──────────────────────────────────────────────────────────────── */
 
 @theme {
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Bricolage Grotesque", "Space Grotesk", ui-sans-serif, sans-serif;
+  --font-nav: "Press Start 2P", "Rajdhani", "Space Grotesk", ui-sans-serif, sans-serif;
+
+  /* Zemin ve yüzeyler (kömür karası: neonları patlatan nötr fon) */
+  --color-night: #121212;       /* sayfa zemini — en derin */
+  --color-night-deep: #0b0b0d;  /* navbar/footer, en koyu */
+  --color-coal: #1a1a1d;        /* kart yüzeyi */
+  --color-coal-light: #26262b;  /* hover / yükseltilmiş yüzey */
+  --color-line: #2e2e33;        /* kenarlık / ring */
+
+  /* Metin */
+  --color-cream: #f2f2ef; /* gövde metni */
+  --color-faded: #a6a6b0; /* ikincil metin (nötr gri) */
+
+  /* Marka: neon ateş */
+  --color-ember: #ff4500;      /* birincil CTA, marka */
+  --color-ember-soft: #ff6d33; /* hover, gradyan ucu */
+  --color-ember-deep: #b33000; /* arcade alt gölge, scrollbar */
+
+  /* İkincil: elektrik moru (rozetler, gradyanlar, ikincil CTA) */
+  --color-plasma: #8a2be2;
+  --color-plasma-soft: #a45df0; /* koyu zeminde okunur mor metin */
+  --color-plasma-deep: #5c1d99; /* arcade alt gölge */
+
+  /* Siber aksan: parlak turkuaz (link, focus, istatistik) */
+  --color-zap: #00ffff;
+  --color-zap-deep: #00b8b8; /* koyu turkuaz: dolgu, kenarlık */
+
+  /* Başarı / S-Tier: asit yeşili */
+  --color-acid: #39ff14;
+  --color-acid-deep: #1e9e0c;
+
+  /* Aksan: gradyan ara turuncusu (logo alevi) */
+  --color-flame: #ff8c1a;
+
+  /* Durumlar */
+  --color-danger: #ff3b5c;
+  --color-win: #39ff14; /* = acid; pozitif delta */
 
   --animate-rise: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-flicker: flicker 2.4s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-pop: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-wiggle: wiggle 0.9s ease-in-out infinite;
+  --animate-flame-dance: flame-dance 1.6s ease-in-out infinite;
+  --animate-neon-pulse: neon-pulse 2.2s ease-in-out infinite;
+  --animate-acid-breathe: acid-breathe 2.6s ease-in-out infinite;
+  --animate-inferno-shift: inferno-shift 6s linear infinite;
 
   /* Sayfa/kart girişi: aşağıdan yükselerek belirir */
   @keyframes rise {
@@ -34,31 +79,70 @@
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(-14px); }
   }
+
+  /* Rozet/podium girişi: yaylanarak belirir */
+  @keyframes pop {
+    0%   { opacity: 0; transform: scale(0.6); }
+    70%  { opacity: 1; transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Dikkat çekici sallanma (emoji, CTA süsleri) */
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50%      { transform: rotate(3deg); }
+  }
+
+  /* Podyum alevi: yükselip büzüşen parlama */
+  @keyframes flame-dance {
+    0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.9; }
+    35%      { transform: translateY(-3px) scaleY(1.08); opacity: 1; }
+    70%      { transform: translateY(-1px) scaleY(0.95); opacity: 0.8; }
+  }
+
+  /* Neon nabız: rengi elemanın metin renginden (currentColor) alır */
+  @keyframes neon-pulse {
+    0%, 100% { filter: brightness(1) drop-shadow(0 0 3px currentColor); }
+    50%      { filter: brightness(1.2) drop-shadow(0 0 10px currentColor); }
+  }
+
+  /* S-Tier halesi: asit yeşili parlama soluk alıp verir */
+  @keyframes acid-breathe {
+    0%, 100% { box-shadow: 0 0 0 1px rgb(57 255 20 / 0.5), 0 0 14px rgb(57 255 20 / 0.25), 0 0 36px rgb(57 255 20 / 0.1); }
+    50%      { box-shadow: 0 0 0 1px rgb(57 255 20 / 0.8), 0 0 24px rgb(57 255 20 / 0.45), 0 0 60px rgb(57 255 20 / 0.2); }
+  }
+
+  /* Hero başlığı: degrade metnin üstünde kayar */
+  @keyframes inferno-shift {
+    to { background-position: 200% center; }
+  }
 }
 
 @layer base {
   * {
     scrollbar-width: thin;
-    scrollbar-color: #7c2d12 transparent;
+    scrollbar-color: #b33000 transparent;
   }
 
-  /* Zemin: düz siyah üstüne sık, düzenli orange-300 nokta deseni.
-     Nokta boyutu 1px, aralık background-size ile ayarlanır (şu an 8px). */
+  /* Zemin: kömür degrade üstüne ofsetli ember + plazma konfeti noktaları */
   body {
-    @apply bg-black text-stone-200 antialiased;
+    @apply bg-night text-cream antialiased;
     background-image:
-      radial-gradient(circle, rgb(253 186 116 / 0.25) 1px, transparent 1px);
-    background-size: 8px 8px;
+      radial-gradient(circle, rgb(255 69 0 / 0.06) 1px, transparent 1px),
+      radial-gradient(circle, rgb(138 43 226 / 0.07) 1px, transparent 1px),
+      linear-gradient(180deg, #161617 0%, #121212 55%, #0e0e10 100%);
+    background-size: 22px 22px, 22px 22px, 100% 100%;
+    background-position: 0 0, 11px 11px, 0 0;
     background-attachment: fixed;
   }
 
   ::selection {
-    background-color: #f59e0b;
-    color: #1c1917;
+    background-color: #00ffff;
+    color: #121212;
   }
 
   :focus-visible {
-    outline: 2px solid #f97316;
+    outline: 2px solid #00ffff;
     outline-offset: 2px;
   }
 
@@ -72,39 +156,132 @@
 }
 
 @layer components {
-  /* Birincil CTA: ateş degradesi. Tüm ana butonlar bunu kullanır. */
+  /* Birincil CTA: neon ateş arcade butonu — basılınca gölgesine oturur,
+     hover'da neon hale saçar */
   .btn-fire {
-    @apply inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 px-4 py-2 font-bold text-white shadow-lg shadow-orange-950/50 transition duration-200 hover:-translate-y-0.5 hover:shadow-orange-600/30 hover:brightness-110 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:brightness-100;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ember px-5 py-2 font-display font-extrabold text-night shadow-[0_4px_0_var(--color-ember-deep)] transition duration-200 hover:-translate-y-0.5 hover:bg-ember-soft hover:shadow-[0_6px_0_var(--color-ember-deep),0_0_20px_rgb(255_69_0_/_0.35)] active:translate-y-0.5 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:bg-ember disabled:hover:shadow-[0_4px_0_var(--color-ember-deep)];
   }
 
-  /* İkincil buton: çerçeveli, hover'da közlenir */
+  /* İkincil buton: çerçeveli, hover'da atește ısınır */
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 font-semibold text-stone-200 ring-1 ring-stone-700 transition duration-200 hover:-translate-y-0.5 hover:bg-stone-900 hover:text-white hover:ring-orange-500/60;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 font-semibold text-cream ring-1 ring-line transition duration-200 hover:-translate-y-0.5 hover:bg-coal-light hover:text-ember-soft hover:ring-ember/60;
+  }
+
+  /* İkincil CTA: elektrik moru arcade butonu (mor dolguda metin beyaz kalmalı) */
+  .btn-plasma {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-plasma px-5 py-2 font-display font-extrabold text-white shadow-[0_4px_0_var(--color-plasma-deep)] transition duration-200 hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_6px_0_var(--color-plasma-deep),0_0_20px_rgb(138_43_226_/_0.4)] active:translate-y-0.5 active:shadow-none;
   }
 
   /* Ateş degradeli vurgu yazısı (logo, başlık vurguları) */
   .text-fire {
-    @apply bg-gradient-to-r from-red-500 via-orange-400 to-amber-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-ember-soft via-ember to-flame bg-clip-text text-transparent;
   }
 
-  /* Form alanları */
+  /* Form alanları: odakta siber turkuaz uyanır */
   .input-dark {
-    @apply w-full rounded-md border border-stone-700 bg-stone-950/70 px-3 py-2 text-white placeholder-stone-500 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20;
+    @apply w-full rounded-md border border-line bg-night-deep/60 px-3 py-2 text-cream placeholder-faded/60 outline-none transition focus:border-zap/70 focus:ring-2 focus:ring-zap/25;
   }
 
-  /* Kart yüzeyi: üst kenarda belli belirsiz köz parlaması */
+  /* Kart yüzeyi: çerçevesiz, zeminin üstünde süzülen yumuşak yüzey.
+     Derinlik kenarlıkla değil gölgeyle verilir; üstteki 1px iç ışık
+     yüzeye vuran ışığı taklit eder. */
   .card-dark {
-    @apply rounded-md border border-stone-800 bg-stone-900/70 backdrop-blur;
-    background-image: linear-gradient(180deg, rgb(249 115 22 / 0.05), transparent 45%);
+    @apply rounded-2xl bg-coal/70 backdrop-blur;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.05),
+      0 14px 32px -14px rgb(0 0 0 / 0.85);
   }
 
-  /* Sayfa/bölüm başlığı: solunda ateş degradeli vurgu çubuğu */
+  /* Arcade bileti: koyu neon kart — ember kenar çizgisi + sert alt gölge.
+     Derinlik dili arcade butonlarıyla aynı: hover'da bilet yükselir,
+     gölgesinden ayrılır ve neon halesi güçlenir. */
+  .card-ticket {
+    @apply rounded-2xl bg-coal text-cream;
+    box-shadow:
+      0 0 0 1px rgb(255 69 0 / 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.06),
+      0 5px 0 var(--color-ember-deep),
+      0 18px 32px -14px rgb(0 0 0 / 0.8);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s;
+  }
+  .card-ticket:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 0 0 1px rgb(255 69 0 / 0.7),
+      inset 0 1px 0 rgb(255 255 255 / 0.08),
+      0 11px 0 var(--color-ember-deep),
+      0 28px 44px -16px rgb(0 0 0 / 0.85),
+      0 0 24px rgb(255 69 0 / 0.25);
+  }
+
+  /* Öne çıkan panel: yüzen yüzey + çifte neon hale (ateş + plazma) */
+  .card-glow {
+    @apply rounded-2xl bg-coal/60 backdrop-blur;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.06),
+      0 18px 44px -16px rgb(0 0 0 / 0.9),
+      0 0 30px rgb(255 69 0 / 0.06),
+      0 0 60px rgb(138 43 226 / 0.06);
+  }
+
+  /* Sayfa/bölüm başlığı: solunda ateş-plazma-turkuaz vurgu çubuğu */
   .title-ember {
     @apply flex items-center gap-3;
   }
   .title-ember::before {
     content: "";
     height: 1.05em;
-    @apply w-1.5 shrink-0 rounded-full bg-gradient-to-b from-amber-400 via-orange-500 to-red-600 shadow-[0_0_10px_rgba(249,115,22,0.45)];
+    @apply w-1.5 shrink-0 rounded-full bg-gradient-to-b from-ember via-plasma to-zap shadow-[0_0_10px_rgba(255,69,0,0.45)];
+  }
+
+  /* Gün rozeti: plazma pill (ikincil UI rengi) */
+  .badge-day {
+    @apply inline-flex items-center gap-2 rounded-full bg-plasma/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-plasma-soft ring-1 ring-plasma/40;
+  }
+
+  /* Podyum alevi: tabanda dans eden ateş + plazma parlama */
+  .podium-flame {
+    position: relative;
+  }
+  .podium-flame::before {
+    content: "";
+    position: absolute;
+    inset: auto -12% -14% -12%;
+    height: 55%;
+    border-radius: 9999px;
+    background: radial-gradient(ellipse at bottom, rgb(255 69 0 / 0.55), rgb(138 43 226 / 0.25) 55%, transparent 75%);
+    filter: blur(6px);
+    animation: var(--animate-flame-dance);
+    pointer-events: none;
+  }
+
+  /* Banner dokusu: çapraz koyu çizgiler (ember zemin üstünde) */
+  .stripe-neon {
+    background-image: repeating-linear-gradient(-45deg, rgb(0 0 0 / 0.18) 0 12px, transparent 12px 24px);
+  }
+
+  /* Neon haleler: katmanlı kutu parlaması (statik).
+     Not: aynı elemanda ring-* ile birlikte kullanma — ring'in box-shadow'u
+     haleyi ezer; 1px çizgi zaten ilk katmanda var. */
+  .glow-ember  { box-shadow: 0 0 0 1px rgb(255 69 0 / 0.5), 0 0 16px rgb(255 69 0 / 0.3), 0 0 40px rgb(255 69 0 / 0.12); }
+  .glow-plasma { box-shadow: 0 0 0 1px rgb(138 43 226 / 0.5), 0 0 16px rgb(138 43 226 / 0.3), 0 0 40px rgb(138 43 226 / 0.12); }
+  .glow-zap    { box-shadow: 0 0 0 1px rgb(0 255 255 / 0.4), 0 0 16px rgb(0 255 255 / 0.22), 0 0 40px rgb(0 255 255 / 0.1); }
+  .glow-acid   { box-shadow: 0 0 0 1px rgb(57 255 20 / 0.5), 0 0 16px rgb(57 255 20 / 0.3), 0 0 40px rgb(57 255 20 / 0.12); }
+
+  /* Neon tabela yazısı: rengi üzerindeki text-* sınıfından devralır */
+  .text-neon {
+    text-shadow: 0 0 6px currentColor, 0 0 22px currentColor;
+  }
+
+  /* Hero başlık degradesi: akan ateş-mor-turkuaz metin */
+  .text-inferno {
+    @apply bg-gradient-to-r from-ember via-plasma to-zap bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: var(--animate-inferno-shift);
+  }
+
+  /* Tier listesi boş yuvası: kesikli çerçeve, hover'da turkuaz uyanır */
+  .tier-slot {
+    @apply flex aspect-square w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-line bg-night-deep/50 text-lg font-bold text-faded/50 transition hover:border-zap/50 hover:text-zap sm:w-20;
   }
 }

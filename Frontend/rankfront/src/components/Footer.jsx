@@ -34,6 +34,7 @@ const columns = [
     ),
     links: [
       { label: 'Tüm Öğeler', to: '/items' },
+      { label: 'Tier Listesi', to: '/tiers' },
       { label: 'Trend' },
       { label: 'Kategoriler' },
       { label: 'En Yüksek Puanlılar' },
@@ -76,25 +77,25 @@ const columns = [
 ]
 
 const linkStyle =
-  'text-left text-stone-400 transition hover:text-orange-300'
+  'text-left text-faded transition hover:text-zap'
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-stone-800/80 bg-stone-950/90 backdrop-blur">
-      {/* Üst kenar: lav şeridi */}
-      <div className="h-1 bg-[repeating-linear-gradient(-45deg,#f97316_0_10px,transparent_10px_20px)] opacity-70" />
+    <footer className="mt-16 border-t border-line/60 bg-night-deep/90 backdrop-blur">
+      {/* Üst kenar: turuncu-siyah tehlike şeridi */}
+      <div className="h-1 bg-[repeating-linear-gradient(-45deg,#ff6a00_0_14px,#1a1a1a_14px_28px)]" />
 
       <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-12 lg:grid-cols-[1.2fr_2fr]">
         {/* Sol: marka, tanıtım, sosyal medya, dil */}
         <div className="flex flex-col gap-5">
           <Link to="/" className="flex items-center gap-2">
             <Flame className="h-8 w-8" />
-            <span className="font-display text-3xl font-extrabold tracking-tight text-white">
+            <span className="font-display text-3xl font-extrabold tracking-tight text-cream">
               Rank<span className="text-fire">Hell</span>
             </span>
           </Link>
 
-          <p className="max-w-xs text-sm leading-relaxed text-stone-400">
+          <p className="max-w-xs text-sm leading-relaxed text-faded">
             RankHell, acımasız sıralamaların dünyasıdır. Puanla, oyla, tartış —
             burada her şey cehennem sırasına girer!
           </p>
@@ -105,7 +106,7 @@ export default function Footer() {
                 key={s.label}
                 type="button"
                 aria-label={s.label}
-                className="rounded-lg p-2.5 text-stone-400 ring-1 ring-stone-700 transition hover:text-orange-300 hover:ring-orange-500/60"
+                className="rounded-lg p-2.5 text-faded ring-1 ring-line transition hover:text-zap hover:ring-ember/60"
               >
                 <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
                   <path d={s.path} />
@@ -115,12 +116,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="mb-2 text-sm text-stone-500">Diller</p>
+            <p className="mb-2 text-sm text-faded/70">Diller</p>
             <button
               type="button"
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-stone-300 ring-1 ring-stone-700 transition hover:ring-orange-500/60"
+              className="rounded-lg px-4 py-2 text-sm font-semibold text-cream ring-1 ring-line transition hover:ring-ember/60"
             >
-              TR <span className="font-normal text-stone-500">(Türkçe)</span>
+              TR <span className="font-normal text-faded/70">(Türkçe)</span>
             </button>
           </div>
         </div>
@@ -130,12 +131,12 @@ export default function Footer() {
           {columns.map((col) => (
             <div key={col.title}>
               <div className="mb-4 flex items-center gap-2.5">
-                <span className="rounded-lg bg-stone-800/80 p-2 text-amber-400 ring-1 ring-stone-700">
+                <span className="rounded-lg bg-coal p-2 text-ember ring-1 ring-line">
                   <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
                     {col.icon}
                   </svg>
                 </span>
-                <h3 className="font-display text-base font-bold uppercase tracking-wide text-amber-400">
+                <h3 className="font-display text-base font-bold uppercase tracking-wide text-ember-soft">
                   {col.title}
                 </h3>
               </div>
@@ -160,16 +161,16 @@ export default function Footer() {
       </div>
 
       {/* Alt bar: telif + yukarı çık */}
-      <div className="border-t border-stone-800/60">
+      <div className="border-t border-line/40">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-6 py-5">
-          <p className="text-sm text-stone-500">
+          <p className="text-sm text-faded/70">
             © {new Date().getFullYear()} · RankHell · Tüm hakları saklıdır
           </p>
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             aria-label="Yukarı çık"
-            className="rounded-full bg-stone-800 p-3 text-stone-300 ring-1 ring-stone-700 transition hover:-translate-y-0.5 hover:text-orange-300 hover:ring-orange-500/60"
+            className="rounded-full bg-coal p-3 text-cream ring-1 ring-line transition hover:-translate-y-0.5 hover:text-zap hover:ring-ember/60"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
               <path d="M12 5l-8 8 1.41 1.41L11 8.83V20h2V8.83l5.59 5.58L20 13z" />

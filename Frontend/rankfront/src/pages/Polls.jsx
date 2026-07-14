@@ -14,7 +14,7 @@ export default function Polls() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="title-ember font-display text-3xl font-extrabold text-white">Anketler</h1>
+        <h1 className="title-ember font-display text-3xl font-extrabold text-cream">Anketler</h1>
         <Link to="/polls/new" className="btn-fire px-4 py-2 text-sm">
           + Yeni Anket
         </Link>
@@ -32,19 +32,19 @@ export default function Polls() {
             <Link
               key={poll.pollId}
               to={`/polls/${poll.pollId}`}
-              className="group card-dark flex animate-rise items-center justify-between gap-4 p-4 transition duration-200 hover:translate-x-1 hover:border-orange-500/50"
+              className="group card-dark flex animate-rise items-center justify-between gap-4 p-4 transition duration-200 hover:translate-x-1 hover:bg-coal-light/50"
               style={{ animationDelay: `${i * 50}ms` }}
             >
               <div>
-                <h2 className="font-display font-bold text-stone-100 transition group-hover:text-orange-300">
+                <h2 className="font-display font-bold text-cream transition group-hover:text-ember-soft">
                   {poll.title}
                 </h2>
-                <p className="mt-1 text-sm text-stone-400">
+                <p className="mt-1 text-sm text-faded">
                   @{poll.creator.username} · {poll.itemCount} seçenek ·{' '}
                   {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
                 </p>
               </div>
-              <span className="text-lg text-stone-600 transition duration-200 group-hover:translate-x-1 group-hover:text-orange-400">
+              <span className="text-lg text-faded/60 transition duration-200 group-hover:translate-x-1 group-hover:text-zap">
                 →
               </span>
             </Link>

@@ -3,7 +3,7 @@
 // fonksiyon gövdeleri fetch('http://localhost:8080/api/...') çağrılarına
 // çevrilecek, sayfalara ve bileşenlere dokunulmayacak.
 
-import { categories, items, users, ratings, polls } from './mock/data'
+import { categories, items, users, ratings, polls, dailyRanking } from './mock/data'
 
 // Ağ gecikmesini taklit eder — loading durumlarının gerçekçi görünmesi için.
 const delay = (ms = 400) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -74,6 +74,17 @@ export async function getItems(categoryId = null) {
 export async function getTopItems(limit = 5) {
   await delay()
   return [...items].sort((a, b) => b.globalScore - a.globalScore).slice(0, limit)
+}
+
+export async function getDailyRanking() {
+  await delay()
+  return {
+    date: dailyRanking.date,
+    title: dailyRanking.title,
+    entries: dailyRanking.entries
+      .map((e) => ({ ...e, item: items.find((i) => i.itemId === e.itemId) }))
+      .filter((e) => e.item),
+  }
 }
 
 export async function getItem(itemId) {
