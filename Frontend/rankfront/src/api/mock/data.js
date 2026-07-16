@@ -98,6 +98,54 @@ export const dailyRanking = {
   ],
 }
 
+// Düello: iki rakip, tek oy. Anonim oylanır — item rating'lerinden ayrı bir akış,
+// hero'da kayıt olmadan tek tıkla oy verilsin diye.
+// imageUrl null ise widget düz renk + baş harf placeholder'ı çizer; backend gerçek
+// URL yollamaya başlayınca component değişmeden çalışır.
+// Not: renk veriye yazılmaz — taraf tonu A/B pozisyonundan türetilir (tek renk ailesi).
+export const duels = [
+  {
+    duelId: 1,
+    title: 'Kebap masasında son söz',
+    itemA: { name: 'Adana Kebap', imageUrl: '/duels/adana.jpg' },
+    itemB: { name: 'İskender', imageUrl: '/duels/iskender.jpg' },
+    votesA: 796,
+    votesB: 488, // 1.284 oy · %62 — %38
+  },
+  {
+    duelId: 2,
+    title: 'Altın çağın iki devi',
+    itemA: { name: 'Breaking Bad', imageUrl: '/duels/breakingbad.jpg' },
+    itemB: { name: 'The Wire', imageUrl: '/duels/wire.jpg' },
+    votesA: 1120,
+    votesB: 954,
+  },
+  {
+    duelId: 3,
+    title: 'Açık dünyanın tahtı',
+    itemA: { name: 'Elden Ring', imageUrl: '/duels/eldenring.jpg' },
+    itemB: { name: 'The Witcher 3', imageUrl: '/duels/witcher.jpg' },
+    votesA: 688,
+    votesB: 731,
+  },
+  {
+    duelId: 4,
+    title: 'Sinemanın ağır topları',
+    itemA: { name: 'The Godfather', imageUrl: '/duels/godfather.jpg' },
+    itemB: { name: 'Interstellar', imageUrl: '/duels/interstellar.jpg' },
+    votesA: 1502,
+    votesB: 1187,
+  },
+  {
+    duelId: 5,
+    title: 'Fincanda biten kavga',
+    itemA: { name: 'Çay', imageUrl: '/duels/cay.jpg' },
+    itemB: { name: 'Türk Kahvesi', imageUrl: '/duels/kahve.jpg' },
+    votesA: 2210,
+    votesB: 1640,
+  },
+]
+
 export const users = [
   { userId: 1, username: 'arda', email: 'arda@rankhell.dev', role: 'USER', createdAt: '2026-06-01T10:00:00' },
   { userId: 2, username: 'erkan', email: 'erkan@example.com', role: 'ADMIN', createdAt: '2026-05-20T09:30:00' },

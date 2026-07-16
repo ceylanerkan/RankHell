@@ -280,6 +280,44 @@
     animation: var(--animate-inferno-shift);
   }
 
+  /* ── Canlı düello widget'ı ───────────────────────────────────────
+     Sayfanın geri kalanından bilinçli olarak sakin: tek aksan (ember),
+     hafif köşe, hale yok. Vurgu tek bir ana ayrılmış — oy sonrası bar
+     hareketi. Bu yüzden .card-ticket/.glow-* kullanmaz. */
+
+  /* Widget gövdesi: kömür yüzey + ince ember hattı (hale değil, çizgi) */
+  .duel-card {
+    @apply rounded-lg bg-coal/90 backdrop-blur;
+    box-shadow:
+      inset 0 0 0 1px rgb(255 69 0 / 0.22),
+      inset 0 1px 0 rgb(255 255 255 / 0.05),
+      0 18px 40px -18px rgb(0 0 0 / 0.9);
+  }
+
+  /* Rakip kartı: hover'da yükselmez, büyümez — sadece içeriden ısınır.
+     Geçiş barla aynı süre/easing: tek bir hareket dili. */
+  .duel-side {
+    @apply rounded-lg bg-night-deep/60 text-left;
+    box-shadow: inset 0 0 0 1px rgb(255 69 0 / 0.18);
+    transition: box-shadow 400ms ease-out, opacity 400ms ease-out;
+  }
+  .duel-side:not([aria-disabled='true']):hover {
+    box-shadow:
+      inset 0 0 0 1px rgb(255 69 0 / 0.45),
+      inset 0 0 22px rgb(255 69 0 / 0.12);
+  }
+  /* Global focus ring turkuaz; widget tek aksan kuralına uysun diye ember'a çevrilir */
+  .duel-side:focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 2px;
+  }
+  /* Kazanan: iç ısı kalıcılaşır, hat güçlenir. Ayrı animasyon yok. */
+  .duel-side-won {
+    box-shadow:
+      inset 0 0 0 1px rgb(255 69 0 / 0.6),
+      inset 0 0 26px rgb(255 69 0 / 0.16);
+  }
+
   /* Tier listesi boş yuvası: kesikli çerçeve, hover'da turkuaz uyanır */
   .tier-slot {
     @apply flex aspect-square w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-line bg-night-deep/50 text-lg font-bold text-faded/50 transition hover:border-zap/50 hover:text-zap sm:w-20;
