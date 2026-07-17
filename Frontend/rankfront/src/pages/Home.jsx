@@ -90,13 +90,15 @@ export default function Home() {
           Yüzeysiz: çerçeve/hale/blur yok. Sayfanın açılışı doğrudan zeminde
           durur, tek yükseltilmiş yüzey düello widget'ı. Alt ayrım navbar'ın
           border-b border-line/60 hattının aynısı — ağırlık kutudan değil
-          tipografiden ve boşluktan gelir. */}
-      <section className="mb-12 border-b border-line/60 pb-12">
+          tipografiden ve boşluktan gelir. .hero-warm: navbar'ın koyu tonundan
+          türeyen tam genişlik sıcak yıkama (index.css). */}
+      <section className="hero-warm mb-12 border-b border-line/60 pb-10">
         {/* Masaüstü: söz solda / düello sağda. Mobil: tek kolon, widget başlığın altına iner.
-            Sağ kolon oransal (0.8fr): sabit cap'te geniş ekranda ortada ölü boşluk
-            kalıyordu; oranla büyüyünce görseller de irileşiyor. minmax alt sınırı
-            widget'ın sıkışmasını engeller. */}
-        <div className="grid gap-10 lg:grid-cols-[1fr_minmax(380px,0.8fr)] lg:items-center lg:gap-16">
+            1240px cap + mx-auto YOK: içerik navbar logosuyla aynı sol hatta kalır,
+            sağda kalan boşluk bilinçli nefes payı. Dar gap metinle widget arasındaki
+            ölü boşluğu alır; 0.85fr + minmax alt sınırı widget'ı lg+ ekranda
+            ~540-560px bandında tutar. */}
+        <div className="grid max-w-[1240px] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.85fr)] lg:items-center lg:gap-10 xl:gap-12">
           <div>
             {/* 7xl xl'de açılır, lg'de değil: lg (1024) tam kolonun daraldığı
                 nokta, orada 72px başlığı üç satıra kırıyordu. */}
@@ -120,7 +122,11 @@ export default function Home() {
             </div>
           </div>
 
-          <DuelWidget />
+          {/* lg:translate-y-1: widget metin bloğundan uzun; items-center onu üstten
+              alttakinden ~10px fazla taşırıyordu. 4px aşağı kaydırma taşmayı eşitler. */}
+          <div className="lg:translate-y-1">
+            <DuelWidget />
+          </div>
         </div>
       </section>
 

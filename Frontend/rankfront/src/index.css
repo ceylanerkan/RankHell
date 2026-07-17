@@ -280,6 +280,36 @@
     animation: var(--animate-inferno-shift);
   }
 
+  /* ── Hero sıcak yıkaması ─────────────────────────────────────────
+     Navbar'ın koyu kahve-siyah tonundan türeyen, hero'ya özel düz bir
+     yıkama: zemindeki gri/mor noktalı soğukluğu bastırır. Yatayda tam
+     genişliğe (100vw) taşar ve alta doğru şeffaflaşır — görünür bir
+     dikdörtgen kart kenarı oluşmaz; alt ayrımı yine section'ın kendi
+     hairline'ı yapar. top: -2rem main'in py-8 üst boşluğunu da ısıtıp
+     yıkamayı navbar hattına yaslar. z-index -1: içerik üstte kalır.
+     Yatay: -1.5rem main'in px-6'sını geri alır — ≤1600px viewport'ta tam
+     genişlik. 100vw BİLEREK yok: klasik scrollbar'lı platformlarda 100vw
+     taşıp yatay scroll yaratıyordu. mask: kenarlar yumuşak erir, >1600px
+     ekranda da sert dikey hat oluşmaz. */
+  .hero-warm {
+    position: relative;
+  }
+  .hero-warm::before {
+    content: "";
+    position: absolute;
+    inset: -2rem -1.5rem 0;
+    pointer-events: none;
+    z-index: -1;
+    background: linear-gradient(
+      180deg,
+      rgb(42 27 17 / 0.5) 0%,
+      rgb(36 24 16 / 0.3) 50%,
+      rgb(30 20 14 / 0.12) 80%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(90deg, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+  }
+
   /* ── Canlı düello widget'ı ───────────────────────────────────────
      Sayfanın geri kalanından bilinçli olarak sakin: tek aksan (ember),
      hafif köşe, hale yok. Vurgu tek bir ana ayrılmış — oy sonrası bar
@@ -324,9 +354,10 @@
   }
 
   /* Alt kontrol: widget'ın kendi kenarına oturan tam genişlikte eylem şeridi.
-     Sönük durur, hover'da ısınır — CTA'larla yarışmaz ama tıklanabilirliği açık. */
+     cream/90: okunur ve tıklanabilir görünür ama aksan rengine geçmez —
+     CTA'larla yarışmaz; hover'da ısınır, ok JSX'te group-hover ile kayar. */
   .duel-next {
-    @apply text-faded transition duration-200 hover:bg-coal-light hover:text-ember-soft;
+    @apply text-cream/90 transition duration-200 hover:bg-coal-light hover:text-ember-soft;
   }
   .duel-next:focus-visible {
     outline: 2px solid var(--color-ember);

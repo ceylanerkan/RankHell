@@ -48,7 +48,7 @@ function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
           uzatır, grid iki kartı eşitlerken kaybedenin görseli aşağı kayar ve
           isim hizası bozulur. mt-auto şeridi her hâlükârda dibe sabitler. */}
       <span className="mt-auto flex min-h-[3.25rem] items-center justify-between gap-2 bg-night-deep/85 px-3 py-2.5">
-        <span className="min-w-0 truncate font-display text-sm font-bold leading-snug text-cream sm:text-base">
+        <span className="min-w-0 truncate font-display text-[15px] font-bold leading-snug text-cream sm:text-[17px]">
           {item.name}
         </span>
         {hasVoted && (
@@ -73,7 +73,7 @@ export default function DuelWidget() {
   // animasyon olurdu. Sessiz iskelet, kart yüksekliğini tutup zıplamayı önlüyor.
   if (!duel) {
     return (
-      <div className="duel-card p-5 sm:p-6" aria-busy={!error}>
+      <div className="duel-card p-4 sm:p-5" aria-busy={!error}>
         {error ? (
           <p className="text-sm font-semibold text-danger">{error}</p>
         ) : (
@@ -92,12 +92,14 @@ export default function DuelWidget() {
 
   return (
     <div className="duel-card overflow-hidden">
-      <div className="p-5 sm:p-6">
+      {/* p-4/p-5: dar padding görsellere daha çok alan bırakır — widget'ın
+          kütlesi çerçevede değil içerikte. */}
+      <div className="p-4 sm:p-5">
         {/* Sayaç aria-live DEĞİL: sahte realtime 3-8sn'de bir artırıyor, ekran
             okuyucuyu sürekli konuşturur. Duyuru sadece kullanıcının kendi oyunda. */}
         <div className="mb-4 flex items-baseline justify-between gap-3">
-          <p className="font-display text-base font-extrabold text-cream">{duel.title}</p>
-          <p className="shrink-0 text-xs font-bold tabular-nums text-faded">
+          <p className="font-display text-base font-extrabold text-cream sm:text-lg">{duel.title}</p>
+          <p className="shrink-0 text-sm font-semibold tabular-nums text-faded">
             {totalVotes.toLocaleString('tr-TR')} oy
           </p>
         </div>
@@ -144,10 +146,12 @@ export default function DuelWidget() {
         <button
           type="button"
           onClick={next}
-          className="duel-next flex w-full items-center justify-center gap-1.5 border-t border-line/60 px-5 py-3 text-sm font-semibold"
+          className="duel-next group flex w-full items-center justify-center gap-1.5 border-t border-line/60 px-5 py-3 text-sm font-semibold"
         >
           {hasVoted ? 'Sıradaki düello' : 'Atla'}
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
+            →
+          </span>
         </button>
       )}
 
