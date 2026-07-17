@@ -9,9 +9,13 @@ function initialOf(name) {
   return name.trim().charAt(0).toLocaleUpperCase('tr-TR')
 }
 
-// Rakip kartı. Ton veriden değil A/B pozisyonundan türer: A parlak kor,
-// B sönük köz — bar'daki eşlemenin aynısı, bu yüzden legend gerekmiyor.
-function DuelSide({ item, side, voted, hasVoted, onVote }) {
+// Rakip kartı. Görsel kartı kenardan kenara doldurur, isim altındaki koyu şeride
+// biner: prominence oranı zorlayarak değil, çerçeveyi kaldırarak geliyor.
+// aspect-[3/2]: kaynak görsellerin yarısı (tüm yemekler) zaten tam 3:2 — hiç
+// kırpılmıyorlar; kalan yatay görseller için de en az agresif gerçekçi kadraj.
+// Ton veriden değil A/B pozisyonundan türer: A parlak kor, B sönük köz —
+// bar'daki eşlemenin aynısı, bu yüzden legend gerekmiyor.
+function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
   const tint = side === 'A' ? 'bg-ember/15 text-ember' : 'bg-ember-deep/30 text-ember-deep'
   const lost = hasVoted && !voted
 
@@ -24,22 +28,38 @@ function DuelSide({ item, side, voted, hasVoted, onVote }) {
       aria-disabled={hasVoted}
       onClick={hasVoted ? undefined : onVote}
       aria-label={`${item.name} için oy ver`}
-      className={`duel-side p-3 sm:p-4 ${voted ? 'duel-side-won' : ''} ${lost ? 'opacity-60' : ''} ${
+      className={`duel-side ${voted ? 'duel-side-won' : ''} ${lost ? 'opacity-60' : ''} ${
         hasVoted ? 'cursor-default' : 'cursor-pointer'
       }`}
     >
       {item.imageUrl ? (
-        <img src={item.imageUrl} alt="" className="mb-3 aspect-[4/3] w-full rounded-md object-cover" />
+        <img src={item.imageUrl} alt="" className="aspect-[3/2] w-full object-cover object-center" />
       ) : (
         <span
           aria-hidden="true"
-          className={`mb-3 flex aspect-[4/3] w-full items-center justify-center rounded-md font-display text-4xl font-extrabold sm:text-5xl ${tint}`}
+          className={`flex aspect-[3/2] w-full items-center justify-center font-display text-4xl font-extrabold sm:text-5xl ${tint}`}
         >
           {initialOf(item.name)}
         </span>
       )}
-      <span className="block font-display text-sm font-bold leading-snug text-cream sm:text-base">
-        {item.name}
+      {/* İsim + sonuç tek şeritte: oydan sonra kazananın yüzdesi iri ve kor,
+          kaybedeninki küçük ve sönük — hiyerarşi rakamın kütlesinden geliyor.
+          Sabit yükseklik (min-h) şart: yoksa kazananın iri yüzdesi şeridi
+          uzatır, grid iki kartı eşitlerken kaybedenin görseli aşağı kayar ve
+          isim hizası bozulur. mt-auto şeridi her hâlükârda dibe sabitler. */}
+      <span className="mt-auto flex min-h-[3.25rem] items-center justify-between gap-2 bg-night-deep/85 px-3 py-2.5">
+        <span className="min-w-0 truncate font-display text-sm font-bold leading-snug text-cream sm:text-base">
+          {item.name}
+        </span>
+        {hasVoted && (
+          <span
+            className={`shrink-0 font-display font-extrabold tabular-nums ${
+              voted ? 'text-2xl text-ember' : 'text-sm text-faded'
+            }`}
+          >
+            %{percent}
+          </span>
+        )}
       </span>
     </button>
   )
@@ -59,12 +79,11 @@ export default function DuelWidget() {
         ) : (
           <div aria-hidden="true" className="space-y-3">
             <div className="h-3 w-40 rounded bg-coal-light" />
-            <div className="h-5 w-52 rounded bg-coal-light" />
             <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="aspect-[4/3] rounded-md bg-coal-light" />
-              <div className="aspect-[4/3] rounded-md bg-coal-light" />
+              <div className="aspect-[3/2] rounded-md bg-coal-light" />
+              <div className="aspect-[3/2] rounded-md bg-coal-light" />
             </div>
-            <div className="h-2.5 rounded-[4px] bg-coal-light" />
+            <div className="h-1.5 rounded-full bg-coal-light" />
           </div>
         )}
       </div>
@@ -72,61 +91,64 @@ export default function DuelWidget() {
   }
 
   return (
-    <div className="duel-card p-5 sm:p-6">
-      <p className="text-xs font-bold uppercase tracking-widest text-faded">{duel.title}</p>
-      {/* Sayaç aria-live DEĞİL: sahte realtime 3-8sn'de bir artırıyor, ekran
-          okuyucuyu sürekli konuşturur. Duyuru sadece kullanıcının kendi oyunda. */}
-      <p className="mt-1 font-display text-lg font-extrabold text-cream">
-        Bu düelloda <span className="tabular-nums text-ember">{totalVotes.toLocaleString('tr-TR')}</span> oy
-      </p>
-
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <DuelSide
-          item={duel.itemA}
-          side="A"
-          voted={votedSide === 'A'}
-          hasVoted={hasVoted}
-          onVote={() => vote('A')}
-        />
-        <DuelSide
-          item={duel.itemB}
-          side="B"
-          voted={votedSide === 'B'}
-          hasVoted={hasVoted}
-          onVote={() => vote('B')}
-        />
-      </div>
-
-      {/* Tek orkestre an: oran barı. Sahte realtime de aynı geçişi kullanır.
-          Bilgi yüzde yazılarında da var — reduced-motion'da bar zıplasa bile kayıp yok. */}
-      <div aria-hidden="true" className="mt-4 flex h-2.5 overflow-hidden rounded-[4px] bg-night-deep">
-        <div
-          className="bg-ember transition-[width] duration-[400ms] ease-out"
-          style={{ width: `${percentA}%` }}
-        />
-        <div
-          className="bg-ember-deep transition-[width] duration-[400ms] ease-out"
-          style={{ width: `${percentB}%` }}
-        />
-      </div>
-
-      <div className="mt-2 flex items-center justify-between text-xs font-bold tabular-nums text-cream">
-        <span>%{percentA}</span>
-        <span>%{percentB}</span>
-      </div>
-
-      {error && <p className="mt-3 text-xs font-semibold text-danger">{error}</p>}
-
-      {hasVoted && hasNext && (
-        <div className="mt-4 flex justify-end">
-          <button
-            type="button"
-            onClick={next}
-            className="text-sm font-semibold text-ember-soft transition hover:underline focus-visible:outline-ember"
-          >
-            Sıradaki düello →
-          </button>
+    <div className="duel-card overflow-hidden">
+      <div className="p-5 sm:p-6">
+        {/* Sayaç aria-live DEĞİL: sahte realtime 3-8sn'de bir artırıyor, ekran
+            okuyucuyu sürekli konuşturur. Duyuru sadece kullanıcının kendi oyunda. */}
+        <div className="mb-4 flex items-baseline justify-between gap-3">
+          <p className="font-display text-base font-extrabold text-cream">{duel.title}</p>
+          <p className="shrink-0 text-xs font-bold tabular-nums text-faded">
+            {totalVotes.toLocaleString('tr-TR')} oy
+          </p>
         </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <DuelSide
+            item={duel.itemA}
+            side="A"
+            percent={percentA}
+            voted={votedSide === 'A'}
+            hasVoted={hasVoted}
+            onVote={() => vote('A')}
+          />
+          <DuelSide
+            item={duel.itemB}
+            side="B"
+            percent={percentB}
+            voted={votedSide === 'B'}
+            hasVoted={hasVoted}
+            onVote={() => vote('B')}
+          />
+        </div>
+
+        {/* Tek orkestre an: oran barı. Sahte realtime de aynı geçişi kullanır.
+            Bilgi kartlardaki yüzdelerde de var — reduced-motion'da bar zıplasa bile kayıp yok. */}
+        <div aria-hidden="true" className="mt-4 flex h-1.5 overflow-hidden rounded-full bg-night-deep">
+          <div
+            className="bg-ember transition-[width] duration-[400ms] ease-out"
+            style={{ width: `${percentA}%` }}
+          />
+          <div
+            className="bg-ember-deep transition-[width] duration-[400ms] ease-out"
+            style={{ width: `${percentB}%` }}
+          />
+        </div>
+
+        {error && <p className="mt-3 text-xs font-semibold text-danger">{error}</p>}
+      </div>
+
+      {/* Oy vermeden de geçilebilir: ilgilenmediği eşleşmede sıkışan ziyaretçi
+          hero'nun tek etkileşimli anını terk ediyordu. next() sadece index'i
+          döngüsel ilerletir — atlanan düello oylanmamış kalır, oy durumu bozulmaz. */}
+      {hasNext && (
+        <button
+          type="button"
+          onClick={next}
+          className="duel-next flex w-full items-center justify-center gap-1.5 border-t border-line/60 px-5 py-3 text-sm font-semibold"
+        >
+          {hasVoted ? 'Sıradaki düello' : 'Atla'}
+          <span aria-hidden="true">→</span>
+        </button>
       )}
 
       {/* Yüzde yok: sahte realtime her oynadığında yeniden okunmasın diye statik */}

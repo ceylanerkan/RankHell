@@ -86,43 +86,36 @@ export default function Home() {
 
   return (
     <div>
-      {/* ── Hero: karanlık neon arena sahnesi ────────────────── */}
-      <section className="glow-ember relative mb-12 overflow-hidden rounded-2xl bg-night-deep p-8 sm:p-12">
-        {/* Dekor katmanı: kor ışık lekeleri ve hayalet #1.
-            Tek renk ailesi: parlak kor solda, sönük köz sağda. */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
-          <span className="absolute -left-16 -top-24 h-72 w-72 rounded-full bg-ember/20 blur-3xl" />
-          <span className="absolute -bottom-28 -right-10 h-80 w-80 rounded-full bg-ember-deep/20 blur-3xl" />
-          <span className="absolute -bottom-10 -right-4 font-display text-[11rem] font-extrabold leading-none text-ember/[0.07] sm:text-[15rem]">
-            #1
-          </span>
-        </div>
-
-        {/* Masaüstü: söz solda / düello sağda. Mobil: tek kolon, widget başlığın altına iner. */}
-        <div className="relative grid gap-8 lg:grid-cols-[1.1fr_minmax(320px,0.9fr)] lg:items-center">
+      {/* ── Hero ─────────────────────────────────────────────────
+          Yüzeysiz: çerçeve/hale/blur yok. Sayfanın açılışı doğrudan zeminde
+          durur, tek yükseltilmiş yüzey düello widget'ı. Alt ayrım navbar'ın
+          border-b border-line/60 hattının aynısı — ağırlık kutudan değil
+          tipografiden ve boşluktan gelir. */}
+      <section className="mb-12 border-b border-line/60 pb-12">
+        {/* Masaüstü: söz solda / düello sağda. Mobil: tek kolon, widget başlığın altına iner.
+            Sağ kolon oransal (0.8fr): sabit cap'te geniş ekranda ortada ölü boşluk
+            kalıyordu; oranla büyüyünce görseller de irileşiyor. minmax alt sınırı
+            widget'ın sıkışmasını engeller. */}
+        <div className="grid gap-10 lg:grid-cols-[1fr_minmax(380px,0.8fr)] lg:items-center lg:gap-16">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-ember/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-ember-soft ring-1 ring-ember/40">
-              Canlı oylama — arena açık
-            </span>
-
-            <h1 className="mt-4 font-display text-4xl font-extrabold leading-tight text-cream sm:text-5xl">
-              Her şeyi <span className="text-ember">sırala</span>
+            {/* 7xl xl'de açılır, lg'de değil: lg (1024) tam kolonun daraldığı
+                nokta, orada 72px başlığı üç satıra kırıyordu. */}
+            <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-cream sm:text-6xl xl:text-7xl">
+              Her şeyi <span className="text-ember">sırala</span>,
               <br className="hidden sm:block" /> herkesle yarıştır
             </h1>
-            <p className="mt-3 max-w-xl text-lg font-semibold text-faded">
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-faded">
               Filmden yemeğe her şeye puan ver, topluluğun sıralamasını gör, kendi anketini oluştur.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link to="/items" className="btn-fire group px-6 py-2.5">
+            {/* Tek birincil eylem: btn-fire daha iri. İkincil aynı yükseklikte ama sönük. */}
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link to="/items" className="btn-fire group px-7 py-3 text-base">
                 Keşfetmeye Başla
                 <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2.5} />
               </Link>
-              <Link to="/polls/new" className="btn-ghost">
+              <Link to="/polls/new" className="btn-ghost px-5 py-3">
                 Anket Oluştur
                 <Plus className="h-5 w-5" strokeWidth={2.5} />
-              </Link>
-              <Link to="/tiers" className="text-sm font-semibold text-ember-soft transition hover:underline">
-                Tier Listesi →
               </Link>
             </div>
           </div>
