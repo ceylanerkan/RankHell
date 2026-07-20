@@ -17,7 +17,7 @@ public class CategoryService {
 
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll().stream()
-                .map(c -> new CategoryDTO(c.getCategoryId(), c.getName()))
+                .map(c -> new CategoryDTO(c.getCategoryId(), c.getName(), c.getTagline()))
                 .toList();
     }
 }

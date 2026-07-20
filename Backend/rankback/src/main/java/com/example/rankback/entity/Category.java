@@ -29,4 +29,8 @@ public class Category {
     @Column(name = "image_url", length = 1000   ) // Veritabanında VARCHAR(255) olarak oluşturur
     private String imageUrl;
 
+    @Size(max = 150, message = "Tagline 150 karakterden uzun olamaz")
+    @Column(name = "tagline", length = 150)
+    private String tagline;
+
 }

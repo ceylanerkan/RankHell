@@ -58,7 +58,7 @@ public class ItemService {
                 .collect(Collectors.groupingBy(
                         ic -> ic.getItem().getItemId(),
                         Collectors.mapping(
-                                ic -> new CategoryDTO(ic.getCategory().getCategoryId(), ic.getCategory().getName()),
+                                ic -> new CategoryDTO(ic.getCategory().getCategoryId(), ic.getCategory().getName(), ic.getCategory().getTagline()),
                                 Collectors.toList())
                 ));
 
