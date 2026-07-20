@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "Item_Votes", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"user_id", "item_id"})
 })

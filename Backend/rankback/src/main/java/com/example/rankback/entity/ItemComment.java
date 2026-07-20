@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "Item_Comments")
 @SQLRestriction("is_deleted = false")
 public class ItemComment {
