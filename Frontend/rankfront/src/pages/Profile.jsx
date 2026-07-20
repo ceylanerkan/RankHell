@@ -23,18 +23,18 @@ export default function Profile() {
   return (
     <div>
       <div className="mb-8 flex items-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-600 via-orange-500 to-amber-500 font-display text-2xl font-extrabold text-white shadow-lg shadow-orange-950/50">
+        <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-ember via-flame to-plasma font-display text-2xl font-extrabold text-night shadow-[0_4px_0_var(--color-ember-deep)]">
           {session.username[0].toUpperCase()}
         </div>
         <div>
-          <h1 className="font-display text-2xl font-extrabold text-white">@{session.username}</h1>
-          <p className="text-sm text-stone-400">{session.email} · {session.role}</p>
+          <h1 className="font-display text-2xl font-extrabold text-cream">@{session.username}</h1>
+          <p className="text-sm text-faded">{session.email} · {session.role}</p>
         </div>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
         <section>
-          <h2 className="mb-3 font-display text-lg font-extrabold text-white">Verdiğim Oylar</h2>
+          <h2 className="title-ember mb-3 font-display text-lg font-extrabold text-cream">Verdiğim Oylar</h2>
           {!ratings ? (
             <Loading />
           ) : ratings.length === 0 ? (
@@ -45,9 +45,9 @@ export default function Profile() {
                 <Link
                   key={r.ratingId}
                   to={`/items/${r.itemId}`}
-                  className="card-dark flex items-center justify-between rounded-xl p-3 transition duration-200 hover:translate-x-1 hover:border-orange-500/50"
+                  className="card-dark flex items-center justify-between p-3 transition duration-200 hover:translate-x-1 hover:bg-coal-light/50"
                 >
-                  <span className="text-stone-200">{r.item?.name}</span>
+                  <span className="text-cream">{r.item?.name}</span>
                   <StarRating value={r.score} size="text-base" />
                 </Link>
               ))}
@@ -56,7 +56,7 @@ export default function Profile() {
         </section>
 
         <section>
-          <h2 className="mb-3 font-display text-lg font-extrabold text-white">Anketlerim</h2>
+          <h2 className="title-ember mb-3 font-display text-lg font-extrabold text-cream">Anketlerim</h2>
           {!polls ? (
             <Loading />
           ) : polls.length === 0 ? (
@@ -67,10 +67,10 @@ export default function Profile() {
                 <Link
                   key={p.pollId}
                   to={`/polls/${p.pollId}`}
-                  className="card-dark block rounded-xl p-3 transition duration-200 hover:translate-x-1 hover:border-orange-500/50"
+                  className="card-dark block p-3 transition duration-200 hover:translate-x-1 hover:bg-coal-light/50"
                 >
-                  <span className="text-stone-200">{p.title}</span>
-                  <p className="text-xs text-stone-500">
+                  <span className="text-cream">{p.title}</span>
+                  <p className="text-xs text-faded/70">
                     {new Date(p.createdAt).toLocaleDateString('tr-TR')}
                   </p>
                 </Link>

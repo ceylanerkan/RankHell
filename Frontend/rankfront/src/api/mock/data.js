@@ -2,11 +2,11 @@
 // Backend API hazır olduğunda bu dosya silinecek, client.js fetch'e geçecek.
 
 export const categories = [
-  { categoryId: 1, name: 'Film' },
-  { categoryId: 2, name: 'Dizi' },
-  { categoryId: 3, name: 'Oyun' },
-  { categoryId: 4, name: 'Yemek' },
-  { categoryId: 5, name: 'Müzik' },
+  { categoryId: 1, name: 'Film', emoji: '🎬', tagline: 'Kült mü, klişe mi?' },
+  { categoryId: 2, name: 'Dizi', emoji: '📺', tagline: 'Final hak etti mi?' },
+  { categoryId: 3, name: 'Oyun', emoji: '🎮', tagline: 'Efsane mi, hype mı?' },
+  { categoryId: 4, name: 'Yemek', emoji: '🍔', tagline: 'Damak kavgası burada' },
+  { categoryId: 5, name: 'Müzik', emoji: '🎵', tagline: 'Kulaklar jüri' },
 ]
 
 export const items = [
@@ -81,6 +81,68 @@ export const items = [
     globalScore: 4.31,
     totalVotes: 412,
     categories: [{ categoryId: 4, name: 'Yemek' }],
+  },
+]
+
+// Günün sıralaması — bugün en çok oy toplayan item'lar (vitrin verisi).
+// delta: dünkü sıraya göre değişim (+n / -n / 0), 'yeni' = listeye yeni girdi.
+export const dailyRanking = {
+  date: '2026-07-14',
+  title: 'Günün Sıralaması',
+  entries: [
+    { itemId: 2, votesToday: 128, delta: 0 },
+    { itemId: 7, votesToday: 97, delta: 2 },
+    { itemId: 1, votesToday: 84, delta: -1 },
+    { itemId: 4, votesToday: 61, delta: 'yeni' },
+    { itemId: 6, votesToday: 45, delta: -2 },
+  ],
+}
+
+// Düello: iki rakip, tek oy. Anonim oylanır — item rating'lerinden ayrı bir akış,
+// hero'da kayıt olmadan tek tıkla oy verilsin diye.
+// imageUrl null ise widget düz renk + baş harf placeholder'ı çizer; backend gerçek
+// URL yollamaya başlayınca component değişmeden çalışır.
+// Not: renk veriye yazılmaz — taraf tonu A/B pozisyonundan türetilir (tek renk ailesi).
+export const duels = [
+  {
+    duelId: 1,
+    title: 'Kebap masasında son söz',
+    itemA: { name: 'Adana Kebap', imageUrl: '/duels/adana.jpg' },
+    itemB: { name: 'İskender', imageUrl: '/duels/iskender.jpg' },
+    votesA: 796,
+    votesB: 488, // 1.284 oy · %62 — %38
+  },
+  {
+    duelId: 2,
+    title: 'Altın çağın iki devi',
+    itemA: { name: 'Breaking Bad', imageUrl: '/duels/breakingbad.jpg' },
+    itemB: { name: 'The Wire', imageUrl: '/duels/wire.jpg' },
+    votesA: 1120,
+    votesB: 954,
+  },
+  {
+    duelId: 3,
+    title: 'Açık dünyanın tahtı',
+    itemA: { name: 'Elden Ring', imageUrl: '/duels/eldenring.jpg' },
+    itemB: { name: 'The Witcher 3', imageUrl: '/duels/witcher.jpg' },
+    votesA: 688,
+    votesB: 731,
+  },
+  {
+    duelId: 4,
+    title: 'Sinemanın ağır topları',
+    itemA: { name: 'The Godfather', imageUrl: '/duels/godfather.jpg' },
+    itemB: { name: 'Interstellar', imageUrl: '/duels/interstellar.jpg' },
+    votesA: 1502,
+    votesB: 1187,
+  },
+  {
+    duelId: 5,
+    title: 'Fincanda biten kavga',
+    itemA: { name: 'Çay', imageUrl: '/duels/cay.jpg' },
+    itemB: { name: 'Türk Kahvesi', imageUrl: '/duels/kahve.jpg' },
+    votesA: 2210,
+    votesB: 1640,
   },
 ]
 

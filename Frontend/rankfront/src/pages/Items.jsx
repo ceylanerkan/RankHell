@@ -19,15 +19,15 @@ export default function Items() {
   }, [selected])
 
   const filterClass = (active) =>
-    `rounded-full px-4 py-1.5 text-sm font-semibold transition duration-200 ${
+    `rounded-full px-4 py-1.5 text-sm font-bold transition duration-200 ${
       active
-        ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-orange-950/50'
-        : 'bg-stone-900 text-stone-300 ring-1 ring-stone-800 hover:-translate-y-0.5 hover:text-white hover:ring-orange-500/40'
+        ? 'bg-ember text-night shadow-[0_3px_0_var(--color-ember-deep)]'
+        : 'bg-coal text-faded ring-1 ring-line hover:-translate-y-0.5 hover:text-cream hover:ring-ember/40'
     }`
 
   return (
     <div>
-      <h1 className="mb-4 font-display text-3xl font-extrabold text-white">Keşfet</h1>
+      <h1 className="title-ember mb-4 font-display text-3xl font-extrabold text-cream">Keşfet</h1>
 
       <div className="mb-6 flex flex-wrap gap-2">
         <button className={filterClass(selected === null)} onClick={() => setSelected(null)}>
@@ -51,7 +51,7 @@ export default function Items() {
       ) : items.length === 0 ? (
         <EmptyState message="Bu kategoride henüz item yok." />
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => (
             <div key={item.itemId} className="animate-rise" style={{ animationDelay: `${i * 50}ms` }}>
               <ItemCard item={item} />

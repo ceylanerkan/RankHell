@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 import Home from './pages/Home'
 import Items from './pages/Items'
 import ItemDetail from './pages/ItemDetail'
+import TierList from './pages/TierList'
 import Polls from './pages/Polls'
 import PollNew from './pages/PollNew'
 import PollDetail from './pages/PollDetail'
@@ -15,13 +17,14 @@ import Profile from './pages/Profile'
 function Shell() {
   const location = useLocation()
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main key={location.pathname} className="mx-auto max-w-6xl animate-rise px-4 py-8">
+      <main key={location.pathname} className="mx-auto w-full max-w-[1600px] flex-1 animate-rise px-6 py-8">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/items" element={<Items />} />
           <Route path="/items/:id" element={<ItemDetail />} />
+          <Route path="/tiers" element={<TierList />} />
           <Route path="/polls" element={<Polls />} />
           <Route path="/polls/new" element={<PollNew />} />
           <Route path="/polls/:id" element={<PollDetail />} />
@@ -30,6 +33,7 @@ function Shell() {
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   )
 }

@@ -42,4 +42,17 @@ public class User {
     @Column(name = "created_at", insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @Column(name = "is_terms_accepted", nullable = false)
+    private boolean isTermsAccepted = false;
+
+    @Column(name = "is_kvkk_accepted", nullable = false)
+    private boolean isKvkkAccepted = false;
+
+    @Column(name = "agreement_date")
+    private LocalDateTime agreementDate;
+
+    // IPv6 adresleri de desteklemesi için max 45 karakter sınırı validation ile de güvenceye alındı
+    @Size(max = 45, message = "Kayıt IP adresi 45 karakterden uzun olamaz")
+    @Column(name = "registered_ip", length = 45)
+    private String registeredIp;
 }
