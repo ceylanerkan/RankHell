@@ -17,7 +17,7 @@ import Profile from './pages/Profile'
 function Shell() {
   const location = useLocation()
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col overflow-x-clip">
       <Navbar />
       <main key={location.pathname} className="mx-auto w-full max-w-[1600px] flex-1 animate-rise px-6 py-8">
         <Routes>

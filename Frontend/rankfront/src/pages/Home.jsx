@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus, ArrowRight } from 'lucide-react'
 import { getTopItems, getCategories, getDailyRanking } from '../api/client'
+import Auralis from '@/components/ui/auralis'
 import ItemCard from '../components/ItemCard'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
@@ -92,13 +93,66 @@ export default function Home() {
           border-b border-line/60 hattının aynısı — ağırlık kutudan değil
           tipografiden ve boşluktan gelir. .hero-warm: navbar'ın koyu tonundan
           türeyen tam genişlik sıcak yıkama (index.css). */}
-      <section className="hero-warm mb-12 border-b border-line/60 pb-10">
+      <section
+        className="hero-warm relative isolate mb-12 border-b border-line/60 pb-10"
+        style={{ '--hero-gap': '36px', marginTop: 'var(--hero-gap)' }}
+      >
+        {/* Navbar ↔ shader boşluğu. Section komple --hero-gap kadar aşağı
+            kaydırılır (marginTop); shader -top-8 ile section'a bağlı olduğu için
+            içeriğiyle birlikte iner → widget↔shader mesafesi korunur. Bu
+            tam-genişlik şerit açılan boşluğu #101011 ile doldurur: üstü tam
+            navbar altına (main py-8 = 2rem'i geri alarak), altı tam shader'ın
+            üst kenarına oturur. Boşluğu değiştirmek için SADECE --hero-gap. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 w-screen -translate-x-1/2"
+          style={{
+            top: 'calc(-2rem - var(--hero-gap))',
+            height: 'var(--hero-gap)',
+            backgroundColor: '#101011',
+          }}
+        />
+        {/* Üst ayrım hattı zeminden ayrı katman: full-bleed DEĞİL, içerik
+            genişliğinde (inset-x-0 → section'ın px-6 kenarlarına yaslanır) —
+            hero'nun alt border-b'siyle birebir aynı hat. Zemin (#101011) tam
+            genişlikte kalır, sadece çizgi içeri çekilir. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 border-b border-line/60"
+          style={{
+            top: 'calc(-2rem - var(--hero-gap))',
+            height: 'var(--hero-gap)',
+          }}
+        />
+        {/* Auralis: WebGL ambient ateş zemini — hero'nun canlı arka planı. Ember
+            paletiyle temayla uyumlu, pointer-events yok. isolate + z-10'lu içerik
+            onu üstte tutar; opak zemini hero-warm ::before yıkamasının yerini alır.
+            Tam kenar taşması (full-bleed): left-1/2 + -translate-x-1/2 + w-screen
+            ile section'ın max-w/px-6 kısıtını aşıp viewport genişliğine yayılır;
+            -top-8 + height calc üstteki main py-8 boşluğunu navbar'a yaslar.
+            Yatay scroll'u App shell'deki overflow-x-clip engeller. */}
+        <Auralis
+          colors={['#ff4500', '#ff6d33', '#b33000']}
+          grain={0.4}
+          height="calc(100% + 2rem)"
+          className="absolute left-1/2 -top-8 w-screen -translate-x-1/2"
+        />
+        {/* Okunabilirlik scrim'i: soldaki metni koyultur, sağa doğru açılıp efekti
+            gösterir; alt kenar zemine (night) yaslanıp sonraki bölüme yumuşak geçer. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-8 left-1/2 h-[calc(100%+2rem)] w-screen -translate-x-1/2 bg-gradient-to-r from-night/90 via-night/55 to-night/25"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-1/2 h-24 w-screen -translate-x-1/2 bg-gradient-to-t from-night to-transparent"
+        />
         {/* Masaüstü: söz solda / düello sağda. Mobil: tek kolon, widget başlığın altına iner.
             1240px cap + mx-auto YOK: içerik navbar logosuyla aynı sol hatta kalır,
             sağda kalan boşluk bilinçli nefes payı. Dar gap metinle widget arasındaki
             ölü boşluğu alır; 0.85fr + minmax alt sınırı widget'ı lg+ ekranda
             ~540-560px bandında tutar. */}
-        <div className="grid max-w-[1240px] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.85fr)] lg:items-center lg:gap-10 xl:gap-12">
+        <div className="relative z-10 grid max-w-[1240px] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.85fr)] lg:items-center lg:gap-10 xl:gap-12">
           <div>
             {/* 7xl xl'de açılır, lg'de değil: lg (1024) tam kolonun daraldığı
                 nokta, orada 72px başlığı üç satıra kırıyordu. */}

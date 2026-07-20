@@ -25,7 +25,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-10 overflow-hidden border-b border-line/60 bg-night-deep/85 backdrop-blur-md">
+    <header className="navbar sticky top-0 border-b border-line/60 backdrop-blur-md">
       {/* Arka plan: çapraz uyarı deseni (hazard stripes) */}
       <div
         aria-hidden
