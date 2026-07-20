@@ -273,6 +273,8 @@ export default function Home() {
         </section>
       )}
 
+      <div className="section-divider mb-12" aria-hidden="true" />
+
       {/* ── Liderlik Tablosu ─────────────────────────────────── */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="title-ember font-display text-2xl font-extrabold text-cream">Liderlik Tablosu</h2>
@@ -316,6 +318,8 @@ export default function Home() {
           </Link>
         </div>
       )}
+
+      <div className="section-divider mt-12" aria-hidden="true" />
 
       {/* ── Meydan okuma banner'ı: plazma neon panel ─────────── */}
       <section className="glow-plasma relative mt-12 overflow-hidden rounded-2xl bg-night-deep p-8 sm:p-10">

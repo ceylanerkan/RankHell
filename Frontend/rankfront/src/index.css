@@ -234,6 +234,22 @@
     @apply w-1.5 shrink-0 rounded-full bg-gradient-to-b from-ember via-plasma to-zap shadow-[0_0_10px_rgba(255,69,0,0.45)];
   }
 
+  /* Bölüm ayracı: iki ucu solan, ortası ember-vurgulu ince hat + hafif hale.
+     Dosyanın rgb(255 69 0 / x) notasyonuyla hizalı (kullanıcı snippet'i
+     255,77,18 idi; ayraç halesinde fark gözle seçilmez, tek aksan korunur). */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 69 0 / 0.08) 20%,
+      rgb(255 69 0 / 0.3) 50%,
+      rgb(255 69 0 / 0.08) 80%,
+      transparent 100%
+    );
+    box-shadow: 0 0 18px rgb(255 69 0 / 0.08);
+  }
+
   /* Gün rozeti: plazma pill (ikincil UI rengi) */
   .badge-day {
     @apply inline-flex items-center gap-2 rounded-full bg-plasma/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-plasma-soft ring-1 ring-plasma/40;
