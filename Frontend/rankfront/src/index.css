@@ -234,6 +234,22 @@
     @apply w-1.5 shrink-0 rounded-full bg-gradient-to-b from-ember via-plasma to-zap shadow-[0_0_10px_rgba(255,69,0,0.45)];
   }
 
+  /* Bölüm ayracı: iki ucu solan, ortası ember-vurgulu ince hat + hafif hale.
+     Dosyanın rgb(255 69 0 / x) notasyonuyla hizalı (kullanıcı snippet'i
+     255,77,18 idi; ayraç halesinde fark gözle seçilmez, tek aksan korunur). */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 69 0 / 0.08) 20%,
+      rgb(255 69 0 / 0.3) 50%,
+      rgb(255 69 0 / 0.08) 80%,
+      transparent 100%
+    );
+    box-shadow: 0 0 18px rgb(255 69 0 / 0.08);
+  }
+
   /* Gün rozeti: plazma pill (ikincil UI rengi) */
   .badge-day {
     @apply inline-flex items-center gap-2 rounded-full bg-plasma/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-plasma-soft ring-1 ring-plasma/40;
@@ -367,5 +383,29 @@
   /* Tier listesi boş yuvası: kesikli çerçeve, hover'da turkuaz uyanır */
   .tier-slot {
     @apply flex aspect-square w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-line bg-night-deep/50 text-lg font-bold text-faded/50 transition hover:border-zap/50 hover:text-zap sm:w-20;
+  }
+
+  /* Navbar: altına taşan yumuşak gölge geçişi. ::after navbar hattının
+     32px altına düşer ve şeffaflaşır — sert bir kesme yerine yumuşak
+     ayrım. Header'da overflow-hidden YOK olmalı, aksi halde ::after kırpılır. */
+  .navbar {
+    position: relative;
+    z-index: 10;
+    background: rgba(10, 9, 9, 0.92);
+  }
+
+  .navbar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -32px;
+    height: 32px;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 9, 9, 0.95),
+      rgba(10, 9, 9, 0)
+    );
   }
 }
