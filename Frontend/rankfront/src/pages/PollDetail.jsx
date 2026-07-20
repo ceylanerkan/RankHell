@@ -20,8 +20,8 @@ export default function PollDetail() {
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-extrabold text-white">{poll.title}</h1>
-      <p className="mt-1 mb-6 text-sm text-stone-400">
+      <h1 className="title-ember font-display text-3xl font-extrabold text-cream">{poll.title}</h1>
+      <p className="mt-1 mb-6 text-sm text-faded">
         @{poll.creator.username} · {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
       </p>
 
@@ -36,7 +36,7 @@ export default function PollDetail() {
           ))}
         </div>
       )}
-      <p className="mt-4 text-sm text-stone-500">
+      <p className="mt-4 text-sm text-faded/70">
         Sıralama, seçeneklerin genel puanına göredir. Oy vermek için bir seçeneğe tıkla.
       </p>
     </div>

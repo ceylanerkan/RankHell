@@ -30,10 +30,10 @@ export default function Register() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card-dark mx-auto max-w-sm p-6">
-      <h1 className="mb-6 font-display text-2xl font-extrabold text-white">Kayıt Ol</h1>
+    <form onSubmit={handleSubmit} className="card-glow mx-auto max-w-sm p-6">
+      <h1 className="mb-6 font-display text-2xl font-extrabold text-cream">Kayıt Ol</h1>
 
-      <label className="mb-1 block text-sm font-semibold text-stone-300">Kullanıcı adı</label>
+      <label className="mb-1 block text-sm font-semibold text-cream/90">Kullanıcı adı</label>
       <input
         value={username}
         onChange={(e) => setUsername(e.target.value)}
@@ -41,7 +41,7 @@ export default function Register() {
         className="input-dark mb-4"
       />
 
-      <label className="mb-1 block text-sm font-semibold text-stone-300">E-posta</label>
+      <label className="mb-1 block text-sm font-semibold text-cream/90">E-posta</label>
       <input
         type="email"
         value={email}
@@ -50,7 +50,7 @@ export default function Register() {
         className="input-dark mb-4"
       />
 
-      <label className="mb-1 block text-sm font-semibold text-stone-300">Şifre</label>
+      <label className="mb-1 block text-sm font-semibold text-cream/90">Şifre</label>
       <input
         type="password"
         value={password}
@@ -59,15 +59,15 @@ export default function Register() {
         className="input-dark mb-4"
       />
 
-      {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
+      {error && <p className="mb-4 text-sm text-danger">{error}</p>}
 
       <button type="submit" disabled={submitting} className="btn-fire w-full py-2.5">
         {submitting ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
       </button>
 
-      <p className="mt-4 text-center text-sm text-stone-400">
+      <p className="mt-4 text-center text-sm text-faded">
         Zaten hesabın var mı?{' '}
-        <Link to="/login" className="font-semibold text-orange-400 hover:underline">
+        <Link to="/login" className="font-semibold text-zap hover:underline">
           Giriş yap
         </Link>
       </p>

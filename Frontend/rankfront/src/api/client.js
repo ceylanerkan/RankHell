@@ -3,7 +3,7 @@
 // fonksiyon gövdeleri fetch('http://localhost:8080/api/...') çağrılarına
 // çevrilecek, sayfalara ve bileşenlere dokunulmayacak.
 
-import { categories, items, users, ratings, polls } from './mock/data'
+import { categories, items, users, ratings, polls, dailyRanking, duels } from './mock/data'
 
 // Ağ gecikmesini taklit eder — loading durumlarının gerçekçi görünmesi için.
 const delay = (ms = 400) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -76,6 +76,17 @@ export async function getTopItems(limit = 5) {
   return [...items].sort((a, b) => b.globalScore - a.globalScore).slice(0, limit)
 }
 
+export async function getDailyRanking() {
+  await delay()
+  return {
+    date: dailyRanking.date,
+    title: dailyRanking.title,
+    entries: dailyRanking.entries
+      .map((e) => ({ ...e, item: items.find((i) => i.itemId === e.itemId) }))
+      .filter((e) => e.item),
+  }
+}
+
 export async function getItem(itemId) {
   await delay()
   const item = items.find((i) => i.itemId === Number(itemId))
@@ -129,6 +140,30 @@ export async function getMyRatings() {
   return ratings
     .filter((r) => r.userId === session.userId)
     .map((r) => ({ ...r, item: items.find((i) => i.itemId === r.itemId) }))
+}
+
+// ---------- Düellolar ----------
+// Hero widget'ının veri kaynağı. Backend hazır olduğunda SADECE bu iki fonksiyonun
+// gövdesi fetch'e çevrilecek; useDuel hook'una ve DuelWidget'a dokunulmayacak.
+
+export async function getDuels() {
+  await delay(200)
+  return duels.map((d) => ({ ...d }))
+}
+
+// side: 'A' | 'B'. Bilerek getSession() kontrolü yok — düello anonim oylanır,
+// hero'nun amacı kayıt olmadan tek tıkla oy. Mükerrer oy engeli istemci tarafında
+// (useDuel hook'u localStorage'a yazar).
+export async function voteDuel(duelId, side) {
+  await delay(150)
+  const duel = duels.find((d) => d.duelId === Number(duelId))
+  if (!duel) throw new Error('Düello bulunamadı')
+  if (side !== 'A' && side !== 'B') throw new Error('Geçersiz taraf')
+
+  if (side === 'A') duel.votesA += 1
+  else duel.votesB += 1
+
+  return { ...duel }
 }
 
 // ---------- Anketler ----------
