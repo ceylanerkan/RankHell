@@ -23,7 +23,7 @@ export default function Profile() {
   return (
     <div>
       <div className="mb-8 flex items-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-ember via-flame to-plasma font-display text-2xl font-extrabold text-night shadow-[0_4px_0_var(--color-ember-deep)]">
+        <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-copper-soft font-display text-2xl font-extrabold text-night-deep shadow-[0_4px_0_var(--color-copper-deep)]">
           {session.username[0].toUpperCase()}
         </div>
         <div>
@@ -34,7 +34,7 @@ export default function Profile() {
 
       <div className="grid gap-8 lg:grid-cols-2">
         <section>
-          <h2 className="title-ember mb-3 font-display text-lg font-extrabold text-cream">Verdiğim Oylar</h2>
+          <h2 className="title-copper mb-3 font-display text-lg font-extrabold text-cream">Verdiğim Oylar</h2>
           {!ratings ? (
             <Loading />
           ) : ratings.length === 0 ? (
@@ -56,7 +56,7 @@ export default function Profile() {
         </section>
 
         <section>
-          <h2 className="title-ember mb-3 font-display text-lg font-extrabold text-cream">Anketlerim</h2>
+          <h2 className="title-copper mb-3 font-display text-lg font-extrabold text-cream">Anketlerim</h2>
           {!polls ? (
             <Loading />
           ) : polls.length === 0 ? (

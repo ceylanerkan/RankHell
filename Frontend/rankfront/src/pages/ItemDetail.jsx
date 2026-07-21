@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getItem, getMyRating, rateItem, getSession } from '../api/client'
 import StarRating from '../components/StarRating'
 import CategoryBadge from '../components/CategoryBadge'
 import { Loading, ErrorState } from '../components/States'
+import Button from '../components/ui/button/Button'
 
 export default function ItemDetail() {
   const { id } = useParams()
@@ -40,8 +41,8 @@ export default function ItemDetail() {
           alt={item.name}
           className="aspect-video w-full rounded-2xl object-cover shadow-[0_20px_44px_-16px_rgba(0,0,0,0.9)]"
         />
-        {/* Görselin altındaki neon ateş parıltısı */}
-        <div aria-hidden="true" className="absolute -inset-2 -z-10 rounded-xl bg-ember/10 blur-2xl" />
+        {/* Görselin altındaki nötr yüzey ayrımı */}
+        <div aria-hidden="true" className="absolute -inset-2 -z-10 rounded-xl bg-ash/[0.05] blur-2xl" />
       </div>
 
       <div>
@@ -55,7 +56,7 @@ export default function ItemDetail() {
         <p className="mt-3 text-cream/90">{item.description}</p>
 
         <div className="card-dark mt-6 flex items-center gap-4 p-4">
-          <span className="font-display text-4xl font-extrabold tabular-nums text-zap drop-shadow-[0_0_14px_rgba(0,255,255,0.35)]">
+          <span className="font-display text-4xl font-extrabold tabular-nums text-brass-soft drop-shadow-[0_0_10px_rgba(185,145,63,0.22)]">
             {Number(item.globalScore).toFixed(2)}
           </span>
           <div>
@@ -73,13 +74,13 @@ export default function ItemDetail() {
           ) : (
             <p className="text-sm text-faded">
               Oy vermek için{' '}
-              <a href="/login" className="font-semibold text-zap hover:underline">
+              <Button variant="link" as={Link} to="/login">
                 giriş yap
-              </a>
+              </Button>
               .
             </p>
           )}
-          {rateError && <p className="mt-2 text-sm text-danger">{rateError}</p>}
+          {rateError && <p className="mt-2 text-sm text-cinder-soft">{rateError}</p>}
         </div>
       </div>
     </div>

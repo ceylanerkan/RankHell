@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom'
 import CategoryBadge from './CategoryBadge'
 
-// İlk üç sıra podyum rengi alır: asit (şampiyon) / plazma / turkuaz
+// İlk üç sıra pirinç ailesinin açık / ana / koyu derecelerini alır.
 function rankBadgeClass(rank) {
   if (rank === 1)
-    return 'bg-acid text-night shadow-[0_0_18px_rgba(57,255,20,0.5)]'
+    return 'bg-brass-soft text-night shadow-[0_0_12px_rgba(185,145,63,0.25)]'
   if (rank === 2)
-    return 'bg-gradient-to-br from-plasma-soft to-plasma text-white'
+    return 'bg-brass text-night'
   if (rank === 3)
-    return 'bg-gradient-to-br from-zap-deep to-zap text-night'
-  return 'bg-night-deep/80 text-zap backdrop-blur'
+    return 'bg-brass-deep text-cream'
+  return 'bg-night-deep/80 text-ash backdrop-blur'
 }
 
-// Arcade bileti: koyu neon yüzey, görsel biletin içine gömülü, ember kenarlı
+// Arcade bileti: koyu metal yüzey; sıralama vurgusu yalnızca rozetlerde yaşar.
 export default function ItemCard({ item, rank }) {
   return (
     <Link to={`/items/${item.itemId}`} className="card-ticket group flex h-full flex-col p-2.5">
@@ -32,7 +32,7 @@ export default function ItemCard({ item, rank }) {
             {rank === 1 && <span className="animate-flicker text-xs">🔥</span>}
           </span>
         )}
-        <span className="absolute bottom-2 right-2 rounded-full bg-night-deep/75 px-2.5 py-1 text-sm font-bold tabular-nums text-zap backdrop-blur">
+        <span className="absolute bottom-2 right-2 rounded-full bg-night-deep/75 px-2.5 py-1 text-sm font-bold tabular-nums text-brass-soft backdrop-blur">
           ★ {Number(item.globalScore).toFixed(2)}
         </span>
       </div>

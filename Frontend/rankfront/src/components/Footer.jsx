@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Flame from './Flame'
+import Button from './ui/button/Button'
 
 // Sosyal medya ikonları — şimdilik hedefsiz butonlar, hesaplar açılınca href verilecek.
 const socials = [
@@ -77,13 +78,13 @@ const columns = [
 ]
 
 const linkStyle =
-  'text-left text-faded transition hover:text-zap'
+  'text-left text-faded transition hover:text-copper-soft'
 
 export default function Footer() {
   return (
     <footer className="mt-16 border-t border-line/60 bg-night-deep/90 backdrop-blur">
-      {/* Üst kenar: turuncu-siyah tehlike şeridi */}
-      <div className="h-1 bg-[repeating-linear-gradient(-45deg,#ff6a00_0_14px,#1a1a1a_14px_28px)]" />
+      {/* Üst kenar: kömür üstünde kontrollü bakır detay şeridi */}
+      <div className="h-1 bg-[repeating-linear-gradient(-45deg,var(--color-copper)_0_14px,var(--color-coal)_14px_28px)]" />
 
       <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-12 lg:grid-cols-[1.2fr_2fr]">
         {/* Sol: marka, tanıtım, sosyal medya, dil */}
@@ -102,27 +103,24 @@ export default function Footer() {
 
           <div className="flex flex-wrap gap-2">
             {socials.map((s) => (
-              <button
+              <Button
                 key={s.label}
-                type="button"
+                variant="icon-line"
+                size="sm"
                 aria-label={s.label}
-                className="rounded-lg p-2.5 text-faded ring-1 ring-line transition hover:text-zap hover:ring-ember/60"
               >
                 <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
                   <path d={s.path} />
                 </svg>
-              </button>
+              </Button>
             ))}
           </div>
 
           <div>
             <p className="mb-2 text-sm text-faded/70">Diller</p>
-            <button
-              type="button"
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-cream ring-1 ring-line transition hover:ring-ember/60"
-            >
+            <Button variant="ghost" size="sm">
               TR <span className="font-normal text-faded/70">(Türkçe)</span>
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -131,12 +129,12 @@ export default function Footer() {
           {columns.map((col) => (
             <div key={col.title}>
               <div className="mb-4 flex items-center gap-2.5">
-                <span className="rounded-lg bg-coal p-2 text-ember ring-1 ring-line">
+                <span className="rounded-lg bg-coal p-2 text-copper-soft ring-1 ring-line">
                   <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
                     {col.icon}
                   </svg>
                 </span>
-                <h3 className="font-display text-base font-bold uppercase tracking-wide text-ember-soft">
+                <h3 className="font-display text-base font-bold uppercase tracking-wide text-cream">
                   {col.title}
                 </h3>
               </div>
@@ -166,16 +164,15 @@ export default function Footer() {
           <p className="text-sm text-faded/70">
             © {new Date().getFullYear()} · RankHell · Tüm hakları saklıdır
           </p>
-          <button
-            type="button"
+          <Button
+            variant="icon"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             aria-label="Yukarı çık"
-            className="rounded-full bg-coal p-3 text-cream ring-1 ring-line transition hover:-translate-y-0.5 hover:text-zap hover:ring-ember/60"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
               <path d="M12 5l-8 8 1.41 1.41L11 8.83V20h2V8.83l5.59 5.58L20 13z" />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
     </footer>

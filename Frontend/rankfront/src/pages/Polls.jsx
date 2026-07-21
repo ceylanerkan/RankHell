@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getPolls } from '../api/client'
 import { Loading, ErrorState, EmptyState } from '../components/States'
+import Button from '../components/ui/button/Button'
 
 export default function Polls() {
   const [polls, setPolls] = useState(null)
@@ -14,10 +15,10 @@ export default function Polls() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="title-ember font-display text-3xl font-extrabold text-cream">Anketler</h1>
-        <Link to="/polls/new" className="btn-fire px-4 py-2 text-sm">
+        <h1 className="title-copper font-display text-3xl font-extrabold text-cream">Anketler</h1>
+        <Button variant="primary" size="sm" as={Link} to="/polls/new">
           + Yeni Anket
-        </Link>
+        </Button>
       </div>
 
       {error ? (
@@ -36,7 +37,7 @@ export default function Polls() {
               style={{ animationDelay: `${i * 50}ms` }}
             >
               <div>
-                <h2 className="font-display font-bold text-cream transition group-hover:text-ember-soft">
+                <h2 className="font-display font-bold text-cream transition group-hover:text-copper-soft">
                   {poll.title}
                 </h2>
                 <p className="mt-1 text-sm text-faded">
@@ -44,7 +45,7 @@ export default function Polls() {
                   {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
                 </p>
               </div>
-              <span className="text-lg text-faded/60 transition duration-200 group-hover:translate-x-1 group-hover:text-zap">
+              <span className="text-lg text-faded/60 transition duration-200 group-hover:translate-x-1 group-hover:text-ash">
                 →
               </span>
             </Link>

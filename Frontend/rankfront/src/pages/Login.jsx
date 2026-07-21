@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../api/client'
+import Button from '../components/ui/button/Button'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -47,17 +48,17 @@ export default function Login() {
         className="input-dark mb-4"
       />
 
-      {error && <p className="mb-4 text-sm text-danger">{error}</p>}
+      {error && <p className="mb-4 text-sm text-cinder-soft">{error}</p>}
 
-      <button type="submit" disabled={submitting} className="btn-fire w-full py-2.5">
-        {submitting ? 'Giriş yapılıyor...' : 'Giriş Yap'}
-      </button>
+      <Button type="submit" variant="primary" fullWidth loading={submitting}>
+        Giriş Yap
+      </Button>
 
       <p className="mt-4 text-center text-sm text-faded">
         Hesabın yok mu?{' '}
-        <Link to="/register" className="font-semibold text-zap hover:underline">
+        <Button variant="link" as={Link} to="/register">
           Kayıt ol
-        </Link>
+        </Button>
       </p>
       <p className="mt-2 text-center text-xs text-faded/60">
         Deneme hesabı: arda@rankhell.dev / herhangi 8+ karakter

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getItems, createPoll, getSession } from '../api/client'
 import { Loading, ErrorState } from '../components/States'
+import Button from '../components/ui/button/Button'
 
 export default function PollNew() {
   const navigate = useNavigate()
@@ -46,7 +47,7 @@ export default function PollNew() {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl">
-      <h1 className="title-ember mb-6 font-display text-3xl font-extrabold text-cream">Yeni Anket</h1>
+      <h1 className="title-copper mb-6 font-display text-3xl font-extrabold text-cream">Yeni Anket</h1>
 
       <label className="mb-1 block text-sm font-semibold text-cream/90">Anket başlığı</label>
       <input
@@ -59,7 +60,7 @@ export default function PollNew() {
 
       <p className="mb-2 mt-6 text-sm font-semibold text-cream/90">
         Seçenekler{' '}
-        <span className={selectedIds.length > 0 ? 'text-zap' : ''}>
+        <span className={selectedIds.length > 0 ? 'text-ember-soft' : ''}>
           ({selectedIds.length} seçildi)
         </span>
       </p>
@@ -73,7 +74,7 @@ export default function PollNew() {
               onClick={() => toggle(item.itemId)}
               className={`flex items-center gap-3 rounded-md border p-2 text-left transition duration-200 ${
                 active
-                  ? 'border-zap/70 bg-zap/10 shadow-[0_0_14px_rgba(0,255,255,0.15)]'
+                  ? 'border-ember/70 bg-ember/10'
                   : 'border-line/60 bg-coal/70 hover:-translate-y-0.5 hover:border-line'
               }`}
             >
@@ -83,17 +84,17 @@ export default function PollNew() {
                 className={`h-10 w-14 rounded object-cover transition ${active ? '' : 'saturate-[.8]'}`}
               />
               <span className="flex-1 text-sm text-cream">{item.name}</span>
-              {active && <span className="pr-1 text-acid">✓</span>}
+              {active && <span className="pr-1 text-moss-soft">✓</span>}
             </button>
           )
         })}
       </div>
 
-      {error && <p className="mt-4 text-sm text-danger">{error}</p>}
+      {error && <p className="mt-4 text-sm text-cinder-soft">{error}</p>}
 
-      <button type="submit" disabled={submitting} className="btn-fire mt-6 w-full py-2.5">
-        {submitting ? 'Oluşturuluyor...' : 'Anketi Oluştur'}
-      </button>
+      <Button type="submit" variant="primary" fullWidth loading={submitting} className="mt-6">
+        Anketi Oluştur
+      </Button>
     </form>
   )
 }

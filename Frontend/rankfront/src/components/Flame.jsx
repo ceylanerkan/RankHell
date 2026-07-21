@@ -8,9 +8,9 @@ export default function Flame({ className = '' }) {
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
       <defs>
         <linearGradient id={id} x1="12" y1="22" x2="12" y2="2" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#ff2d00" />
-          <stop offset="0.55" stopColor="#ff4500" />
-          <stop offset="1" stopColor="#ff8c1a" />
+          <stop offset="0" stopColor="var(--color-ember-deep)" />
+          <stop offset="0.55" stopColor="var(--color-ember)" />
+          <stop offset="1" stopColor="var(--color-flame)" />
         </linearGradient>
       </defs>
       <path

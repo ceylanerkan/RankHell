@@ -19,8 +19,8 @@ export default function StarRating({ value = 0, onRate, size = 'text-2xl' }) {
             onRate ? 'cursor-pointer hover:-rotate-12 hover:scale-125' : 'cursor-default'
           } ${
             star <= shown
-              ? 'text-ember drop-shadow-[0_0_6px_rgba(255,69,0,0.55)]'
-              : 'text-line'
+              ? 'text-brass-soft drop-shadow-[0_0_6px_rgba(185,145,63,0.35)]'
+              : 'text-ash'
           }`}
           aria-label={`${star} yıldız`}
         >

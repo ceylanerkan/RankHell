@@ -1,4 +1,5 @@
 import { useDuel } from '../hooks/useDuel'
+import Button from './ui/button/Button'
 
 // Hero'nun imza elementi: ziyaretçi scroll etmeden, kayıt olmadan oy verir.
 // Veriyi SADECE useDuel'den alır — fetch/mock/localStorage'dan haberi yok.
@@ -13,10 +14,10 @@ function initialOf(name) {
 // biner: prominence oranı zorlayarak değil, çerçeveyi kaldırarak geliyor.
 // aspect-[3/2]: kaynak görsellerin yarısı (tüm yemekler) zaten tam 3:2 — hiç
 // kırpılmıyorlar; kalan yatay görseller için de en az agresif gerçekçi kadraj.
-// Ton veriden değil A/B pozisyonundan türer: A parlak kor, B sönük köz —
+// Ton veriden değil A/B pozisyonundan türer: A bakır, B nötr metal —
 // bar'daki eşlemenin aynısı, bu yüzden legend gerekmiyor.
 function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
-  const tint = side === 'A' ? 'bg-ember/15 text-ember' : 'bg-ember-deep/30 text-ember-deep'
+  const tint = side === 'A' ? 'bg-copper/15 text-copper-soft' : 'bg-iron/40 text-ash'
   const lost = hasVoted && !voted
 
   return (
@@ -42,7 +43,7 @@ function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
           {initialOf(item.name)}
         </span>
       )}
-      {/* İsim + sonuç tek şeritte: oydan sonra kazananın yüzdesi iri ve kor,
+      {/* İsim + sonuç tek şeritte: oydan sonra kazananın yüzdesi iri ve pirinç,
           kaybedeninki küçük ve sönük — hiyerarşi rakamın kütlesinden geliyor.
           Sabit yükseklik (min-h) şart: yoksa kazananın iri yüzdesi şeridi
           uzatır, grid iki kartı eşitlerken kaybedenin görseli aşağı kayar ve
@@ -54,7 +55,7 @@ function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
         {hasVoted && (
           <span
             className={`shrink-0 font-display font-extrabold tabular-nums ${
-              voted ? 'text-2xl text-ember' : 'text-sm text-faded'
+              voted ? 'text-2xl text-brass-soft' : 'text-sm text-faded'
             }`}
           >
             %{percent}
@@ -127,11 +128,11 @@ export default function DuelWidget() {
             Bilgi kartlardaki yüzdelerde de var — reduced-motion'da bar zıplasa bile kayıp yok. */}
         <div aria-hidden="true" className="mt-4 flex h-1.5 overflow-hidden rounded-full bg-night-deep">
           <div
-            className="bg-ember transition-[width] duration-[400ms] ease-out"
+            className="bg-copper-soft transition-[width] duration-[400ms] ease-out"
             style={{ width: `${percentA}%` }}
           />
           <div
-            className="bg-ember-deep transition-[width] duration-[400ms] ease-out"
+            className="bg-copper-deep transition-[width] duration-[400ms] ease-out"
             style={{ width: `${percentB}%` }}
           />
         </div>
@@ -143,16 +144,19 @@ export default function DuelWidget() {
           hero'nun tek etkileşimli anını terk ediyordu. next() sadece index'i
           döngüsel ilerletir — atlanan düello oylanmamış kalır, oy durumu bozulmaz. */}
       {hasNext && (
-        <button
-          type="button"
-          onClick={next}
-          className="duel-next group flex w-full items-center justify-center gap-1.5 border-t border-line/60 px-5 py-3 text-sm font-semibold"
-        >
-          {hasVoted ? 'Sıradaki düello' : 'Atla'}
-          <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
-            →
-          </span>
-        </button>
+        <div className="border-t border-line/60">
+          <Button
+            variant="ghost"
+            fullWidth
+            onClick={next}
+            className="group rounded-none"
+          >
+            {hasVoted ? 'Sıradaki düello' : 'Atla'}
+            <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
+              →
+            </span>
+          </Button>
+        </div>
       )}
 
       {/* Yüzde yok: sahte realtime her oynadığında yeniden okunmasın diye statik */}

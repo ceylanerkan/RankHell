@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus, ArrowRight } from 'lucide-react'
+import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus } from 'lucide-react'
 import { getTopItems, getCategories, getDailyRanking } from '../api/client'
 import Auralis from '@/components/ui/auralis'
 import ItemCard from '../components/ItemCard'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
+import Button, { ArrowIcon } from '../components/ui/button/Button'
 
 // Kategori emojilerinin yerine geçen Lucide ikon eşlemesi (categoryId bazlı)
 const CATEGORY_ICONS = {
@@ -19,7 +20,7 @@ const CATEGORY_ICONS = {
 // Günün sıralamasında dünle kıyas: yükseldi / düştü / sabit / yeni giriş
 function DeltaBadge({ delta }) {
   if (delta === 'yeni')
-    return <span className="text-xs font-extrabold uppercase tracking-wide text-plasma-soft">Yeni</span>
+    return <span className="text-xs font-extrabold uppercase tracking-wide text-copper-soft">Yeni</span>
   if (delta > 0)
     return <span className="text-xs font-bold tabular-nums text-win">▲ {delta}</span>
   if (delta < 0)
@@ -27,11 +28,10 @@ function DeltaBadge({ delta }) {
   return <span className="text-xs font-bold text-faded/70">—</span>
 }
 
-// Podyum sütunu: 2-1-3 dizilir, birinci en yüksek platformda alevle durur
-// Renk dili: şampiyon asit yeşili, ikinci plazma, üçüncü turkuaz
+// Podyum sütunu: 2-1-3 dizilir, pirinç ailesi ödül hiyerarşisini taşır.
 function PodiumSpot({ item, rank, height, delay }) {
   const ringClass =
-    rank === 1 ? 'ring-4 ring-acid' : rank === 2 ? 'ring-4 ring-plasma-soft/70' : 'ring-4 ring-zap/60'
+    rank === 1 ? 'ring-4 ring-brass-soft' : rank === 2 ? 'ring-4 ring-brass/75' : 'ring-4 ring-brass-deep/70'
   return (
     <Link
       to={`/items/${item.itemId}`}
@@ -51,15 +51,15 @@ function PodiumSpot({ item, rank, height, delay }) {
         />
       </div>
       <div className="text-center">
-        <p className="font-display font-bold text-cream transition group-hover:text-ember-soft">
+        <p className="font-display font-bold text-cream transition group-hover:text-brass-soft">
           {item.name}
         </p>
-        <span className="mt-1 inline-block rounded-md bg-zap/10 px-2 py-0.5 text-sm font-bold tabular-nums text-zap">
+        <span className="mt-1 inline-block rounded-md bg-brass/10 px-2 py-0.5 text-sm font-bold tabular-nums text-brass-soft">
           ★ {Number(item.globalScore).toFixed(2)}
         </span>
       </div>
       <div
-        className="stripe-neon flex w-full items-start justify-center rounded-t-xl bg-gradient-to-b from-ember-soft to-ember pt-3"
+        className="stripe-neon flex w-full items-start justify-center rounded-t-xl bg-gradient-to-b from-brass-soft via-brass to-brass-deep pt-3"
         style={{ height }}
       >
         <span className="font-display text-3xl font-extrabold text-night">#{rank}</span>
@@ -157,22 +157,21 @@ export default function Home() {
             {/* 7xl xl'de açılır, lg'de değil: lg (1024) tam kolonun daraldığı
                 nokta, orada 72px başlığı üç satıra kırıyordu. */}
             <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-cream sm:text-6xl xl:text-7xl">
-              Her şeyi <span className="text-ember">sırala</span>,
+              Her şeyi <span className="text-ember">sırala</span>
               <br className="hidden sm:block" /> herkesle yarıştır
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-faded">
               Filmden yemeğe her şeye puan ver, topluluğun sıralamasını gör, kendi anketini oluştur.
             </p>
-            {/* Tek birincil eylem: btn-fire daha iri. İkincil aynı yükseklikte ama sönük. */}
+            {/* Tek birincil eylem: hero-primary (vitrin pill+coin). İkincil secondary — çentikli, sönük. */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link to="/items" className="btn-fire group px-7 py-3 text-base">
+              <Button variant="hero-primary" as={Link} to="/items">
                 Keşfetmeye Başla
-                <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2.5} />
-              </Link>
-              <Link to="/polls/new" className="btn-ghost px-5 py-3">
+              </Button>
+              <Button variant="secondary" size="lg" as={Link} to="/polls/new">
                 Anket Oluştur
                 <Plus className="h-5 w-5" strokeWidth={2.5} />
-              </Link>
+              </Button>
             </div>
           </div>
 
@@ -186,7 +185,7 @@ export default function Home() {
 
       {/* ── Kategoriler ──────────────────────────────────────── */}
       <section className="mb-12">
-        <h2 className="title-ember mb-5 font-display text-2xl font-extrabold text-cream">
+        <h2 className="title-copper mb-5 font-display text-2xl font-extrabold text-cream">
           Bugün ne sıralıyoruz?
         </h2>
         {!categories ? (
@@ -204,7 +203,7 @@ export default function Home() {
                   >
                     {Icon && (
                       <Icon
-                        className="h-9 w-9 text-ember-soft drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)] transition group-hover:animate-wiggle"
+                        className="h-9 w-9 text-copper-soft drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)] transition group-hover:animate-wiggle"
                         strokeWidth={2}
                       />
                     )}
@@ -221,7 +220,7 @@ export default function Home() {
       {/* ── Zirvedekiler: alevli podyum ──────────────────────── */}
       {podium?.length === 3 && (
         <section className="mb-12">
-          <h2 className="title-ember mb-8 font-display text-2xl font-extrabold text-cream">
+          <h2 className="title-copper mb-8 font-display text-2xl font-extrabold text-cream">
             Zirvedekiler
           </h2>
           <div className="mx-auto grid max-w-2xl grid-cols-3 items-end gap-3 sm:gap-6">
@@ -246,7 +245,7 @@ export default function Home() {
               {daily.entries.map((entry, i) => (
                 <li key={entry.itemId}>
                   <div className="flex items-center gap-3 py-3 sm:gap-4">
-                    <span className="w-6 shrink-0 text-center font-display text-lg font-extrabold text-ember">
+                    <span className="w-6 shrink-0 text-center font-display text-lg font-extrabold text-brass">
                       {i + 1}
                     </span>
                     <img
@@ -259,12 +258,10 @@ export default function Home() {
                       <p className="text-xs tabular-nums text-faded">+{entry.votesToday} oy</p>
                     </div>
                     <DeltaBadge delta={entry.delta} />
-                    <Link
-                      to={`/items/${entry.itemId}`}
-                      className="shrink-0 text-sm font-semibold text-zap transition hover:underline"
-                    >
-                      Sen de oyla →
-                    </Link>
+                    <Button variant="ghost" size="sm" as={Link} to={`/items/${entry.itemId}`} className="shrink-0">
+                      Sen de oyla
+                      <ArrowIcon size={14} />
+                    </Button>
                   </div>
                 </li>
               ))}
@@ -277,10 +274,10 @@ export default function Home() {
 
       {/* ── Liderlik Tablosu ─────────────────────────────────── */}
       <div className="mb-5 flex items-center justify-between">
-        <h2 className="title-ember font-display text-2xl font-extrabold text-cream">Liderlik Tablosu</h2>
-        <Link to="/items" className="text-sm font-semibold text-zap transition hover:underline">
-          Tümünü gör →
-        </Link>
+        <h2 className="title-copper font-display text-2xl font-extrabold text-cream">Liderlik Tablosu</h2>
+        <Button variant="link" arrow as={Link} to="/items">
+          Tümünü gör
+        </Button>
       </div>
 
       {error ? (
@@ -311,7 +308,7 @@ export default function Home() {
             <span className="text-sm font-semibold text-faded">
               Tüm sıralamayı liste sayfasında keşfet.
             </span>
-            <span className="mt-1 inline-flex items-center gap-2 rounded-full bg-ember px-5 py-2 font-display font-extrabold text-night shadow-[0_4px_0_var(--color-ember-deep)]">
+            <span className="mt-1 inline-flex items-center gap-2 rounded-full bg-ember px-5 py-2 font-display font-extrabold text-night-deep shadow-[0_4px_0_var(--color-ember-deep)]">
               Tümünü gör
               <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
             </span>
@@ -322,21 +319,21 @@ export default function Home() {
       <div className="section-divider mt-12" aria-hidden="true" />
 
       {/* ── Meydan okuma banner'ı: plazma neon panel ─────────── */}
-      <section className="glow-plasma relative mt-12 overflow-hidden rounded-2xl bg-night-deep p-8 sm:p-10">
+      <section className="glow-metal relative mt-12 overflow-hidden rounded-2xl bg-night-deep p-8 sm:p-10">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
-          <span className="absolute -right-16 -top-20 h-64 w-64 rounded-full bg-plasma/20 blur-3xl" />
-          <span className="absolute -bottom-24 -left-12 h-56 w-56 rounded-full bg-ember/15 blur-3xl" />
+          <span className="absolute -right-16 -top-20 h-64 w-64 rounded-full bg-ash/10 blur-3xl" />
+          <span className="absolute -bottom-24 -left-12 h-56 w-56 rounded-full bg-copper/15 blur-3xl" />
         </div>
         <div className="relative flex flex-wrap items-center justify-between gap-6">
           <div>
             <h2 className="font-display text-3xl font-extrabold text-cream">Kendi arenanı kur!</h2>
             <p className="mt-2 max-w-xl font-semibold text-faded">
-              Fikrin mi var? Anketini aç, herkes oylasın, kavga çıksın 😈
+              Fikrin mi var? Anketini aç, herkes oylasın, kavga çıksın
             </p>
           </div>
-          <Link to="/polls/new" className="btn-fire px-6 py-3">
+          <Button variant="primary" size="lg" as={Link} to="/polls/new">
             Anket Oluştur →
-          </Link>
+          </Button>
         </div>
       </section>
     </div>
