@@ -6,6 +6,7 @@ import Auralis from '@/components/ui/auralis'
 import ItemCard from '../components/ItemCard'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
+import Button from '../components/ui/button/Button'
 
 // Kategori emojilerinin yerine geçen Lucide ikon eşlemesi (categoryId bazlı)
 const CATEGORY_ICONS = {
@@ -277,9 +278,9 @@ export default function Home() {
       {/* ── Liderlik Tablosu ─────────────────────────────────── */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="title-copper font-display text-2xl font-extrabold text-cream">Liderlik Tablosu</h2>
-        <Link to="/items" className="text-sm font-semibold text-copper-soft transition hover:text-cream hover:underline">
-          Tümünü gör →
-        </Link>
+        <Button variant="link" arrow as={Link} to="/items">
+          Tümünü gör
+        </Button>
       </div>
 
       {error ? (
@@ -333,9 +334,9 @@ export default function Home() {
               Fikrin mi var? Anketini aç, herkes oylasın, kavga çıksın
             </p>
           </div>
-          <Link to="/polls/new" className="btn-fire px-6 py-3">
+          <Button variant="primary" size="lg" as={Link} to="/polls/new">
             Anket Oluştur →
-          </Link>
+          </Button>
         </div>
       </section>
     </div>
