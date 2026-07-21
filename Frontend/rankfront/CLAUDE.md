@@ -141,6 +141,7 @@ Until they are marked as locked in `docs/DESIGN_SYSTEM.md`:
 - follow the closest existing pattern
 - keep interaction states consistent
 - avoid broad redesigns unless explicitly requested
+- for in-app navigation use `<Button as={Link} to=...>`, never a raw `<a>` (preserves SPA routing)
 
 ## Scope discipline
 

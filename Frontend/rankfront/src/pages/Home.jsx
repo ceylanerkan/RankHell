@@ -6,7 +6,7 @@ import Auralis from '@/components/ui/auralis'
 import ItemCard from '../components/ItemCard'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
-import Button from '../components/ui/button/Button'
+import Button, { ArrowIcon } from '../components/ui/button/Button'
 
 // Kategori emojilerinin yerine geçen Lucide ikon eşlemesi (categoryId bazlı)
 const CATEGORY_ICONS = {
@@ -259,12 +259,10 @@ export default function Home() {
                       <p className="text-xs tabular-nums text-faded">+{entry.votesToday} oy</p>
                     </div>
                     <DeltaBadge delta={entry.delta} />
-                    <Link
-                      to={`/items/${entry.itemId}`}
-                      className="shrink-0 text-sm font-semibold text-copper-soft transition hover:text-cream hover:underline"
-                    >
-                      Sen de oyla →
-                    </Link>
+                    <Button variant="ghost" size="sm" as={Link} to={`/items/${entry.itemId}`} className="shrink-0">
+                      Sen de oyla
+                      <ArrowIcon size={14} />
+                    </Button>
                   </div>
                 </li>
               ))}

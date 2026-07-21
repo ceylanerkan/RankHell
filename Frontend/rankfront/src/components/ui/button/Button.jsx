@@ -15,6 +15,9 @@
  *   <Button variant="icon" aria-label="Ara"><SearchIcon /></Button>
  *   <Button variant="link" arrow href="/oylar">Tüm oyları incele</Button>
  *   <Button variant="danger" loading={deleting} onClick={confirmDelete}>Sil</Button>
+ *
+ * Router içi navigasyonda ham <a> yerine as={Link} + to kullan (SPA nav korunur):
+ *   <Button variant="primary" as={Link} to="/polls/new">Yeni Anket</Button>
  */
 
 import { forwardRef } from 'react';
