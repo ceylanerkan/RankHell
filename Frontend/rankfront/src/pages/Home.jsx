@@ -330,7 +330,7 @@ export default function Home() {
           <div>
             <h2 className="font-display text-3xl font-extrabold text-cream">Kendi arenanı kur!</h2>
             <p className="mt-2 max-w-xl font-semibold text-faded">
-              Fikrin mi var? Anketini aç, herkes oylasın, kavga çıksın 😈
+              Fikrin mi var? Anketini aç, herkes oylasın, kavga çıksın
             </p>
           </div>
           <Link to="/polls/new" className="btn-fire px-6 py-3">
