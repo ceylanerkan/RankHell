@@ -129,20 +129,48 @@ Before creating a new component:
 
 Do not introduce one-off styling that cannot be reused or explained by the design system.
 
-## Buttons and cards
+## Buttons — LOCKED (Damga v1)
 
-Button and card systems are currently provisional.
+Every button on the site goes through `src/components/ui/button/Button`
+(`Button.jsx` + `button.css`). Do not style a raw `<button>`/`<a>`, and do not
+write a new button style or a disconnected variant.
 
-Until they are marked as locked in `docs/DESIGN_SYSTEM.md`:
+Variant decision tree:
 
-- reuse existing shared components
+- Landing/marketing showcase, single CTA on the page → `hero-primary`
+- The view's primary action (vote, save, publish, submit) → `primary` (max 1 per view)
+- The real secondary path next to the primary action → `secondary`
+- In-card / toolbar / repeated, low-risk action → `ghost`
+- Destructive, irreversible action → `danger` (always behind a confirmation step)
+- Tight space, meaning is obvious → `icon` (`aria-label` required; use `icon-line` on busy/visual backgrounds)
+- Inline / tertiary action → `link`
+
+Rules:
+
+- Async actions use the `loading` prop; no spinners.
+- Colors come only from `button.css`'s `--btn-*` tokens (mapped to the shared
+  palette); never override color for a single instance.
+- Sizes: sm 32 / md 40 / lg 48. `hero-primary` uses its own 56px pill — that
+  pill shape never appears on any other variant.
+- For in-app navigation use `<Button as={Link} to=...>`, never a raw `<a>`
+  (preserves SPA routing).
+- The navbar is chrome: its `primary` (Kayıt Ol) is counted separately from
+  page content and is exempt from the one-primary-per-view rule.
+- When creating a new variant, do not modify or break the existing
+  `primary`, `secondary`, `ghost`, `danger`, `icon`, `icon-line`, or `link` variants.
+
+## Cards — PROVISIONAL
+
+The card system is currently provisional.
+
+Until it is marked as locked in `docs/DESIGN_SYSTEM.md`:
+
+- reuse existing shared card patterns (`card-dark`, `card-ticket`, `card-glow`, `duel-card`)
 - do not create disconnected variants
 - do not introduce new colors
 - follow the closest existing pattern
 - keep interaction states consistent
 - avoid broad redesigns unless explicitly requested
-- for in-app navigation use `<Button as={Link} to=...>`, never a raw `<a>` (preserves SPA routing)
-- the navbar is chrome: its `primary` (Kayıt Ol) is counted separately from page content and is exempt from the one-primary-per-view rule
 
 ## Scope discipline
 
@@ -191,4 +219,4 @@ At the end of each task, report:
 * Add reusable custom designs to the design system as new variants.
 * Keep designs intended for a single use local to the relevant component.
 * Custom variants must preserve the base button dimensions, typography, accessibility states, and overall brand language.
-* When creating a new variant, do not modify or break the existing `primary`, `secondary`, `ghost`, `danger`, `icon`, or `link` variants.
+* For the button variant list and which existing variants must not be broken, see "Buttons — LOCKED (Damga v1)" above.
