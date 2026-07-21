@@ -163,7 +163,7 @@ export default function Home() {
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-faded">
               Filmden yemeğe her şeye puan ver, topluluğun sıralamasını gör, kendi anketini oluştur.
             </p>
-            {/* Tek birincil eylem: btn-fire daha iri. İkincil aynı yükseklikte ama sönük. */}
+            {/* Tek birincil eylem: hero-primary (vitrin pill+coin). İkincil secondary — çentikli, sönük. */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button variant="hero-primary" as={Link} to="/items">
                 Keşfetmeye Başla
