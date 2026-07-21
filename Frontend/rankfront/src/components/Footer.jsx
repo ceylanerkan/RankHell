@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Flame from './Flame'
+import Button from './ui/button/Button'
 
 // Sosyal medya ikonları — şimdilik hedefsiz butonlar, hesaplar açılınca href verilecek.
 const socials = [
@@ -102,27 +103,24 @@ export default function Footer() {
 
           <div className="flex flex-wrap gap-2">
             {socials.map((s) => (
-              <button
+              <Button
                 key={s.label}
-                type="button"
+                variant="icon-line"
+                size="sm"
                 aria-label={s.label}
-                className="rounded-lg p-2.5 text-faded ring-1 ring-line transition hover:text-copper-soft hover:ring-copper/60"
               >
                 <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
                   <path d={s.path} />
                 </svg>
-              </button>
+              </Button>
             ))}
           </div>
 
           <div>
             <p className="mb-2 text-sm text-faded/70">Diller</p>
-            <button
-              type="button"
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-cream ring-1 ring-line transition hover:ring-copper/60"
-            >
+            <Button variant="ghost" size="sm">
               TR <span className="font-normal text-faded/70">(Türkçe)</span>
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -166,16 +164,15 @@ export default function Footer() {
           <p className="text-sm text-faded/70">
             © {new Date().getFullYear()} · RankHell · Tüm hakları saklıdır
           </p>
-          <button
-            type="button"
+          <Button
+            variant="icon"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             aria-label="Yukarı çık"
-            className="rounded-full bg-coal p-3 text-cream ring-1 ring-line transition hover:-translate-y-0.5 hover:text-copper-soft hover:ring-copper/60"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
               <path d="M12 5l-8 8 1.41 1.41L11 8.83V20h2V8.83l5.59 5.58L20 13z" />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
     </footer>

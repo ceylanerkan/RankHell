@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getItems, createPoll, getSession } from '../api/client'
 import { Loading, ErrorState } from '../components/States'
+import Button from '../components/ui/button/Button'
 
 export default function PollNew() {
   const navigate = useNavigate()
@@ -91,9 +92,9 @@ export default function PollNew() {
 
       {error && <p className="mt-4 text-sm text-cinder-soft">{error}</p>}
 
-      <button type="submit" disabled={submitting} className="btn-fire mt-6 w-full py-2.5">
-        {submitting ? 'Oluşturuluyor...' : 'Anketi Oluştur'}
-      </button>
+      <Button type="submit" variant="primary" fullWidth loading={submitting} className="mt-6">
+        Anketi Oluştur
+      </Button>
     </form>
   )
 }

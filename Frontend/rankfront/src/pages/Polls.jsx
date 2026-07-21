@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getPolls } from '../api/client'
 import { Loading, ErrorState, EmptyState } from '../components/States'
+import Button from '../components/ui/button/Button'
 
 export default function Polls() {
   const [polls, setPolls] = useState(null)
@@ -15,9 +16,9 @@ export default function Polls() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="title-copper font-display text-3xl font-extrabold text-cream">Anketler</h1>
-        <Link to="/polls/new" className="btn-fire px-4 py-2 text-sm">
+        <Button variant="primary" size="sm" as={Link} to="/polls/new">
           + Yeni Anket
-        </Link>
+        </Button>
       </div>
 
       {error ? (

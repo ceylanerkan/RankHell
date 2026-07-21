@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus, ArrowRight } from 'lucide-react'
+import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus } from 'lucide-react'
 import { getTopItems, getCategories, getDailyRanking } from '../api/client'
 import Auralis from '@/components/ui/auralis'
 import ItemCard from '../components/ItemCard'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
+import Button, { ArrowIcon } from '../components/ui/button/Button'
 
 // Kategori emojilerinin yerine geçen Lucide ikon eşlemesi (categoryId bazlı)
 const CATEGORY_ICONS = {
@@ -162,16 +163,15 @@ export default function Home() {
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-faded">
               Filmden yemeğe her şeye puan ver, topluluğun sıralamasını gör, kendi anketini oluştur.
             </p>
-            {/* Tek birincil eylem: btn-fire daha iri. İkincil aynı yükseklikte ama sönük. */}
+            {/* Tek birincil eylem: hero-primary (vitrin pill+coin). İkincil secondary — çentikli, sönük. */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link to="/items" className="btn-fire group px-7 py-3 text-base">
+              <Button variant="hero-primary" as={Link} to="/items">
                 Keşfetmeye Başla
-                <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2.5} />
-              </Link>
-              <Link to="/polls/new" className="btn-ghost px-5 py-3">
+              </Button>
+              <Button variant="secondary" size="lg" as={Link} to="/polls/new">
                 Anket Oluştur
                 <Plus className="h-5 w-5" strokeWidth={2.5} />
-              </Link>
+              </Button>
             </div>
           </div>
 
@@ -258,12 +258,10 @@ export default function Home() {
                       <p className="text-xs tabular-nums text-faded">+{entry.votesToday} oy</p>
                     </div>
                     <DeltaBadge delta={entry.delta} />
-                    <Link
-                      to={`/items/${entry.itemId}`}
-                      className="shrink-0 text-sm font-semibold text-copper-soft transition hover:text-cream hover:underline"
-                    >
-                      Sen de oyla →
-                    </Link>
+                    <Button variant="ghost" size="sm" as={Link} to={`/items/${entry.itemId}`} className="shrink-0">
+                      Sen de oyla
+                      <ArrowIcon size={14} />
+                    </Button>
                   </div>
                 </li>
               ))}
@@ -277,9 +275,9 @@ export default function Home() {
       {/* ── Liderlik Tablosu ─────────────────────────────────── */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="title-copper font-display text-2xl font-extrabold text-cream">Liderlik Tablosu</h2>
-        <Link to="/items" className="text-sm font-semibold text-copper-soft transition hover:text-cream hover:underline">
-          Tümünü gör →
-        </Link>
+        <Button variant="link" arrow as={Link} to="/items">
+          Tümünü gör
+        </Button>
       </div>
 
       {error ? (
@@ -330,12 +328,12 @@ export default function Home() {
           <div>
             <h2 className="font-display text-3xl font-extrabold text-cream">Kendi arenanı kur!</h2>
             <p className="mt-2 max-w-xl font-semibold text-faded">
-              Fikrin mi var? Anketini aç, herkes oylasın, kavga çıksın 😈
+              Fikrin mi var? Anketini aç, herkes oylasın, kavga çıksın
             </p>
           </div>
-          <Link to="/polls/new" className="btn-fire px-6 py-3">
+          <Button variant="primary" size="lg" as={Link} to="/polls/new">
             Anket Oluştur →
-          </Link>
+          </Button>
         </div>
       </section>
     </div>

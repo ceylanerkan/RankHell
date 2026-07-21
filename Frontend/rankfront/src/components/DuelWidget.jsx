@@ -1,4 +1,5 @@
 import { useDuel } from '../hooks/useDuel'
+import Button from './ui/button/Button'
 
 // Hero'nun imza elementi: ziyaretçi scroll etmeden, kayıt olmadan oy verir.
 // Veriyi SADECE useDuel'den alır — fetch/mock/localStorage'dan haberi yok.
@@ -143,16 +144,19 @@ export default function DuelWidget() {
           hero'nun tek etkileşimli anını terk ediyordu. next() sadece index'i
           döngüsel ilerletir — atlanan düello oylanmamış kalır, oy durumu bozulmaz. */}
       {hasNext && (
-        <button
-          type="button"
-          onClick={next}
-          className="duel-next group flex w-full items-center justify-center gap-1.5 border-t border-line/60 px-5 py-3 text-sm font-semibold"
-        >
-          {hasVoted ? 'Sıradaki düello' : 'Atla'}
-          <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
-            →
-          </span>
-        </button>
+        <div className="border-t border-line/60">
+          <Button
+            variant="ghost"
+            fullWidth
+            onClick={next}
+            className="group rounded-none"
+          >
+            {hasVoted ? 'Sıradaki düello' : 'Atla'}
+            <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
+              →
+            </span>
+          </Button>
+        </div>
       )}
 
       {/* Yüzde yok: sahte realtime her oynadığında yeniden okunmasın diye statik */}

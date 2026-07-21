@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getItem, getMyRating, rateItem, getSession } from '../api/client'
 import StarRating from '../components/StarRating'
 import CategoryBadge from '../components/CategoryBadge'
 import { Loading, ErrorState } from '../components/States'
+import Button from '../components/ui/button/Button'
 
 export default function ItemDetail() {
   const { id } = useParams()
@@ -73,9 +74,9 @@ export default function ItemDetail() {
           ) : (
             <p className="text-sm text-faded">
               Oy vermek için{' '}
-              <a href="/login" className="font-semibold text-copper-soft hover:text-cream hover:underline">
+              <Button variant="link" as={Link} to="/login">
                 giriş yap
-              </a>
+              </Button>
               .
             </p>
           )}
