@@ -61,6 +61,7 @@ function ArrowIcon({ size = 18 }) {
  * @param {boolean} [props.arrow=false]       sadece link: ileri götüren ok
  * @param {import('react').ReactNode} [props.coinIcon]  sadece hero-primary: paranın ön yüzü (varsayılan: alev)
  * @param {string}  [props.href]              verilirse <a> olarak render edilir
+ * @param {any}     [props.as]                polimorfik tag (ör. react-router Link); SPA nav için, `to` prop'u geçilir
  */
 const Button = forwardRef(function Button(
   {
@@ -71,6 +72,7 @@ const Button = forwardRef(function Button(
     arrow = false,
     coinIcon,
     href,
+    as,
     className = '',
     children,
     onClick,
@@ -82,7 +84,10 @@ const Button = forwardRef(function Button(
 ) {
   const isLink = variant === 'link';
   const isHero = variant === 'hero-primary';
-  const Tag = href ? 'a' : 'button';
+  // as: polimorfik tag (ör. react-router Link) — SPA navigasyonu korunur.
+  // Verilmezse: href varsa ham <a>, yoksa <button>.
+  const Tag = as ?? (href ? 'a' : 'button');
+  const isNativeButton = Tag === 'button';
 
   if (import.meta.env.DEV) {
     if ((variant === 'icon' || variant === 'icon-line') && !rest['aria-label']) {
@@ -115,10 +120,10 @@ const Button = forwardRef(function Button(
     <Tag
       ref={ref}
       href={href}
-      type={Tag === 'button' ? type ?? 'button' : undefined}
+      type={isNativeButton ? type ?? 'button' : undefined}
       className={cls}
-      disabled={Tag === 'button' ? disabled || undefined : undefined}
-      aria-disabled={Tag === 'a' && disabled ? true : undefined}
+      disabled={isNativeButton ? disabled || undefined : undefined}
+      aria-disabled={!isNativeButton && disabled ? true : undefined}
       aria-busy={loading || undefined}
       onClick={handleClick}
       {...rest}
