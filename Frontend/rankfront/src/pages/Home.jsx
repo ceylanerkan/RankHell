@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus, ArrowRight } from 'lucide-react'
+import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus } from 'lucide-react'
 import { getTopItems, getCategories, getDailyRanking } from '../api/client'
 import Auralis from '@/components/ui/auralis'
 import ItemCard from '../components/ItemCard'
@@ -165,14 +165,13 @@ export default function Home() {
             </p>
             {/* Tek birincil eylem: btn-fire daha iri. İkincil aynı yükseklikte ama sönük. */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link to="/items" className="btn-fire group px-7 py-3 text-base">
+              <Button variant="hero-primary" as={Link} to="/items">
                 Keşfetmeye Başla
-                <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2.5} />
-              </Link>
-              <Link to="/polls/new" className="btn-ghost px-5 py-3">
+              </Button>
+              <Button variant="secondary" size="lg" as={Link} to="/polls/new">
                 Anket Oluştur
                 <Plus className="h-5 w-5" strokeWidth={2.5} />
-              </Link>
+              </Button>
             </div>
           </div>
 
