@@ -179,3 +179,14 @@ At the end of each task, report:
 - assumptions
 - unresolved design decisions
 - whether protected areas were affected
+
+## Component Customization Rules
+
+* When adding new features, use existing design system components first.
+* Modify existing global variants only when a global change is explicitly requested.
+* Do not apply a visual change requested for a specific section to other usages.
+* For local changes, preserve the existing component and use either a dedicated variant or a limited local override.
+* Add reusable custom designs to the design system as new variants.
+* Keep designs intended for a single use local to the relevant component.
+* Custom variants must preserve the base button dimensions, typography, accessibility states, and overall brand language.
+* When creating a new variant, do not modify or break the existing `primary`, `secondary`, `ghost`, `danger`, `icon`, or `link` variants.

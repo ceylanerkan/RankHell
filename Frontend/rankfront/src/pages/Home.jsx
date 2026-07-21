@@ -156,7 +156,7 @@ export default function Home() {
             {/* 7xl xl'de açılır, lg'de değil: lg (1024) tam kolonun daraldığı
                 nokta, orada 72px başlığı üç satıra kırıyordu. */}
             <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-cream sm:text-6xl xl:text-7xl">
-              Her şeyi <span className="text-ember">sırala</span>,
+              Her şeyi <span className="text-ember">sırala</span>
               <br className="hidden sm:block" /> herkesle yarıştır
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-faded">
