@@ -1,6 +1,7 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { getSession, logout } from '../api/client'
 import Flame from './Flame'
+import Button from './ui/button/Button'
 
 // Orta menü: sade büyük harf sekmeler; aktif sayfanın altında Ember çizgisi.
 const itemClass = ({ isActive }) =>
@@ -107,11 +108,11 @@ export default function Navbar() {
                   {session.username}
                 </span>
               </NavLink>
-              <button
+              <Button
+                variant="icon"
                 onClick={handleLogout}
                 aria-label="Çıkış yap"
                 title="Çıkış yap"
-                className="flex h-12 w-12 items-center justify-center rounded-full text-faded ring-1 ring-line/60 transition duration-200 hover:bg-danger/15 hover:text-danger hover:ring-danger/60"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -127,12 +128,12 @@ export default function Navbar() {
                   <polyline points="16 17 21 12 16 7" />
                   <line x1="21" y1="12" x2="9" y2="12" />
                 </svg>
-              </button>
+              </Button>
             </>
           ) : (
             <>
-              <NavLink to="/login" className="btn-ghost px-4 py-1.5 font-display text-sm">Giriş</NavLink>
-              <Link to="/register" className="btn-fire px-4 py-1.5 text-sm">Kayıt Ol</Link>
+              <Button variant="ghost" size="sm" as={Link} to="/login">Giriş</Button>
+              <Button variant="primary" size="sm" as={Link} to="/register">Kayıt Ol</Button>
             </>
           )}
         </div>

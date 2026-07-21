@@ -142,6 +142,7 @@ Until they are marked as locked in `docs/DESIGN_SYSTEM.md`:
 - keep interaction states consistent
 - avoid broad redesigns unless explicitly requested
 - for in-app navigation use `<Button as={Link} to=...>`, never a raw `<a>` (preserves SPA routing)
+- the navbar is chrome: its `primary` (Kayıt Ol) is counted separately from page content and is exempt from the one-primary-per-view rule
 
 ## Scope discipline
 
