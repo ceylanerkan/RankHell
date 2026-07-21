@@ -1,4 +1,3 @@
-'use client';
 /**
  * RankHell — Damga v1 · Button
  * ----------------------------------------------------------------
@@ -6,8 +5,9 @@
  * Ham <button>/<a> stillenmez, yeni buton stili yazılmaz.
  *
  * Stil dosyası: ./button.css
- * (globals'a @import ile bağlanır — bkz. migrasyon planı, Adım 1.
- *  Fontlar site genelinde zaten yüklü: Bricolage / Instrument / JetBrains.)
+ * (src/index.css'e @import ile global bağlandı — bkz. migrasyon planı,
+ *  Adım 1. Fontlar button.css içinde --font-sans / --font-display
+ *  tokenlarından gelir; site genelinde Space Grotesk + Bricolage yüklü.)
  *
  * Kullanım:
  *   <Button variant="primary" size="lg" onClick={vote}>Oy ver</Button>
@@ -84,7 +84,7 @@ const Button = forwardRef(function Button(
   const isHero = variant === 'hero-primary';
   const Tag = href ? 'a' : 'button';
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (import.meta.env.DEV) {
     if ((variant === 'icon' || variant === 'icon-line') && !rest['aria-label']) {
       console.warn('[Button] icon varyantı aria-label olmadan kullanılamaz — Damga v1 kuralı.');
     }

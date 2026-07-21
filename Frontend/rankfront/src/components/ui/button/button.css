@@ -16,31 +16,37 @@
    NOT: Fontlar burada YÜKLENMEZ — site genelinde zaten var.
    ================================================================ */
 
-/* ---- TOKENLAR — Kor & Obsidyen haritanla eşle -------------------
-   Değerler yer tutucu. Migrasyon planı Adım 1'de Claude Code
-   bunları design system spec'indeki gerçek değerlerle değiştirir. */
+/* ---- TOKENLAR — Kor & Obsidyen paletine bağlı --------------------
+   Değerler artık yer tutucu DEĞİL: index.css'teki @theme paletine
+   (--color-*) bağlandı. Renk override'ı burada yapılmaz; palet
+   değişirse butonlar da otomatik değişir. Paletle birebir örtüşmeyen
+   3 ton onaylı tokenlardan color-mix ile türetildi (kor-hot,
+   danger-edge, danger-surface). */
 :root {
-  --btn-text: #efe9e2;
-  --btn-muted: #a2989f;
-  --btn-ink: #1d1109;              /* accent plaka üstündeki yazı */
+  --btn-text: var(--color-cream);
+  --btn-muted: var(--color-faded);
+  --btn-ink: var(--color-night-deep);   /* accent plaka üstündeki yazı */
 
-  --btn-accent: #e85b25;
-  --btn-accent-edge: #7e2e0e;      /* damga kenarı / soğuk köz */
-  --btn-kor-hot: #ffca9c;          /* beyaz sıcak: hover bandı + loading çizgisi */
+  --btn-accent: var(--color-ember);
+  --btn-accent-edge: var(--color-ember-deep);   /* damga kenarı / soğuk köz */
+  /* beyaz sıcak: hover bandı + loading çizgisi — palette tam yok, flame+cream türevi */
+  --btn-kor-hot: color-mix(in srgb, var(--color-flame) 55%, var(--color-cream));
 
-  --btn-danger: #c4382e;
-  --btn-danger-edge: #571712;
-  --btn-danger-surface: #291514;
-  --btn-danger-border: #8a2a23;
-  --btn-danger-ink: #fff2ef;
+  --btn-danger: var(--color-cinder);
+  /* plakadan koyu: damga 3D gölgesi için türev */
+  --btn-danger-edge: color-mix(in srgb, var(--color-cinder-deep) 60%, var(--color-night-deep));
+  /* koyu kızıl taban: türev */
+  --btn-danger-surface: color-mix(in srgb, var(--color-cinder-deep) 25%, var(--color-night-deep));
+  --btn-danger-border: var(--color-cinder-deep);
+  --btn-danger-ink: var(--color-cream);
 
-  --btn-sec-border: #463d46;
-  --btn-sec-surface: #241f25;
-  --btn-sec-surface-hover: #2c262d;
+  --btn-sec-border: var(--color-iron);
+  --btn-sec-surface: var(--color-coal);
+  --btn-sec-surface-hover: var(--color-coal-light);
 
-  --btn-ghost-tint: rgba(239, 233, 226, 0.07);
-  --btn-ghost-tint-active: rgba(239, 233, 226, 0.13);
-  --btn-focus-tick: #f4efe9;
+  --btn-ghost-tint: color-mix(in srgb, var(--color-cream) 7%, transparent);
+  --btn-ghost-tint-active: color-mix(in srgb, var(--color-cream) 13%, transparent);
+  --btn-focus-tick: var(--color-cream);
 
   /* metrikler */
   --btn-frame: 3px;                /* focus çerçevesi + ekstra dokunma alanı */
@@ -78,7 +84,7 @@
   background: transparent;
   height: calc(var(--h) + var(--btn-frame) * 2);
   padding: 0 var(--px);
-  font-family: 'Instrument Sans', system-ui, sans-serif;
+  font-family: var(--font-sans, system-ui, sans-serif);
   font-weight: 600;
   font-size: var(--fs);
   letter-spacing: 0.015em;
@@ -157,7 +163,7 @@
   --h: 56px;
   --px: 26px;
   --fs: 17px;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-display, 'Bricolage Grotesque', sans-serif);
   font-weight: 700;
   letter-spacing: 0.002em;
   color: var(--btn-ink);

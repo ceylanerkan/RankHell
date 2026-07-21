@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Damga v1 buton sistemi — tek kapı: src/components/ui/button/Button.
+   @theme'den SONRA kullanılır; --btn-* tokenları palete var() ile bağlı. */
+@import "./components/ui/button/button.css";
+
 /* ─── RankHell Teması: "Coal & Fire" ────────────────────────────
    Kimlik: kömür karası zemin + kontrollü ateş vurgusu.
    Yardımcı: ash/iron · Ödül: brass · Başarı: moss · Tehlike: cinder
