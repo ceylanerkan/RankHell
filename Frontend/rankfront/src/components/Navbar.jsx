@@ -2,7 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { getSession, logout } from '../api/client'
 import Flame from './Flame'
 
-// Orta menü: sade büyük harf sekmeler; aktif sayfanın altında turuncu çizgi.
+// Orta menü: sade büyük harf sekmeler; aktif sayfanın altında Ember çizgisi.
 const itemClass = ({ isActive }) =>
   `relative font-sans text-lg font-medium uppercase tracking-[0.12em] transition duration-200 ${
     isActive ? 'text-cream' : 'text-faded hover:text-cream'
@@ -35,10 +35,10 @@ export default function Navbar() {
             'repeating-linear-gradient(-45deg, #0a0908 0px, #0a0908 24px, #18110E 24px, #18110E 52px)',
         }}
       />
-      {/* Üst kenarda ince neon ateş çizgisi */}
+      {/* Üst kenarda ince bakır detay çizgisi */}
       <div
         aria-hidden
-        className="relative h-px bg-gradient-to-r from-transparent via-ember/60 to-transparent"
+        className="relative h-px bg-gradient-to-r from-transparent via-copper/45 to-transparent"
       />
       <nav className="relative mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-6 py-5">
         <div className="flex items-center gap-20">
@@ -96,11 +96,11 @@ export default function Navbar() {
                   `flex items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-4 ring-1 transition duration-200 ${
                     isActive
                       ? 'bg-coal ring-ember/60'
-                      : 'ring-line/60 hover:bg-coal hover:ring-ember/40'
+                      : 'ring-line/60 hover:bg-coal hover:ring-copper/50'
                   }`
                 }
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-ember to-flame font-display text-base font-extrabold text-night">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-copper-soft font-display text-base font-extrabold text-night-deep">
                   {session.username.charAt(0).toUpperCase()}
                 </span>
                 <span className="hidden font-display text-base font-semibold text-cream sm:inline">

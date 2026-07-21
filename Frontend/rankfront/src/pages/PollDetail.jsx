@@ -20,7 +20,7 @@ export default function PollDetail() {
 
   return (
     <div>
-      <h1 className="title-ember font-display text-3xl font-extrabold text-cream">{poll.title}</h1>
+      <h1 className="title-copper font-display text-3xl font-extrabold text-cream">{poll.title}</h1>
       <p className="mt-1 mb-6 text-sm text-faded">
         @{poll.creator.username} · {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
       </p>

@@ -21,13 +21,13 @@ export default function Items() {
   const filterClass = (active) =>
     `rounded-full px-4 py-1.5 text-sm font-bold transition duration-200 ${
       active
-        ? 'bg-ember text-night shadow-[0_3px_0_var(--color-ember-deep)]'
-        : 'bg-coal text-faded ring-1 ring-line hover:-translate-y-0.5 hover:text-cream hover:ring-ember/40'
+        ? 'bg-ember text-night-deep shadow-[0_3px_0_var(--color-ember-deep)]'
+        : 'bg-coal text-faded ring-1 ring-line hover:-translate-y-0.5 hover:text-cream hover:ring-copper/50'
     }`
 
   return (
     <div>
-      <h1 className="title-ember mb-4 font-display text-3xl font-extrabold text-cream">Keşfet</h1>
+      <h1 className="title-copper mb-4 font-display text-3xl font-extrabold text-cream">Keşfet</h1>
 
       <div className="mb-6 flex flex-wrap gap-2">
         <button className={filterClass(selected === null)} onClick={() => setSelected(null)}>

@@ -13,10 +13,10 @@ function initialOf(name) {
 // biner: prominence oranı zorlayarak değil, çerçeveyi kaldırarak geliyor.
 // aspect-[3/2]: kaynak görsellerin yarısı (tüm yemekler) zaten tam 3:2 — hiç
 // kırpılmıyorlar; kalan yatay görseller için de en az agresif gerçekçi kadraj.
-// Ton veriden değil A/B pozisyonundan türer: A parlak kor, B sönük köz —
+// Ton veriden değil A/B pozisyonundan türer: A bakır, B nötr metal —
 // bar'daki eşlemenin aynısı, bu yüzden legend gerekmiyor.
 function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
-  const tint = side === 'A' ? 'bg-ember/15 text-ember' : 'bg-ember-deep/30 text-ember-deep'
+  const tint = side === 'A' ? 'bg-copper/15 text-copper-soft' : 'bg-iron/40 text-ash'
   const lost = hasVoted && !voted
 
   return (
@@ -42,7 +42,7 @@ function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
           {initialOf(item.name)}
         </span>
       )}
-      {/* İsim + sonuç tek şeritte: oydan sonra kazananın yüzdesi iri ve kor,
+      {/* İsim + sonuç tek şeritte: oydan sonra kazananın yüzdesi iri ve pirinç,
           kaybedeninki küçük ve sönük — hiyerarşi rakamın kütlesinden geliyor.
           Sabit yükseklik (min-h) şart: yoksa kazananın iri yüzdesi şeridi
           uzatır, grid iki kartı eşitlerken kaybedenin görseli aşağı kayar ve
@@ -54,7 +54,7 @@ function DuelSide({ item, side, percent, voted, hasVoted, onVote }) {
         {hasVoted && (
           <span
             className={`shrink-0 font-display font-extrabold tabular-nums ${
-              voted ? 'text-2xl text-ember' : 'text-sm text-faded'
+              voted ? 'text-2xl text-brass-soft' : 'text-sm text-faded'
             }`}
           >
             %{percent}
@@ -127,11 +127,11 @@ export default function DuelWidget() {
             Bilgi kartlardaki yüzdelerde de var — reduced-motion'da bar zıplasa bile kayıp yok. */}
         <div aria-hidden="true" className="mt-4 flex h-1.5 overflow-hidden rounded-full bg-night-deep">
           <div
-            className="bg-ember transition-[width] duration-[400ms] ease-out"
+            className="bg-copper-soft transition-[width] duration-[400ms] ease-out"
             style={{ width: `${percentA}%` }}
           />
           <div
-            className="bg-ember-deep transition-[width] duration-[400ms] ease-out"
+            className="bg-copper-deep transition-[width] duration-[400ms] ease-out"
             style={{ width: `${percentB}%` }}
           />
         </div>

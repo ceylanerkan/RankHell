@@ -59,7 +59,7 @@ export default function Register() {
         className="input-dark mb-4"
       />
 
-      {error && <p className="mb-4 text-sm text-danger">{error}</p>}
+      {error && <p className="mb-4 text-sm text-cinder-soft">{error}</p>}
 
       <button type="submit" disabled={submitting} className="btn-fire w-full py-2.5">
         {submitting ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
@@ -67,7 +67,7 @@ export default function Register() {
 
       <p className="mt-4 text-center text-sm text-faded">
         Zaten hesabın var mı?{' '}
-        <Link to="/login" className="font-semibold text-zap hover:underline">
+        <Link to="/login" className="font-semibold text-copper-soft hover:text-cream hover:underline">
           Giriş yap
         </Link>
       </p>
