@@ -21,6 +21,10 @@
  *     <Card.Perf />
  *     <Card.Stub>...</Card.Stub>
  *   </Card>
+ *
+ * ticketNavWhitelisted?: boolean — yalnızca ItemCard, "daha fazlası" true
+ *   geçer; ticket+navigation dev-uyarısını susturur
+ *   (card-system-decisions.md KARAR 3).
  */
 
 import { forwardRef } from 'react';
@@ -37,6 +41,7 @@ const Card = forwardRef(function Card(
     padding = 'default',
     selected,
     to,
+    ticketNavWhitelisted = false,
     className = '',
     children,
     ...rest
@@ -60,9 +65,9 @@ const Card = forwardRef(function Card(
       console.error('[Card] ticket+selectable reddedilir — static\'e düşüldü.');
       behavior = 'static';
     }
-    if (surface === 'ticket' && behavior === 'navigation') {
+    if (surface === 'ticket' && behavior === 'navigation' && !ticketNavWhitelisted) {
       console.warn(
-        '[Card] ticket+navigation whitelist dışında kullanılıyor olabilir — yalnızca ItemCard, kategori kutucuğu, "daha fazlası" kartı için izinli (card-system-decisions.md KARAR 3).'
+        '[Card] ticket+navigation whitelist dışında kullanılıyor olabilir — yalnızca ItemCard, "daha fazlası" kartı için izinli (card-system-decisions.md KARAR 3).'
       );
     }
     if (selected !== undefined && behavior !== 'selectable') {

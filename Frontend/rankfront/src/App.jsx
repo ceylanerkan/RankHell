@@ -11,6 +11,7 @@ import PollDetail from './pages/PollDetail'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+// /dev/cards yalnızca geliştirmede: prod build'e girmez (tree-shake).
 import DevCards from './pages/dev/Cards'
 
 // Zemin rengi ve dokusu body üzerinde (index.css); main her rota
@@ -32,7 +33,7 @@ function Shell() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/dev/cards" element={<DevCards />} />
+          {import.meta.env.DEV && <Route path="/dev/cards" element={<DevCards />} />}
         </Routes>
       </main>
       <Footer />

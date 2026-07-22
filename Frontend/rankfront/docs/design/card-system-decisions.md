@@ -37,7 +37,9 @@ Gerekçe: "yeni renk üretme yok" kuralı sistemin bel kemiği; onu ilk engelde 
 
 **Yeni ticket satırı:** static ✓ · interactive sınırlı · **navigation sınırlı** · selectable — · disabled sınırlı
 
-"Navigation sınırlı" = yalnızca şu üç bileşen: **ItemCard**, **Home kategori kutucukları**, **"Daha fazlası" kartı**. Dördüncü bir ticket+navigation kullanımı ihlaldir. Card primitive'i bu kombinasyonu reddetmez ama dev ortamında uyarı basar ("ticket+navigation whitelist dışında kullanılıyor olabilir").
+"Navigation sınırlı" = yalnızca şu iki bileşen: **ItemCard**, **"Daha fazlası" kartı** — ikisi de Home'daki liderlik şeridinin aynı rayında, tek bilet ailesi. Üçüncü bir ticket+navigation kullanımı ihlaldir. Card primitive'i bu kombinasyonu reddetmez ama dev ortamında uyarı basar ("ticket+navigation whitelist dışında kullanılıyor olabilir").
+
+Kategori kutucukları whitelist'ten çıkarıldı: bilet = oy/bahis makbuzu; kategori kapıdır, bahis değil — 22.07 Faz 6e kararı.
 
 ---
 
@@ -134,3 +136,22 @@ Föy repoda referans olarak kalıyor; şu üç fark decisions.md ile geçersiz k
 3. ob-3 → yok; raised hover zemini sabit
 
 CLAUDE.md bloğunun güncel hali ayrıca düzeltildi (`claude-md-kart-sistemi-bolumu.md` v2) — Faz 2 sonrası onu yapıştır.
+
+## Faz 7 için not (henüz karar değil)
+
+Faz 6c'de (Home kategori kutucukları göçü) korunan iki efekt var — göç birebir
+taşıma olduğu için bu fazda dokunulmadı, ama sistemin sert/ışıksız diline
+uyumu ayrı bir kararla netleşmeli:
+
+- Kategori ikonlarındaki `drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)]`
+- İkonun `group-hover:animate-wiggle` (rotate mikro-animasyonu)
+
+Faz 7'de `docs/design/exceptions.md` yazılırken bu ikisi ya istisna olarak
+belgelenir ya da kaldırılır — burada sadece iz bırakılıyor.
+
+## KARAR 4 — card.css @layer components'ta yaşar (Faz 8)
+
+card.css @layer components'ta yaşar — layer'sız kural tüketici utility'lerini
+eziyordu (5 noktada kanıtlandı). Ders: 3b'deki text-center belirtisi yamayla
+geçildi, kök neden 6a/6d'de tekrar etti. İlke: aynı bug sınıfı ikinci kez
+görünürse yama değil kök tedavi.

@@ -165,7 +165,7 @@ The card system is currently provisional.
 
 Until it is marked as locked in `docs/DESIGN_SYSTEM.md`:
 
-- reuse existing shared card patterns (`card-dark`, `card-ticket`, `card-glow`, `duel-card`)
+- every card goes through the `src/components/ui/Card.jsx` primitive (surface × behavior); see the "Kart Sistemi (Kor & Obsidyen)" section below plus `docs/design/card-system-decisions.md` and `docs/design/exceptions.md`
 - do not create disconnected variants
 - do not introduce new colors
 - follow the closest existing pattern
@@ -223,7 +223,7 @@ At the end of each task, report:
 
 ## Kart Sistemi (Kor & Obsidyen)
 
-Kaynak: `docs/design/card-system.html` (föy) ve `docs/design/card-system-decisions.md` (kararlar — çelişkide bu kazanır). <!-- Faz 7'de açılacak: İstisnalar: `docs/design/exceptions.md`. --> Emin değilsen önce bunları oku, uydurma.
+Kaynak: `docs/design/card-system.html` (föy) ve `docs/design/card-system-decisions.md` (kararlar — çelişkide bu kazanır). İstisnalar: `docs/design/exceptions.md` (sisteme çekilmeyen bileşenler ve gerekçeleri). Emin değilsen önce bunları oku, uydurma.
 
 **Sözleşme:** Her kart `src/components/ui/Card.jsx` primitive'inden türer:
 `surface: neutral | raised | ticket` × `behavior: static | interactive | navigation | selectable | disabled`.
@@ -235,7 +235,7 @@ Behavior her zaman açık yazılır. `selected` yalnızca `selectable` ile. Alt 
 - Ember marker (sol 2px şerit) yalnızca interactive / navigation / selectable'da. Static ve disabled sinyal olarak kor göstermez; kor veri olarak (önde giden yüzde, bar) serbest.
 - Kart başına tek kor. Brass tıklanabilir öğede kullanılmaz.
 - Disabled: solid `--color-line` kenar. Kesikli kenar yalnızca dropzone / boş yuva / placeholder.
-- Ticket yüzeyi: yalnızca oy/sonuç kartları ve navigation whitelist'i (ItemCard, kategori kutucuğu, "daha fazlası"). Auth, form, profil satırı, bilgi panelinde asla. `ticket+selectable` yasak (uyar + static'e düş). Sayfa başına tek bilet ailesi.
+- Ticket yüzeyi: yalnızca oy/sonuç kartları ve navigation whitelist'i (ItemCard, "daha fazlası"). Auth, form, profil satırı, bilgi panelinde asla. `ticket+selectable` yasak (uyar + static'e düş). Sayfa başına tek bilet ailesi.
 - Semantik: navigation = react-router Link, interactive/selectable = button, static/disabled = div. İç içe tıklanabilir öğe üretme; içinde buton taşıyan kart static kalır.
 - Zemin: neutral=coal, raised/ticket=coal-light. Raised hover'da zemin DEĞİŞMEZ (sinyal: kenar line→iron + e-1 + marker); yeni ara kademe türetilmez.
 - `--color-cinder` tehlike VE negatif delta/trend içindir (hata, yıkıcı aksiyon, ▼ düşüş). Kenar/yapı/kategori/dekorasyon için asla; yapı rolü line/iron/faded'dadır.
@@ -243,3 +243,4 @@ Behavior her zaman açık yazılır. `selected` yalnızca `selectable` ile. Alt 
 - Yeni renk/token üretme; yalnızca src/index.css @theme token'ları. Buton sistemine ve palet hex'lerine dokunma.
 - Hata felsefesi: geçersiz kombinasyon asla render'ı kırmaz — dev'de console.warn/error basar, güvenli davranışa düşer.
 - Sistem dışı bileşenler (DuelWidget, PodiumSpot, "Kendi arenanı kur" banner'ı, TierList satırları, navbar/footer bantları, toast/modal) sisteme çekilmez; listeye yazılmamış istisna üretilmez.
+- card.css @layer components'tadır; tüketici layout utility'leri kart kökünde geçerlidir. Görünüm kuralı yine yalnızca Card'da yazılır.

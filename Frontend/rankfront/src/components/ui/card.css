@@ -129,9 +129,14 @@
 .rh-card--s-neutral.rh-card--b-navigation:hover {
   background: var(--color-coal-light);
 }
-.rh-card--s-raised.rh-card--b-navigation:hover,
-.rh-card--s-ticket.rh-card--b-navigation:hover {
+.rh-card--s-raised.rh-card--b-navigation:hover {
   box-shadow: var(--rh-e1), var(--rh-lift);
+}
+.rh-card--s-ticket.rh-card--b-navigation:hover {
+  box-shadow:
+    inset 0 0 0 1px var(--color-iron),
+    var(--rh-e1),
+    var(--rh-lift);
 }
 .rh-card--b-navigation:active {
   background: var(--color-coal);

@@ -1,5 +1,9 @@
 # RankHell Kart Sistemi — Claude Code Uygulama Planı
 
+> TARİHSEL BELGE — ilk plan. Bazı teknik varsayımları (Next.js, globals.css)
+> Faz 0'da gerçek repoyla düzeltildi. Güncel kurallar:
+> `card-system-decisions.md` + `CLAUDE.md`.
+
 Föy v2.1 (`rankhell-kart-sistemi-ornek-v2.html`) referans alınır. Sınıf sözleşmesi: her kart bir **surface** (`neutral | raised | ticket`) + bir **behavior** (`static | interactive | navigation | selectable | disabled`) alır, behavior her zaman açık yazılır.
 
 Plan yedi faz. Tüm çalışma mevcut **`frontend-setup`** branch'inde yapılır — yeni branch açılmaz. Her faz kendi commit'iyle (veya commit grubuyla) biter, bir sonrakine geçmeden görsel doğrulama yapılır; böylece bir faz ters giderse `git revert` ile sadece o faz geri alınabilir. Claude Code'a her faz **ayrı oturumda, tek prompt** olarak verilir — "plan first, then implement" kuralın her promptta tekrarlanır.
