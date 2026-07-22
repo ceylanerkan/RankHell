@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { getPolls } from '../api/client'
 import { Loading, ErrorState, EmptyState } from '../components/States'
 import Button from '../components/ui/button/Button'
+import Card from '../components/ui/Card'
 
 export default function Polls() {
   const [polls, setPolls] = useState(null)
@@ -30,14 +31,17 @@ export default function Polls() {
       ) : (
         <div className="space-y-3">
           {polls.map((poll, i) => (
-            <Link
+            <Card
               key={poll.pollId}
+              surface="neutral"
+              behavior="navigation"
               to={`/polls/${poll.pollId}`}
-              className="group card-dark flex animate-rise items-center justify-between gap-4 p-4 transition duration-200 hover:translate-x-1 hover:bg-coal-light/50"
+              padding="compact"
+              className="flex animate-rise items-center justify-between gap-4"
               style={{ animationDelay: `${i * 50}ms` }}
             >
               <div>
-                <h2 className="font-display font-bold text-cream transition group-hover:text-copper-soft">
+                <h2 className="font-display font-bold text-cream">
                   {poll.title}
                 </h2>
                 <p className="mt-1 text-sm text-faded">
@@ -45,10 +49,10 @@ export default function Polls() {
                   {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
                 </p>
               </div>
-              <span className="text-lg text-faded/60 transition duration-200 group-hover:translate-x-1 group-hover:text-ash">
+              <span className="rh-card-go text-lg" aria-hidden="true">
                 →
               </span>
-            </Link>
+            </Card>
           ))}
         </div>
       )}

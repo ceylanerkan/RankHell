@@ -1,5 +1,6 @@
 // Veri çeken her sayfanın üç durumu: yükleniyor / hata / boş
 import Flame from './Flame'
+import Card from './ui/Card'
 
 export function Loading({ label = 'Yükleniyor...' }) {
   return (
@@ -15,10 +16,12 @@ export function Loading({ label = 'Yükleniyor...' }) {
 
 export function ErrorState({ message = 'Bir şeyler ters gitti.' }) {
   return (
-    <div className="rounded-xl border border-cinder/30 bg-cinder/10 px-4 py-10 text-center">
-      <p className="font-display text-lg font-bold text-cinder-soft">💀 Hata</p>
-      <p className="mt-1 text-sm text-cream">{message}</p>
-    </div>
+    <Card surface="neutral" behavior="static" padding="spacious">
+      <div className="text-center">
+        <p className="font-display text-lg font-bold text-cinder-soft">💀 Hata</p>
+        <p className="mt-1 text-sm text-cream">{message}</p>
+      </div>
+    </Card>
   )
 }
 

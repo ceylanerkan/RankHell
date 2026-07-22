@@ -5,6 +5,7 @@ import StarRating from '../components/StarRating'
 import CategoryBadge from '../components/CategoryBadge'
 import { Loading, ErrorState } from '../components/States'
 import Button from '../components/ui/button/Button'
+import Card from '../components/ui/Card'
 
 export default function ItemDetail() {
   const { id } = useParams()
@@ -55,7 +56,9 @@ export default function ItemDetail() {
         <h1 className="mt-3 font-display text-4xl font-extrabold text-cream">{item.name}</h1>
         <p className="mt-3 text-cream/90">{item.description}</p>
 
-        <div className="card-dark mt-6 flex items-center gap-4 p-4">
+        <Card surface="neutral" behavior="static" className="mt-6 flex items-center gap-4">
+          {/* TODO(Faz 5 — renk/glow denetimi): brass skor glow'u (drop-shadow)
+              kart sisteminin "glow yasak" kuralı kapsamında; denetimde ele al. */}
           <span className="font-display text-4xl font-extrabold tabular-nums text-brass-soft drop-shadow-[0_0_10px_rgba(185,145,63,0.22)]">
             {Number(item.globalScore).toFixed(2)}
           </span>
@@ -63,7 +66,7 @@ export default function ItemDetail() {
             <StarRating value={item.globalScore} size="text-xl" />
             <p className="text-sm text-faded">{item.totalVotes} oy</p>
           </div>
-        </div>
+        </Card>
 
         <div className="card-glow mt-4 p-4">
           <p className="mb-2 font-display font-bold text-cream">

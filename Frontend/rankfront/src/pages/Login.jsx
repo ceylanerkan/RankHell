@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../api/client'
 import Button from '../components/ui/button/Button'
+import Card from '../components/ui/Card'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -27,42 +28,44 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card-glow mx-auto max-w-sm p-6">
-      <h1 className="mb-6 font-display text-2xl font-extrabold text-cream">Giriş Yap</h1>
+    <Card surface="raised" behavior="static" padding="spacious" className="mx-auto max-w-sm">
+      <form onSubmit={handleSubmit}>
+        <h1 className="mb-6 font-display text-2xl font-extrabold text-cream">Giriş Yap</h1>
 
-      <label className="mb-1 block text-sm font-semibold text-cream/90">E-posta</label>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="ornek@mail.com"
-        className="input-dark mb-4"
-      />
+        <label className="mb-1 block text-sm font-semibold text-cream/90">E-posta</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="ornek@mail.com"
+          className="input-dark mb-4"
+        />
 
-      <label className="mb-1 block text-sm font-semibold text-cream/90">Şifre</label>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="En az 8 karakter"
-        className="input-dark mb-4"
-      />
+        <label className="mb-1 block text-sm font-semibold text-cream/90">Şifre</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="En az 8 karakter"
+          className="input-dark mb-4"
+        />
 
-      {error && <p className="mb-4 text-sm text-cinder-soft">{error}</p>}
+        {error && <p className="mb-4 text-sm text-cinder-soft">{error}</p>}
 
-      <Button type="submit" variant="primary" fullWidth loading={submitting}>
-        Giriş Yap
-      </Button>
-
-      <p className="mt-4 text-center text-sm text-faded">
-        Hesabın yok mu?{' '}
-        <Button variant="link" as={Link} to="/register">
-          Kayıt ol
+        <Button type="submit" variant="primary" fullWidth loading={submitting}>
+          Giriş Yap
         </Button>
-      </p>
-      <p className="mt-2 text-center text-xs text-faded/60">
-        Deneme hesabı: arda@rankhell.dev / herhangi 8+ karakter
-      </p>
-    </form>
+
+        <p className="mt-4 text-center text-sm text-faded">
+          Hesabın yok mu?{' '}
+          <Button variant="link" as={Link} to="/register">
+            Kayıt ol
+          </Button>
+        </p>
+        <p className="mt-2 text-center text-xs text-faded/60">
+          Deneme hesabı: arda@rankhell.dev / herhangi 8+ karakter
+        </p>
+      </form>
+    </Card>
   )
 }

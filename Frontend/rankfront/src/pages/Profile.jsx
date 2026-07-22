@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { getMyRatings, getMyPolls, getSession } from '../api/client'
 import StarRating from '../components/StarRating'
 import { Loading, ErrorState, EmptyState } from '../components/States'
+import Card from '../components/ui/Card'
 
 export default function Profile() {
   const session = getSession()
@@ -42,14 +42,17 @@ export default function Profile() {
           ) : (
             <div className="space-y-2">
               {ratings.map((r) => (
-                <Link
+                <Card
                   key={r.ratingId}
+                  surface="neutral"
+                  behavior="navigation"
                   to={`/items/${r.itemId}`}
-                  className="card-dark flex items-center justify-between p-3 transition duration-200 hover:translate-x-1 hover:bg-coal-light/50"
+                  padding="compact"
+                  className="flex items-center justify-between"
                 >
                   <span className="text-cream">{r.item?.name}</span>
                   <StarRating value={r.score} size="text-base" />
-                </Link>
+                </Card>
               ))}
             </div>
           )}
@@ -64,16 +67,18 @@ export default function Profile() {
           ) : (
             <div className="space-y-2">
               {polls.map((p) => (
-                <Link
+                <Card
                   key={p.pollId}
+                  surface="neutral"
+                  behavior="navigation"
                   to={`/polls/${p.pollId}`}
-                  className="card-dark block p-3 transition duration-200 hover:translate-x-1 hover:bg-coal-light/50"
+                  padding="compact"
                 >
                   <span className="text-cream">{p.title}</span>
                   <p className="text-xs text-faded/70">
                     {new Date(p.createdAt).toLocaleDateString('tr-TR')}
                   </p>
-                </Link>
+                </Card>
               ))}
             </div>
           )}
