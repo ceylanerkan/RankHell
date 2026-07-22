@@ -7,6 +7,7 @@ import ItemCard from '../components/ItemCard'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
 import Button, { ArrowIcon } from '../components/ui/button/Button'
+import Card from '../components/ui/Card'
 
 // Kategori emojilerinin yerine geçen Lucide ikon eşlemesi (categoryId bazlı)
 const CATEGORY_ICONS = {
@@ -234,7 +235,7 @@ export default function Home() {
       {/* ── Günün Sıralaması ─────────────────────────────────── */}
       {daily?.entries?.length > 0 && (
         <section className="mb-12">
-          <div className="card-glow p-5 sm:p-6">
+          <Card surface="raised" behavior="static">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
               <span className="badge-day">
                 {dailyDate} • Günün Sıralaması
@@ -266,7 +267,7 @@ export default function Home() {
                 </li>
               ))}
             </ol>
-          </div>
+          </Card>
         </section>
       )}
 

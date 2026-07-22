@@ -238,7 +238,7 @@ Behavior her zaman açık yazılır. `selected` yalnızca `selectable` ile. Alt 
 - Ticket yüzeyi: yalnızca oy/sonuç kartları ve navigation whitelist'i (ItemCard, kategori kutucuğu, "daha fazlası"). Auth, form, profil satırı, bilgi panelinde asla. `ticket+selectable` yasak (uyar + static'e düş). Sayfa başına tek bilet ailesi.
 - Semantik: navigation = react-router Link, interactive/selectable = button, static/disabled = div. İç içe tıklanabilir öğe üretme; içinde buton taşıyan kart static kalır.
 - Zemin: neutral=coal, raised/ticket=coal-light. Raised hover'da zemin DEĞİŞMEZ (sinyal: kenar line→iron + e-1 + marker); yeni ara kademe türetilmez.
-- `--color-cinder` DANGER kırmızısıdır — kenar/yapı/dekorasyon için asla kullanılmaz; yapı rolü line/iron/faded'dadır.
+- `--color-cinder` tehlike VE negatif delta/trend içindir (hata, yıkıcı aksiyon, ▼ düşüş). Kenar/yapı/kategori/dekorasyon için asla; yapı rolü line/iron/faded'dadır.
 - `focus-visible`: etkileşimli davranışlarda 2px ember outline, offset 2. `outline:none` yazılmaz.
 - Yeni renk/token üretme; yalnızca src/index.css @theme token'ları. Buton sistemine ve palet hex'lerine dokunma.
 - Hata felsefesi: geçersiz kombinasyon asla render'ı kırmaz — dev'de console.warn/error basar, güvenli davranışa düşer.

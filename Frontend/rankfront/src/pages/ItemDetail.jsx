@@ -57,9 +57,7 @@ export default function ItemDetail() {
         <p className="mt-3 text-cream/90">{item.description}</p>
 
         <Card surface="neutral" behavior="static" className="mt-6 flex items-center gap-4">
-          {/* TODO(Faz 5 — renk/glow denetimi): brass skor glow'u (drop-shadow)
-              kart sisteminin "glow yasak" kuralı kapsamında; denetimde ele al. */}
-          <span className="font-display text-4xl font-extrabold tabular-nums text-brass-soft drop-shadow-[0_0_10px_rgba(185,145,63,0.22)]">
+          <span className="font-display text-4xl font-extrabold tabular-nums text-brass-soft">
             {Number(item.globalScore).toFixed(2)}
           </span>
           <div>
@@ -68,7 +66,7 @@ export default function ItemDetail() {
           </div>
         </Card>
 
-        <div className="card-glow mt-4 p-4">
+        <Card surface="raised" behavior="static" className="mt-4">
           <p className="mb-2 font-display font-bold text-cream">
             {myRating ? `Senin puanın: ${myRating.score}` : 'Puanını ver'}
           </p>
@@ -84,7 +82,7 @@ export default function ItemDetail() {
             </p>
           )}
           {rateError && <p className="mt-2 text-sm text-cinder-soft">{rateError}</p>}
-        </div>
+        </Card>
       </div>
     </div>
   )
