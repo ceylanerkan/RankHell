@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RankHell — Kart Sistemi Föyü v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Obsidyen kademeleri */
+  --ob-0:#0D0B0A;   /* sayfa */
+  --ob-1:#151110;   /* +1  neutral */
+  --ob-2:#1C1715;   /* +2  raised / ticket */
+  --ob-3:#241D19;   /* +3  hover */
+
+  /* Cinder — yapı */
+  --line:#2B2421;
+  --line-strong:#433833;
+  --muted:#8B7F78;
+  --text:#F2EDE9;
+
+  /* Aksanlar */
+  --ember:#E2562A;
+  --brass:#C9A05C;
+  --moss:#6B8F5A;
+
+  --r-0:0px; --r-2:2px; --r-4:4px; --r-8:8px;
+  --p-compact:12px; --p-default:20px; --p-spacious:28px;
+
+  --e-1:0 1px 0 rgba(0,0,0,.65);
+  --lift:inset 0 1px 0 rgba(255,238,228,.055);
+
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ob-0);
+  color:var(--text);
+  font:400 15px/1.55 var(--body);
+  padding:0 24px 96px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1060px;margin:0 auto}
+
+/* ---------- şerit bandı ---------- */
+.band{
+  height:10px;border-radius:var(--r-0);
+  background:repeating-linear-gradient(45deg,var(--ob-1) 0 6px,var(--ob-0) 6px 12px);
+  border-block:1px solid var(--line);
+}
+
+/* ---------- başlık ---------- */
+header{padding:56px 0 40px;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.mark{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.mark svg{display:block}
+.mark span{font:800 20px/1 var(--display);letter-spacing:-.02em}
+.mark span i{color:var(--ember);font-style:normal}
+h1{font:800 clamp(30px,5.2vw,46px)/1.02 var(--display);letter-spacing:-.03em;max-width:16ch}
+h1 em{font-style:normal;color:var(--ember)}
+.meta{font:400 11px/1.9 var(--mono);color:var(--muted);text-align:right;white-space:nowrap}
+.meta b{color:var(--text);font-weight:500}
+
+/* ---------- bölüm iskeleti ---------- */
+section{display:grid;grid-template-columns:148px 1fr;gap:36px;padding:44px 0 8px}
+.rail{position:sticky;top:24px;align-self:start}
+.rail h2{font:500 11px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
+.rail p{font:400 12px/1.6 var(--body);color:var(--muted);margin-top:8px}
+.rail .idx{font:400 11px/1 var(--mono);color:var(--ember);display:block;margin-bottom:10px}
+.rail ul{list-style:none;margin-top:10px;font:400 11px/1.8 var(--mono)}
+.rail ul li{color:var(--muted)}
+.rail ul li b{color:var(--moss);font-weight:500}
+.rail ul li s{color:var(--line-strong);text-decoration:none}
+
+.row{display:grid;gap:16px}
+.cols-2{grid-template-columns:1fr 1fr}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.cols-4{grid-template-columns:repeat(4,1fr)}
+
+.tag{
+  font:400 10px/1 var(--mono);color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;
+  display:flex;justify-content:space-between;gap:8px;margin-bottom:9px;
+}
+.tag b{color:var(--text);font-weight:500}
+
+/* ======================================================
+   KART TABANI — yalnızca kap: kenar, radius, padding.
+   Görünüm SURFACE sınıfından, davranış BEHAVIOR sınıfından gelir.
+   ====================================================== */
+.card{
+  position:relative;
+  border:1px solid var(--line);
+  border-radius:var(--r-8);
+  padding:var(--p-default);
+  background:var(--ob-1);
+  transition:background .14s ease,border-color .14s ease,box-shadow .14s ease,transform .08s ease;
+}
+
+/* ---------- SURFACE ---------- */
+.s-neutral{background:var(--ob-1)}                      /* ob+1, düz, ışıksız */
+.s-raised{background:var(--ob-2);box-shadow:var(--lift)}/* ob+2 + üst iç ışık */
+.s-ticket{
+  background:var(--ob-2);border:0;
+  box-shadow:inset 0 0 0 1px var(--line),var(--lift);
+  padding:0;
+  -webkit-mask:
+    radial-gradient(circle 9px at 0 62%,transparent 9px,#000 9.6px),
+    radial-gradient(circle 9px at 100% 62%,transparent 9px,#000 9.6px);
+  -webkit-mask-composite:source-in;
+  mask:
+    radial-gradient(circle 9px at 0 62%,transparent 9px,#000 9.6px),
+    radial-gradient(circle 9px at 100% 62%,transparent 9px,#000 9.6px);
+  mask-composite:intersect;
+}
+.ticket-body{padding:var(--p-default)}
+.perf{height:1px;margin:0;border:0;border-top:1px dashed var(--line-strong)}
+.ticket-stub{padding:14px var(--p-default);display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+
+/* ---------- BEHAVIOR ---------- */
+/* static: sınıf yok. Marker yok, hover yok, cursor default. */
+
+/* Ember kenar işaretçisi yalnızca bu davranışlarda var olur */
+.b-interactive::before,.b-navigation::before,.b-selectable::before{
+  content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:2px;
+  background:var(--ember);border-radius:var(--r-8) 0 0 var(--r-8);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .14s ease;
+}
+
+/* interactive — yerinde eylem tetikler */
+.b-interactive{cursor:pointer}
+.b-interactive:hover{border-color:var(--line-strong)}
+.b-interactive:hover::before{transform:scaleY(1)}
+.s-neutral.b-interactive:hover{background:var(--ob-2)}
+.s-raised.b-interactive:hover{background:var(--ob-3);box-shadow:var(--e-1),var(--lift)}
+.b-interactive:active{transform:translateY(1px);background:var(--ob-1);box-shadow:none}
+
+/* navigation — başka sayfaya götürür; interactive + yön oku */
+.b-navigation{cursor:pointer}
+.b-navigation:hover{border-color:var(--line-strong)}
+.b-navigation:hover::before{transform:scaleY(1)}
+.s-raised.b-navigation:hover{background:var(--ob-3);box-shadow:var(--e-1),var(--lift)}
+.s-neutral.b-navigation:hover{background:var(--ob-2)}
+.b-navigation:active{transform:translateY(1px);background:var(--ob-1);box-shadow:none}
+.go{
+  font:500 14px/1 var(--mono);color:var(--muted);
+  transition:color .14s ease,transform .14s ease;
+}
+.b-navigation:hover .go{color:var(--ember);transform:translateX(2px)}
+
+/* selectable — bir seçenek; seçilebilir, seçili kalabilir */
+.b-selectable{cursor:pointer}
+.b-selectable:hover{border-color:var(--line-strong)}
+.b-selectable:hover::before{transform:scaleY(1)}
+.s-raised.b-selectable:hover{background:var(--ob-3);box-shadow:var(--e-1),var(--lift)}
+.b-selectable:active{transform:translateY(1px)}
+.pick{
+  width:14px;height:14px;flex:none;border-radius:var(--r-2);
+  border:1px solid var(--line-strong);
+  transition:border-color .14s ease,background .14s ease;
+}
+.b-selectable.is-selected{
+  border-color:rgba(226,86,42,.42);
+  background-image:linear-gradient(rgba(226,86,42,.04),rgba(226,86,42,.04));
+}
+.b-selectable.is-selected::before{transform:scaleY(1)}
+.b-selectable.is-selected .pick{background:var(--ember);border-color:var(--ember)}
+
+/* disabled — solid düşük kontrast kenar, tepki kapalı */
+.b-disabled{
+  cursor:not-allowed;
+  border-color:var(--line);          /* solid, kesikli DEĞİL */
+  background:var(--ob-1);
+  box-shadow:none;
+}
+.b-disabled::before{display:none}
+.b-disabled:hover{border-color:var(--line);background:var(--ob-1);box-shadow:none}
+.b-disabled:active{transform:none}
+.b-disabled .c-title,.b-disabled .c-sub,.b-disabled .num,.b-disabled .go{color:var(--muted)}
+.b-disabled .c-title{opacity:.7}
+.b-disabled .bar i{background:var(--line-strong)}
+.b-disabled img,.b-disabled .thumb{filter:grayscale(1)}
+
+/* ---------- kesikli kenar: yalnızca placeholder ---------- */
+.dropzone{
+  border:1px dashed var(--line-strong);
+  border-radius:var(--r-8);
+  background:transparent;
+  min-height:118px;
+  display:grid;place-items:center;
+  color:var(--muted);
+  font:400 12px/1.5 var(--mono);
+  text-align:center;
+  padding:var(--p-default);
+}
+.dropzone b{color:var(--text);font-weight:500;display:block;font-family:var(--body);font-size:13px;margin-bottom:4px}
+
+/* ---------- kart içeriği ---------- */
+.c-title{font:600 16px/1.25 var(--display);letter-spacing:-.01em}
+.c-sub{font:400 13px/1.5 var(--body);color:var(--muted);margin-top:6px}
+.num{font:500 13px/1 var(--mono);color:var(--brass);letter-spacing:-.01em}
+.num.lg{font-size:19px}
+.num.em{color:var(--ember)}
+.bar{height:3px;border-radius:var(--r-0);background:var(--line);margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ember)}
+.split{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.split.center{align-items:center}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.tile{border-radius:var(--r-4);background:var(--ob-0);border:1px solid var(--line);padding:10px 11px}
+.tile .n{font:600 13px/1.2 var(--display)}
+.tile .v{font:500 12px/1 var(--mono);color:var(--brass);margin-top:5px;display:block}
+.chip{
+  display:inline-block;border-radius:var(--r-2);padding:4px 8px;
+  font:500 10px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--line);color:var(--muted);
+}
+.chip.moss{color:var(--moss);border-color:rgba(107,143,90,.4)}
+
+/* ---------- matris ---------- */
+.matrix{border:1px solid var(--line);border-radius:var(--r-8);overflow:hidden}
+.matrix table{width:100%;border-collapse:collapse;font:400 11px/1.4 var(--mono)}
+.matrix th,.matrix td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--line)}
+.matrix tr:last-child td{border-bottom:0}
+.matrix th{background:var(--ob-1);color:var(--muted);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:10px}
+.matrix td:first-child,.matrix th:first-child{text-align:left;background:var(--ob-1);color:var(--text)}
+.matrix td{background:var(--ob-0)}
+.ok{color:var(--moss)}
+.lim{color:var(--brass)}
+.no{color:var(--line-strong)}
+
+/* ---------- ölçek diyagramları ---------- */
+.spec{background:var(--ob-1);border:1px solid var(--line);border-radius:var(--r-8);padding:16px;text-align:center}
+.pad{height:74px;background:var(--ob-2);border:1px solid var(--line);border-radius:var(--r-8);display:flex;margin-bottom:12px}
+.pad i{flex:1;border:1px dashed rgba(226,86,42,.5);border-radius:var(--r-4)}
+.spec .lb{font:500 11px/1 var(--mono);color:var(--text)}
+.spec .lb u{color:var(--muted);text-decoration:none}
+.corner{height:58px;margin:4px auto 12px;width:100%;background:var(--ob-2);border:1px solid var(--line-strong)}
+
+/* ---------- renk görevleri ---------- */
+.roleset{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-8);overflow:hidden}
+.role{display:grid;grid-template-columns:96px 1fr 1fr;gap:20px;align-items:center;background:var(--ob-1);padding:16px 20px}
+.role .sw{display:flex;align-items:center;gap:9px;font:500 12px/1 var(--mono)}
+.role .dot{width:13px;height:13px;border-radius:var(--r-2);flex:none}
+.role .use{font:400 13px/1.5 var(--body)}
+.role .never{font:400 12px/1.5 var(--body);color:var(--muted)}
+.role .never s{text-decoration:none;color:var(--line-strong)}
+
+footer{padding:56px 0 0;font:400 11px/1.9 var(--mono);color:var(--muted);border-top:1px solid var(--line);margin-top:56px}
+footer b{color:var(--text);font-weight:500}
+
+@media (max-width:820px){
+  section{grid-template-columns:1fr;gap:20px;padding:36px 0 4px}
+  .rail{position:static}
+  .cols-2,.cols-3,.cols-4{grid-template-columns:1fr 1fr}
+  .role{grid-template-columns:1fr;gap:8px}
+  .meta{text-align:left}
+}
+@media (max-width:520px){
+  .cols-2,.cols-3,.cols-4{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+  .b-navigation:hover .go{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <div class="mark">
+      <svg width="20" height="24" viewBox="0 0 20 24" fill="none" aria-hidden="true">
+        <path d="M10 1c3.2 4.1 1.6 6.4 3.4 8.2C15 10.7 15.6 8.6 15.6 8.6c2.6 3.1 3.4 6.1 3.4 8.1 0 4-3.9 6.3-9 6.3S1 20.7 1 16.7c0-3.6 2.6-6.6 4.6-9.3C7.9 4.3 10 1 10 1z" fill="#E2562A"/>
+        <path d="M10 23c-2.6 0-4.4-1.5-4.4-3.7 0-2.1 1.7-3.3 2.7-5.1.8-1.5.5-2.9.5-2.9s2 1.4 2.9 3.4c.7-.8.7-2.1.7-2.1 1.4 1.8 2 3.9 2 5.5 0 2.4-1.8 4.9-4.4 4.9z" fill="#0D0B0A"/>
+      </svg>
+      <span>Rank<i>Hell</i></span>
+    </div>
+    <h1>Surface <em>×</em> Behavior</h1>
+  </div>
+  <div class="meta">
+    KOR &amp; OBSİDYEN · FÖY v2<br>
+    surface <b>3</b> · behavior <b>5</b> · radius tavan <b>8px</b><br>
+    22.07.2026
+  </div>
+</header>
+
+<div class="band"></div>
+
+<!-- ============ 00 MATRİS ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">00</span>
+    <h2>Matris</h2>
+    <p>Görünüm ve davranış ayrı eksenler. Her kart bir surface + bir behavior alır; "selected" bir yüzey değil, selectable'ın bir halidir.</p>
+  </div>
+  <div class="matrix">
+    <table>
+      <tr><th>surface \ behavior</th><th>static</th><th>interactive</th><th>navigation</th><th>selectable</th><th>disabled</th></tr>
+      <tr><td>neutral</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td><td class="no">—</td><td class="ok">✓</td></tr>
+      <tr><td>raised</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+      <tr><td>ticket</td><td class="ok">✓</td><td class="lim">sınırlı</td><td class="no">—</td><td class="no">—</td><td class="ok">✓</td></tr>
+    </table>
+  </div>
+</section>
+
+<div class="band"></div>
+
+<!-- ============ 01 YÜZEYLER (hepsi static) ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">01</span>
+    <h2>Yüzeyler</h2>
+    <p>Üçü de <b style="color:var(--text)">static</b> — hiçbirinde marker, hover, cursor yok. Neutral düz ve ışıksız; raised bir kademe açık + üst iç ışık. Ayrım gölgesiz.</p>
+  </div>
+  <div class="row cols-3">
+
+    <div>
+      <div class="tag"><span>neutral · static</span><b>ob+1</b></div>
+      <div class="card s-neutral">
+        <div class="split">
+          <div class="c-title">Bu hafta</div>
+          <span class="num">Δ</span>
+        </div>
+        <p class="c-sub">318 yeni oy · 12 yeni anket · 4 kapanan düello</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="tag"><span>raised · static</span><b>ob+2 + ışık</b></div>
+      <div class="card s-raised">
+        <div class="split">
+          <div class="c-title">Kebap masasında son söz</div>
+          <span class="num">1.341</span>
+        </div>
+        <div class="duo">
+          <div class="tile"><div class="n">Adana</div><span class="v">%61</span></div>
+          <div class="tile"><div class="n">İskender</div><span class="v">%39</span></div>
+        </div>
+        <div class="bar"><i style="width:61%"></i></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tag"><span>ticket · result</span><b>signature</b></div>
+      <div class="card s-ticket">
+        <div class="ticket-body">
+          <div class="c-title">Oyun kaydedildi</div>
+          <p class="c-sub">Adana Kebap</p>
+        </div>
+        <hr class="perf">
+        <div class="ticket-stub">
+          <span class="chip moss">onaylandı</span>
+          <span class="num lg">1.341</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="band"></div>
+
+<!-- ============ 02 DAVRANIŞLAR ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">02</span>
+    <h2>Davranışlar</h2>
+    <p>Ember kenar işaretçisi yalnızca interactive, navigation ve selectable'da vardır. Static ve disabled hiçbir koşulda turuncu göstermez.</p>
+    <p>Kartlar taş: hover'da kalkmaz, büyümez; basınca 1px gömülür.</p>
+  </div>
+  <div class="row cols-3">
+
+    <div>
+      <div class="tag"><span>raised · interactive</span><b>hover ↓</b></div>
+      <div class="card s-raised b-interactive" tabindex="0">
+        <div class="c-title">Sıradaki düello</div>
+        <p class="c-sub">Oy vermek için tıkla</p>
+        <div class="duo">
+          <div class="tile"><div class="n">Çiğ köfte</div><span class="v">?</span></div>
+          <div class="tile"><div class="n">Lahmacun</div><span class="v">?</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tag"><span>raised · navigation</span><b>hover ↓</b></div>
+      <div class="card s-raised b-navigation" tabindex="0">
+        <div class="split center">
+          <div>
+            <div class="c-title">Yemek</div>
+            <p class="c-sub">64 anket · 12.480 oy</p>
+          </div>
+          <span class="go">→</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tag"><span>neutral · navigation</span><b>marker var, ışık yok</b></div>
+      <div class="card s-neutral b-navigation" tabindex="0">
+        <div class="split center">
+          <div>
+            <div class="c-title">Tüm yorumlar</div>
+            <p class="c-sub">214 yorum</p>
+          </div>
+          <span class="go">→</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tag"><span>raised · selectable</span><b>hover ↓</b></div>
+      <div class="card s-raised b-selectable" tabindex="0">
+        <div class="split center">
+          <div>
+            <div class="c-title">İskender</div>
+            <p class="c-sub">Bursa ekolü</p>
+          </div>
+          <span class="pick"></span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tag"><span>raised · selectable + selected</span></div>
+      <div class="card s-raised b-selectable is-selected" tabindex="0">
+        <div class="split center">
+          <div>
+            <div class="c-title">Adana Kebap</div>
+            <p class="c-sub">Oyun bu</p>
+          </div>
+          <span class="pick"></span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tag"><span>raised · disabled</span><b>solid kenar</b></div>
+      <div class="card s-raised b-disabled">
+        <div class="split">
+          <div class="c-title">Müzik anketi</div>
+          <span class="num">—</span>
+        </div>
+        <p class="c-sub">Oylama kapandı</p>
+        <div class="bar"><i style="width:22%"></i></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="band"></div>
+
+<!-- ============ 03 KESİKLİ KENAR ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">03</span>
+    <h2>Kesikli kenar</h2>
+    <p>Kesikli kenar "devre dışı" demez; "burada henüz bir şey yok" der. Yalnızca drop zone, boş tier yuvası ve placeholder'da.</p>
+  </div>
+  <div class="row cols-2">
+    <div>
+      <div class="tag"><span>drop zone · boş tier yuvası</span></div>
+      <div class="dropzone">
+        <div><b>S tier boş</b>Öğeyi buraya sürükle</div>
+      </div>
+    </div>
+    <div>
+      <div class="tag"><span>karşılaştır: disabled kart (solid)</span></div>
+      <div class="card s-neutral b-disabled" style="min-height:118px;display:grid;align-content:center">
+        <div class="c-title">Arşivlenen anket</div>
+        <p class="c-sub">Salt okunur — kesikli değil, soluk</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="band"></div>
+
+<!-- ============ 04 TICKET SINIRI ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">04</span>
+    <h2>Ticket sınırı</h2>
+    <p>İmza yüzey; genelleşirse ölür. Sayfa başına tek bilet ailesi.</p>
+    <ul>
+      <li><b>✓</b> ItemCard</li>
+      <li><b>✓</b> oy / sonuç kartı</li>
+      <li><b>✓</b> özel sıralama kartı</li>
+      <li><b>✓</b> "daha fazlası" kartı</li>
+      <li><b>✓</b> sınırlı öne çıkan</li>
+      <li><s>✗ auth ekranı</s></li>
+      <li><s>✗ standart form</s></li>
+      <li><s>✗ profil satırı</s></li>
+      <li><s>✗ bilgi paneli</s></li>
+    </ul>
+  </div>
+  <div class="row cols-2">
+    <div>
+      <div class="tag"><span>ticket · result</span><b>doğru kullanım</b></div>
+      <div class="card s-ticket">
+        <div class="ticket-body">
+          <div class="split">
+            <div class="c-title">Senin sıralaman</div>
+            <span class="num">#7</span>
+          </div>
+          <p class="c-sub">Antalya'nın en iyi 10 çiğ köftecisi</p>
+        </div>
+        <hr class="perf">
+        <div class="ticket-stub">
+          <span class="chip">senin listen</span>
+          <span class="num mo" style="color:var(--moss)">+3 ↑</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="tag"><span>raised · static</span><b>auth burada, bilette değil</b></div>
+      <div class="card s-raised" style="padding:var(--p-spacious)">
+        <div class="c-title">Giriş yap</div>
+        <p class="c-sub">Form kabuğu — spacious padding'in meşru olduğu az yerden biri. Bilet yüzeyi burada kullanılmaz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="band"></div>
+
+<!-- ============ 05 RADIUS ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">05</span>
+    <h2>Radius</h2>
+    <p>Derinlik sinyali: <span style="color:var(--text)">child = parent − 4</span>. Tavan 8px, hiçbir yerde aşılmaz.</p>
+  </div>
+  <div class="row cols-4">
+    <div class="spec"><div class="corner" style="border-radius:0"></div><div class="lb">r-0 <u>/ medya, bar</u></div></div>
+    <div class="spec"><div class="corner" style="border-radius:2px"></div><div class="lb">r-2 <u>/ çip, pick</u></div></div>
+    <div class="spec"><div class="corner" style="border-radius:4px"></div><div class="lb">r-4 <u>/ kart içi</u></div></div>
+    <div class="spec"><div class="corner" style="border-radius:8px"></div><div class="lb">r-8 <u>/ kart dışı</u></div></div>
+  </div>
+</section>
+
+<div class="band"></div>
+
+<!-- ============ 06 PADDING ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">06</span>
+    <h2>Padding</h2>
+    <p>Varsayılan <b style="color:var(--text)">20</b>, liste satırı <b style="color:var(--text)">12</b>. Spacious yalnızca promosyon, önemli sonuç, boş durum ve büyük form kabuğunda.</p>
+  </div>
+  <div class="row cols-3">
+    <div class="spec"><div class="pad" style="padding:12px"><i></i></div><div class="lb">compact 12 <u>/ liste satırı</u></div></div>
+    <div class="spec"><div class="pad" style="padding:20px"><i></i></div><div class="lb">default 20 <u>/ varsayılan</u></div></div>
+    <div class="spec"><div class="pad" style="padding:28px"><i></i></div><div class="lb">spacious 28 <u>/ promosyon · sonuç · boş durum · form kabuğu</u></div></div>
+  </div>
+</section>
+
+<div class="band"></div>
+
+<!-- ============ 07 RENK GÖREVLERİ ============ -->
+<section>
+  <div class="rail">
+    <span class="idx">07</span>
+    <h2>Renk görevleri</h2>
+    <p>Kart başına tek kor. İkinci turuncu varsa biri yanlış renktedir.</p>
+  </div>
+  <div class="roleset">
+    <div class="role">
+      <span class="sw"><i class="dot" style="background:var(--ember)"></i>Kor</span>
+      <span class="use">Eylem ve seçim — marker, seçili kenar, önde giden yüzde</span>
+      <span class="never">asla <s>static kartta, geniş dolguda</s></span>
+    </div>
+    <div class="role">
+      <span class="sw"><i class="dot" style="background:var(--brass)"></i>Brass</span>
+      <span class="use">Nicel değer — sıra, oy sayısı, yüzde, S tier</span>
+      <span class="never">asla <s>tıklanabilir bir şey</s></span>
+    </div>
+    <div class="role">
+      <span class="sw"><i class="dot" style="background:var(--moss)"></i>Moss</span>
+      <span class="use">Durum onayı — oy verdin, doğrulandı, pozitif delta</span>
+      <span class="never">asla <s>dekorasyon, kategori rengi</s></span>
+    </div>
+    <div class="role">
+      <span class="sw"><i class="dot" style="background:var(--line-strong)"></i>Cinder</span>
+      <span class="use">Yapı — kenar, ayraç, muted metin, şerit dokusu</span>
+      <span class="never">yüzeyin %90'ı zaten bu</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>02</b> bölümündeki kartlar canlı — interactive, navigation ve selectable'ın üzerine gelin, selectable'a tıklamayı deneyin (statik föy; seçim görseli sabit).<br>
+  Sınıf sözleşmesi: <b>.card + .s-{surface} + .b-{behavior}</b> · seçim hali: <b>.is-selected</b> yalnızca .b-selectable ile.<br>
+  Renk değerleri ekran görüntüsünden yaklaşık; gerçek palet token'larıyla değiştirilmeli.
+</footer>
+
+</div>
+</body>
+</html>
