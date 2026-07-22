@@ -1,5 +1,5 @@
 // Kart sistemi doğrulama sayfası — yalnızca geliştirme aracı.
-// Faz 7'de silinir veya docs'a taşınır (bkz. docs/design/card-system-plan.md).
+// Faz 7'de silinir veya docs'a taşınır (ilk plan git geçmişinde, 8d673d8 öncesi).
 import { useState } from 'react'
 import Card from '../../components/ui/Card'
 
