@@ -11,6 +11,7 @@ import PollDetail from './pages/PollDetail'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+import DevCards from './pages/dev/Cards'
 
 // Zemin rengi ve dokusu body üzerinde (index.css); main her rota
 // değişiminde "rise" animasyonuyla girer — key bunun için.
@@ -31,6 +32,7 @@ function Shell() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/dev/cards" element={<DevCards />} />
         </Routes>
       </main>
       <Footer />
