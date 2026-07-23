@@ -184,40 +184,7 @@ within the same small component unless there is a clear hierarchy reason.
 
 ---
 
-## 4. Buttons — PROVISIONAL
-
-The final button system has not yet been approved.
-
-Until it is finalized:
-
-- Reuse the existing shared button component.
-- Do not create isolated button styles.
-- Do not introduce new colors.
-- Primary actions use Ember.
-- Secondary actions remain neutral.
-- Destructive actions use Cinder Red.
-- Brass may be used only for ranking or reward actions.
-- Copper may be used for warm secondary detail, not as the default primary action.
-- All buttons require hover, focus, active and disabled states.
-
-Final decisions still required:
-
-- heights
-- horizontal padding
-- border radius
-- typography
-- icon spacing
-- border treatment
-- shadow treatment
-- variant list
-- loading state
-- icon-only variant
-
-When the button system is approved, replace `PROVISIONAL` with `LOCKED` and document exact values and variants.
-
----
-
-## 5. Cards — PROVISIONAL
+## 4. Cards — PROVISIONAL
 
 The final card system has not yet been approved.
 
@@ -251,7 +218,7 @@ When the card system is approved, replace `PROVISIONAL` with `LOCKED` and docume
 
 ---
 
-## 6. Shader background — LOCKED
+## 5. Shader background — LOCKED
 
 The current shader background must remain unchanged unless explicitly requested.
 
@@ -273,7 +240,7 @@ Changes to the shared color system must not alter the shader’s existing appear
 
 ---
 
-## 7. Hero and navbar — LOCKED STRUCTURE
+## 6. Hero and navbar — LOCKED STRUCTURE
 
 The current hero and navbar are structurally approved.
 
@@ -293,7 +260,7 @@ Do not redesign these sections as part of an unrelated component task.
 
 ---
 
-## 8. Interaction states — PROVISIONAL
+## 7. Interaction states — PROVISIONAL
 
 All interactive components should define:
 
@@ -311,7 +278,7 @@ Use semantic project tokens and maintain sufficient contrast against dark surfac
 
 ---
 
-## 9. Pending decisions
+## 8. Pending decisions
 
 The following systems are not yet finalized:
 

@@ -165,7 +165,7 @@ The card system is currently provisional.
 
 Until it is marked as locked in `docs/DESIGN_SYSTEM.md`:
 
-- reuse existing shared card patterns (`card-dark`, `card-ticket`, `card-glow`, `duel-card`)
+- every card goes through the `src/components/ui/Card.jsx` primitive (surface × behavior); see the "Kart Sistemi (Kor & Obsidyen)" section below plus `docs/design/card-system-decisions.md` and `docs/design/exceptions.md`
 - do not create disconnected variants
 - do not introduce new colors
 - follow the closest existing pattern
@@ -220,3 +220,27 @@ At the end of each task, report:
 * Keep designs intended for a single use local to the relevant component.
 * Custom variants must preserve the base button dimensions, typography, accessibility states, and overall brand language.
 * For the button variant list and which existing variants must not be broken, see "Buttons — LOCKED (Damga v1)" above.
+
+## Kart Sistemi (Kor & Obsidyen)
+
+Kaynak: `docs/design/card-system.html` (föy) ve `docs/design/card-system-decisions.md` (kararlar — çelişkide bu kazanır). İstisnalar: `docs/design/exceptions.md` (sisteme çekilmeyen bileşenler ve gerekçeleri). Emin değilsen önce bunları oku, uydurma.
+
+**Sözleşme:** Her kart `src/components/ui/Card.jsx` primitive'inden türer:
+`surface: neutral | raised | ticket` × `behavior: static | interactive | navigation | selectable | disabled`.
+Behavior her zaman açık yazılır. `selected` yalnızca `selectable` ile. Alt bileşenler görünüm kuralı (border, radius, shadow, hover) yazmaz — kural Card.jsx + card.css'te yaşar. Token'lar `src/index.css` @theme'de; yeni token üretilmez.
+
+**İhlal edilemez kurallar:**
+- Radius tavanı 8px. `rounded-xl` ve üzeri kart bağlamında yasak. İç katman = dış − 4.
+- Blur, glow, scale, hover'da yukarı kalkma yasak. Glow yalnızca primary buton + aktif düello kartında.
+- Ember marker (sol 2px şerit) yalnızca interactive / navigation / selectable'da. Static ve disabled sinyal olarak kor göstermez; kor veri olarak (önde giden yüzde, bar) serbest.
+- Kart başına tek kor. Brass tıklanabilir öğede kullanılmaz.
+- Disabled: solid `--color-line` kenar. Kesikli kenar yalnızca dropzone / boş yuva / placeholder.
+- Ticket yüzeyi: yalnızca oy/sonuç kartları ve navigation whitelist'i (ItemCard, "daha fazlası"). Auth, form, profil satırı, bilgi panelinde asla. `ticket+selectable` yasak (uyar + static'e düş). Sayfa başına tek bilet ailesi.
+- Semantik: navigation = react-router Link, interactive/selectable = button, static/disabled = div. İç içe tıklanabilir öğe üretme; içinde buton taşıyan kart static kalır.
+- Zemin: neutral=coal, raised/ticket=coal-light. Raised hover'da zemin DEĞİŞMEZ (sinyal: kenar line→iron + e-1 + marker); yeni ara kademe türetilmez.
+- `--color-cinder` tehlike VE negatif delta/trend içindir (hata, yıkıcı aksiyon, ▼ düşüş). Kenar/yapı/kategori/dekorasyon için asla; yapı rolü line/iron/faded'dadır.
+- `focus-visible`: etkileşimli davranışlarda 2px ember outline, offset 2. `outline:none` yazılmaz.
+- Yeni renk/token üretme; yalnızca src/index.css @theme token'ları. Buton sistemine ve palet hex'lerine dokunma.
+- Hata felsefesi: geçersiz kombinasyon asla render'ı kırmaz — dev'de console.warn/error basar, güvenli davranışa düşer.
+- Sistem dışı bileşenler (DuelWidget, PodiumSpot, "Kendi arenanı kur" banner'ı, TierList satırları, navbar/footer bantları, toast/modal) sisteme çekilmez; listeye yazılmamış istisna üretilmez.
+- card.css @layer components'tadır; tüketici layout utility'leri kart kökünde geçerlidir. Görünüm kuralı yine yalnızca Card'da yazılır.

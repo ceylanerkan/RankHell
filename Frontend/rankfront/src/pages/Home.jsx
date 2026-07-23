@@ -7,6 +7,7 @@ import ItemCard from '../components/ItemCard'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
 import Button, { ArrowIcon } from '../components/ui/button/Button'
+import Card from '../components/ui/Card'
 
 // Kategori emojilerinin yerine geçen Lucide ikon eşlemesi (categoryId bazlı)
 const CATEGORY_ICONS = {
@@ -197,19 +198,23 @@ export default function Home() {
               return (
                 // animate-rise sarmalayıcıda: fill-mode kartın hover kalkışını ezmesin
                 <div key={cat.categoryId} className="animate-rise" style={{ animationDelay: `${i * 60}ms` }}>
-                  <Link
+                  <Card
+                    surface="raised"
+                    behavior="navigation"
                     to="/items"
-                    className="card-ticket group flex h-full flex-col items-center gap-2 p-5 text-center"
+                    className="group flex h-full flex-col"
                   >
-                    {Icon && (
-                      <Icon
-                        className="h-9 w-9 text-copper-soft drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)] transition group-hover:animate-wiggle"
-                        strokeWidth={2}
-                      />
-                    )}
-                    <span className="font-display font-extrabold text-cream">{cat.name}</span>
-                    <span className="text-xs font-semibold text-faded">{cat.tagline}</span>
-                  </Link>
+                    <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
+                      {Icon && (
+                        <Icon
+                          className="h-9 w-9 text-copper-soft drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)] transition group-hover:animate-wiggle"
+                          strokeWidth={2}
+                        />
+                      )}
+                      <span className="font-display font-extrabold text-cream">{cat.name}</span>
+                      <span className="text-xs font-semibold text-faded">{cat.tagline}</span>
+                    </div>
+                  </Card>
                 </div>
               )
             })}
@@ -234,7 +239,7 @@ export default function Home() {
       {/* ── Günün Sıralaması ─────────────────────────────────── */}
       {daily?.entries?.length > 0 && (
         <section className="mb-12">
-          <div className="card-glow p-5 sm:p-6">
+          <Card surface="raised" behavior="static">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
               <span className="badge-day">
                 {dailyDate} • Günün Sıralaması
@@ -266,7 +271,7 @@ export default function Home() {
                 </li>
               ))}
             </ol>
-          </div>
+          </Card>
         </section>
       )}
 
@@ -287,7 +292,7 @@ export default function Home() {
       ) : items.length === 0 ? (
         <EmptyState message="Henüz puanlanmış bir şey yok. İlk oyu sen ver!" />
       ) : (
-        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto overflow-y-hidden px-1 pb-1">
           {items.map((item, i) => (
             <div
               key={item.itemId}
@@ -298,21 +303,27 @@ export default function Home() {
             </div>
           ))}
           {/* Şeridin sonu: devamı için liste sayfasına yönlendiren kart */}
-          <Link
+          <Card
+            surface="ticket"
+            behavior="navigation"
             to="/items"
-            className="card-ticket group flex w-72 shrink-0 snap-start flex-col items-center justify-center gap-3 p-6 text-center sm:w-80"
+            ticketNavWhitelisted
+            className="flex w-72 shrink-0 flex-col snap-start sm:w-80"
           >
-            <span className="font-display text-lg font-extrabold text-cream">
-              Daha fazlası mı lazım?
-            </span>
-            <span className="text-sm font-semibold text-faded">
-              Tüm sıralamayı liste sayfasında keşfet.
-            </span>
-            <span className="mt-1 inline-flex items-center gap-2 rounded-full bg-ember px-5 py-2 font-display font-extrabold text-night-deep shadow-[0_4px_0_var(--color-ember-deep)]">
-              Tümünü gör
-              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-            </span>
-          </Link>
+            <Card.Body className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
+              <span className="font-display text-lg font-extrabold text-cream">
+                Daha fazlası mı lazım?
+              </span>
+              <span className="text-sm font-semibold text-faded">
+                Tüm sıralamayı liste sayfasında keşfet.
+              </span>
+            </Card.Body>
+            <Card.Perf />
+            <Card.Stub className="justify-center gap-2">
+              <span className="font-display font-extrabold text-cream">Tümünü gör</span>
+              <span className="rh-card-go" aria-hidden="true">→</span>
+            </Card.Stub>
+          </Card>
         </div>
       )}
 

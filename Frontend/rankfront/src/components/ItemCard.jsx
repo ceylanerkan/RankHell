@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
 import CategoryBadge from './CategoryBadge'
+import Card from './ui/Card'
 
 // İlk üç sıra pirinç ailesinin açık / ana / koyu derecelerini alır.
 function rankBadgeClass(rank) {
@@ -9,46 +9,57 @@ function rankBadgeClass(rank) {
     return 'bg-brass text-night'
   if (rank === 3)
     return 'bg-brass-deep text-cream'
-  return 'bg-night-deep/80 text-ash backdrop-blur'
+  return 'bg-night-deep text-ash'
 }
 
 // Arcade bileti: koyu metal yüzey; sıralama vurgusu yalnızca rozetlerde yaşar.
 export default function ItemCard({ item, rank }) {
   return (
-    <Link to={`/items/${item.itemId}`} className="card-ticket group flex h-full flex-col p-2.5">
-      <div className="relative aspect-video overflow-hidden rounded-xl">
-        <img
-          src={item.imageUrl}
-          alt={item.name}
-          className="h-full w-full object-cover transition duration-300 group-hover:scale-105 group-hover:saturate-110"
-        />
-        {/* Alt kenar: puan rozetinin okunması için hafif karartma */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-night-deep/70 to-transparent" />
+    <Card
+      surface="ticket"
+      behavior="navigation"
+      to={`/items/${item.itemId}`}
+      ticketNavWhitelisted
+      className="group flex h-full flex-col"
+    >
+      <Card.Body className="flex h-full flex-col">
+        <div className="relative aspect-video overflow-hidden rounded-xl">
+          <img
+            src={item.imageUrl}
+            alt={item.name}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-105 group-hover:saturate-110"
+          />
+        </div>
+
+        <div className="flex flex-1 flex-col pt-3">
+          <h3 className="font-display text-lg font-extrabold leading-snug text-cream">{item.name}</h3>
+          <p className="mt-1 line-clamp-2 text-sm font-medium text-faded">{item.description}</p>
+          <div className="mt-auto flex items-center justify-between pt-3">
+            <div className="flex flex-wrap gap-1.5">
+              {item.categories?.map((c) => (
+                <CategoryBadge key={c.categoryId} name={c.name} tone="night" />
+              ))}
+            </div>
+            <span className="text-xs font-bold tabular-nums text-faded/80">{item.totalVotes} oy</span>
+          </div>
+        </div>
+      </Card.Body>
+
+      <Card.Perf />
+
+      <Card.Stub>
         {rank != null && (
           <span
-            className={`absolute left-2 top-2 inline-flex -rotate-6 items-center gap-1 rounded px-2.5 py-1 font-display text-sm font-extrabold transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110 ${rankBadgeClass(rank)}`}
+            className={`inline-flex items-center gap-1 rounded px-2.5 py-1 font-display text-sm font-extrabold ${rankBadgeClass(rank)}`}
           >
             #{rank}
             {rank === 1 && <span className="animate-flicker text-xs">🔥</span>}
           </span>
         )}
-        <span className="absolute bottom-2 right-2 rounded-full bg-night-deep/75 px-2.5 py-1 text-sm font-bold tabular-nums text-brass-soft backdrop-blur">
+        <span className="ml-auto rounded-full bg-night px-2.5 py-1 text-sm font-bold tabular-nums text-brass-soft">
           ★ {Number(item.globalScore).toFixed(2)}
         </span>
-      </div>
-
-      <div className="flex flex-1 flex-col px-1.5 pb-1 pt-3">
-        <h3 className="font-display text-lg font-extrabold leading-snug text-cream">{item.name}</h3>
-        <p className="mt-1 line-clamp-2 text-sm font-medium text-faded">{item.description}</p>
-        <div className="mt-auto flex items-center justify-between pt-3">
-          <div className="flex flex-wrap gap-1.5">
-            {item.categories?.map((c) => (
-              <CategoryBadge key={c.categoryId} name={c.name} tone="night" />
-            ))}
-          </div>
-          <span className="text-xs font-bold tabular-nums text-faded/80">{item.totalVotes} oy</span>
-        </div>
-      </div>
-    </Link>
+      </Card.Stub>
+    </Card>
   )
 }

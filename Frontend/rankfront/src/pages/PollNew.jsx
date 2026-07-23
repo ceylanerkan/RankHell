@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { getItems, createPoll, getSession } from '../api/client'
 import { Loading, ErrorState } from '../components/States'
 import Button from '../components/ui/button/Button'
+import Card from '../components/ui/Card'
 
 export default function PollNew() {
   const navigate = useNavigate()
@@ -68,24 +69,19 @@ export default function PollNew() {
         {items.map((item) => {
           const active = selectedIds.includes(item.itemId)
           return (
-            <button
-              type="button"
+            <Card
               key={item.itemId}
+              surface="raised"
+              behavior="selectable"
+              selected={active}
               onClick={() => toggle(item.itemId)}
-              className={`flex items-center gap-3 rounded-md border p-2 text-left transition duration-200 ${
-                active
-                  ? 'border-ember/70 bg-ember/10'
-                  : 'border-line/60 bg-coal/70 hover:-translate-y-0.5 hover:border-line'
-              }`}
+              padding="compact"
+              className="flex items-center gap-3"
             >
-              <img
-                src={item.imageUrl}
-                alt=""
-                className={`h-10 w-14 rounded object-cover transition ${active ? '' : 'saturate-[.8]'}`}
-              />
+              <img src={item.imageUrl} alt="" className="h-10 w-14 rounded object-cover" />
               <span className="flex-1 text-sm text-cream">{item.name}</span>
-              {active && <span className="pr-1 text-moss-soft">✓</span>}
-            </button>
+              <span className="rh-card-pick" aria-hidden="true" />
+            </Card>
           )
         })}
       </div>

@@ -1,0 +1,262 @@
+/**
+ * RankHell — Kart Sistemi v1 · card.css
+ * ----------------------------------------------------------------
+ * TEK KAPI: sitedeki her kart Card.jsx + bu dosyadan geçer.
+ * Görünüm kuralları yalnızca burada yaşar — alt bileşenler kart
+ * görünümü yazmaz (bkz. docs/design/card-system-decisions.md).
+ *
+ * surface: neutral | raised | ticket
+ * behavior: static | interactive | navigation | selectable | disabled
+ * padding: compact(12) | default(20) | spacious(28)
+ *
+ * KARAR 1 (decisions.md): yapı rolü line/iron/faded'dedir — cinder
+ * bu dosyada asla kullanılmaz (cinder = yalnızca danger).
+ * KARAR 2: raised/ticket hover'da zemin SABİT kalır; sinyal kenar
+ * (line→iron) + e-1 gölge + ember marker'dan gelir (palette'te ob-3
+ * kademesi yok, yeni renk türetilmez).
+ */
+
+.rh-card {
+  --rh-e1: 0 1px 0 rgb(0 0 0 / 0.65);
+  --rh-lift: inset 0 1px 0 rgb(255 255 255 / 0.05);
+
+  position: relative;
+  display: block;
+  width: 100%;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-coal);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  appearance: none;
+  transition:
+    background 0.14s ease,
+    border-color 0.14s ease,
+    box-shadow 0.14s ease,
+    transform 0.08s ease;
+}
+
+/* ---------- padding ---------- */
+.rh-card--p-compact {
+  padding: 12px;
+}
+.rh-card--p-default {
+  padding: 20px;
+}
+.rh-card--p-spacious {
+  padding: 28px;
+}
+
+/* ---------- surface ---------- */
+.rh-card--s-neutral {
+  background: var(--color-coal);
+}
+
+.rh-card--s-raised {
+  background: var(--color-coal-light);
+  box-shadow: var(--rh-lift);
+}
+
+.rh-card--s-ticket {
+  background: var(--color-coal-light);
+  border: 0;
+  padding: 0;
+  box-shadow:
+    inset 0 0 0 1px var(--color-line),
+    var(--rh-lift);
+  -webkit-mask:
+    radial-gradient(circle 9px at 0 62%, transparent 9px, #000 9.6px),
+    radial-gradient(circle 9px at 100% 62%, transparent 9px, #000 9.6px);
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle 9px at 0 62%, transparent 9px, #000 9.6px),
+    radial-gradient(circle 9px at 100% 62%, transparent 9px, #000 9.6px);
+  mask-composite: intersect;
+}
+
+/* ---------- ember marker (yalnızca 3 etkileşimli davranış) ---------- */
+.rh-card--b-interactive::before,
+.rh-card--b-navigation::before,
+.rh-card--b-selectable::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--color-ember);
+  border-radius: 8px 0 0 8px;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.14s ease;
+  pointer-events: none;
+}
+
+/* ---------- interactive ---------- */
+.rh-card--b-interactive {
+  cursor: pointer;
+}
+.rh-card--b-interactive:hover {
+  border-color: var(--color-iron);
+}
+.rh-card--b-interactive:hover::before {
+  transform: scaleY(1);
+}
+.rh-card--s-neutral.rh-card--b-interactive:hover {
+  background: var(--color-coal-light);
+}
+.rh-card--s-raised.rh-card--b-interactive:hover {
+  box-shadow: var(--rh-e1), var(--rh-lift);
+}
+.rh-card--b-interactive:active {
+  background: var(--color-coal);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ---------- navigation ---------- */
+.rh-card--b-navigation {
+  cursor: pointer;
+}
+.rh-card--b-navigation:hover {
+  border-color: var(--color-iron);
+}
+.rh-card--b-navigation:hover::before {
+  transform: scaleY(1);
+}
+.rh-card--s-neutral.rh-card--b-navigation:hover {
+  background: var(--color-coal-light);
+}
+.rh-card--s-raised.rh-card--b-navigation:hover {
+  box-shadow: var(--rh-e1), var(--rh-lift);
+}
+.rh-card--s-ticket.rh-card--b-navigation:hover {
+  box-shadow:
+    inset 0 0 0 1px var(--color-iron),
+    var(--rh-e1),
+    var(--rh-lift);
+}
+.rh-card--b-navigation:active {
+  background: var(--color-coal);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+.rh-card-go {
+  display: inline-block;
+  color: var(--color-faded);
+  transition:
+    color 0.14s ease,
+    transform 0.14s ease;
+}
+.rh-card--b-navigation:hover .rh-card-go {
+  color: var(--color-ember);
+  transform: translateX(2px);
+}
+
+/* ---------- selectable (yalnızca raised) ---------- */
+.rh-card--b-selectable {
+  cursor: pointer;
+}
+.rh-card--b-selectable:hover {
+  border-color: var(--color-iron);
+}
+.rh-card--b-selectable:hover::before {
+  transform: scaleY(1);
+}
+.rh-card--s-raised.rh-card--b-selectable:hover {
+  box-shadow: var(--rh-e1), var(--rh-lift);
+}
+.rh-card--b-selectable:active {
+  transform: translateY(1px);
+}
+.rh-card-pick {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  flex: none;
+  border-radius: 2px;
+  border: 1px solid var(--color-iron);
+  transition:
+    border-color 0.14s ease,
+    background 0.14s ease;
+}
+.rh-card--b-selectable.is-selected {
+  border-color: color-mix(in srgb, var(--color-ember) 42%, transparent);
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--color-ember) 4%, transparent),
+    color-mix(in srgb, var(--color-ember) 4%, transparent)
+  );
+}
+.rh-card--b-selectable.is-selected::before {
+  transform: scaleY(1);
+}
+.rh-card--b-selectable.is-selected .rh-card-pick {
+  background: var(--color-ember);
+  border-color: var(--color-ember);
+}
+
+/* ---------- disabled ---------- */
+.rh-card--b-disabled {
+  cursor: not-allowed;
+  border-color: var(--color-line);
+  background: var(--color-coal);
+  box-shadow: none;
+}
+.rh-card--s-raised.rh-card--b-disabled,
+.rh-card--s-ticket.rh-card--b-disabled {
+  background: var(--color-coal-light);
+  box-shadow: var(--rh-lift);
+}
+.rh-card--b-disabled::before {
+  display: none;
+}
+.rh-card--b-disabled:hover {
+  border-color: var(--color-line);
+}
+.rh-card--b-disabled:active {
+  transform: none;
+}
+.rh-card--b-disabled,
+.rh-card--b-disabled .rh-card-go {
+  color: var(--color-faded);
+}
+.rh-card--b-disabled img,
+.rh-card--b-disabled .rh-card-media {
+  filter: grayscale(1);
+}
+
+/* ---------- focus-visible (yalnızca 3 etkileşimli davranış) ---------- */
+.rh-card--b-interactive:focus-visible,
+.rh-card--b-navigation:focus-visible,
+.rh-card--b-selectable:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 2px;
+}
+
+/* ---------- ticket alt parçaları ---------- */
+.rh-card-body {
+  padding: 20px;
+}
+.rh-card-perf {
+  height: 1px;
+  margin: 0;
+  border: 0;
+  border-top: 1px dashed var(--color-iron);
+}
+.rh-card-stub {
+  padding: 14px 20px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-card,
+  .rh-card::before,
+  .rh-card-go {
+    transition: none !important;
+  }
+}

@@ -7,7 +7,7 @@ const TIERS = [
   { id: 'B', tagline: 'İyi', badge: 'bg-copper-deep text-cream', row: 'ring-1 ring-copper/30' },
   { id: 'C', tagline: 'İdare eder', badge: 'bg-ash-deep text-cream', row: 'ring-1 ring-ash/30' },
   { id: 'D', tagline: 'Zayıf', badge: 'bg-iron text-cream', row: 'ring-1 ring-ash-deep/30' },
-  { id: 'F', tagline: 'Felaket', badge: 'bg-cinder-deep text-cream', row: 'ring-1 ring-cinder/30' },
+  { id: 'F', tagline: 'Felaket', badge: 'bg-night-deep text-faded ring-1 ring-iron/30', row: 'ring-1 ring-iron/30' },
 ]
 
 const SLOTS = 5 // satır başına boş yuva sayısı
