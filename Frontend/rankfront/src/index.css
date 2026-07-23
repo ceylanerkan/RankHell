@@ -333,6 +333,200 @@
     @apply flex aspect-square w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-line bg-night-deep/50 text-lg font-bold text-faded/50 transition hover:border-ash/60 hover:text-ash sm:w-20;
   }
 
+  /* ── Hukuki metin modalı (LegalModal.jsx) ───────────────────────
+     Tasarım: coal-light yüzey · line kenarlığı · night-deep backdrop.
+     Glow, blur, scale, dış gölge yok — tasarım sistemine aykırı olur.
+     Mobil: tam ekran; masaüstü: maksimum 640px genişlik, ekranın %90'ı. */
+  .legal-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgb(11 11 13 / 0.82);
+    animation: rise 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .legal-modal-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 640px;
+    max-height: 90dvh;
+    border-radius: 8px;
+    border: 1px solid var(--color-line);
+    background: var(--color-coal-light);
+    animation: rise 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+    overflow: hidden;
+  }
+
+  .legal-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--color-line);
+    flex-shrink: 0;
+  }
+
+  .legal-modal-title {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-cream);
+    line-height: 1.4;
+  }
+
+  .legal-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-faded);
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+  }
+  .legal-modal-close:hover {
+    color: var(--color-cream);
+    border-color: var(--color-iron);
+    background: var(--color-coal);
+  }
+  .legal-modal-close:focus-visible {
+    outline: 2px solid var(--color-ember-soft);
+    outline-offset: 2px;
+  }
+
+  .legal-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-iron) transparent;
+    color: var(--color-faded);
+    font-size: 0.875rem;
+    line-height: 1.75;
+  }
+  .legal-modal-body h3 {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin-top: 1.25rem;
+    margin-bottom: 0.375rem;
+  }
+  .legal-modal-body h3:first-child {
+    margin-top: 0;
+  }
+  .legal-modal-body p {
+    margin-bottom: 0.625rem;
+  }
+  .legal-modal-body ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin-bottom: 0.625rem;
+  }
+  .legal-modal-body li {
+    margin-bottom: 0.25rem;
+  }
+  .legal-modal-body strong {
+    color: var(--color-cream);
+    font-weight: 600;
+  }
+
+  .legal-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid var(--color-line);
+    flex-shrink: 0;
+  }
+
+  /* ── Kayıt formu onay kutucukları ────────────────────────────── */
+  .register-consent-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.625rem 0;
+  }
+
+  .register-consent-checkbox {
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    border-radius: 4px;
+    border: 1.5px solid var(--color-line);
+    background: var(--color-night-deep);
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease;
+    position: relative;
+  }
+  .register-consent-checkbox:hover {
+    border-color: var(--color-ash);
+  }
+  .register-consent-checkbox:checked {
+    background: var(--color-ember);
+    border-color: var(--color-ember);
+  }
+  .register-consent-checkbox:checked::after {
+    content: "";
+    display: block;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--color-cream);
+    border-top: none;
+    border-left: none;
+    transform: translateY(-1px) rotate(45deg);
+  }
+  .register-consent-checkbox:focus-visible {
+    outline: 2px solid var(--color-ember-soft);
+    outline-offset: 2px;
+  }
+
+  .register-consent-label {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-faded);
+  }
+
+  .register-consent-trigger {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 700;
+    color: var(--color-ember-soft);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+  .register-consent-trigger:hover {
+    color: var(--color-flame);
+  }
+  .register-consent-trigger:focus-visible {
+    outline: 2px solid var(--color-ember-soft);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   /* Navbar: altına taşan yumuşak gölge geçişi. ::after navbar hattının
      32px altına düşer ve şeffaflaşır — sert bir kesme yerine yumuşak
      ayrım. Header'da overflow-hidden YOK olmalı, aksi halde ::after kırpılır. */
