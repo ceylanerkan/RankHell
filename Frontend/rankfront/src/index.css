@@ -533,6 +533,21 @@
     border-radius: 2px;
   }
 
+  /* ── Footer: iletişim e-posta linki ───────────────────────────── */
+  .footer-contact-email {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ember-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 150ms ease;
+  }
+  .footer-contact-email:hover {
+    color: var(--color-flame);
+  }
+
   /* Navbar: altına taşan yumuşak gölge geçişi. ::after navbar hattının
      32px altına düşer ve şeffaflaşır — sert bir kesme yerine yumuşak
      ayrım. Header'da overflow-hidden YOK olmalı, aksi halde ::after kırpılır. */

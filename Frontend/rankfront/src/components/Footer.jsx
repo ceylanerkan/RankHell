@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Flame from './Flame'
 import Button from './ui/button/Button'
+import LegalModal from './ui/LegalModal'
+import { TermsContent, PrivacyContent, TERMS_TITLE, PRIVACY_TITLE } from '../lib/legalContent'
 
 // Sosyal medya ikonları — şimdilik hedefsiz butonlar, hesaplar açılınca href verilecek.
 const socials = [
@@ -26,155 +29,201 @@ const socials = [
   },
 ]
 
-// Bağlantı sütunları. to olanlar gerçek rotalar; olmayanlar şimdilik boş butonlar.
-const columns = [
-  {
-    title: 'Keşfet',
-    icon: (
-      <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.24 6.35l-2.12 5.66a1 1 0 01-.59.59l-5.66 2.12 2.12-5.66a1 1 0 01.59-.59zM12 13a1 1 0 110-2 1 1 0 010 2z" />
-    ),
-    links: [
-      { label: 'Tüm Öğeler', to: '/items' },
-      { label: 'Tier Listesi', to: '/tiers' },
-      { label: 'Trend' },
-      { label: 'Kategoriler' },
-      { label: 'En Yüksek Puanlılar' },
-    ],
-  },
-  {
-    title: 'Anketler',
-    icon: (
-      <path d="M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm3 12h2v-5H7zm4 0h2V8h-2zm4 0h2v-3h-2z" />
-    ),
-    links: [
-      { label: 'Tüm Anketler', to: '/polls' },
-      { label: 'Anket Oluştur', to: '/polls/new' },
-      { label: 'Popüler' },
-      { label: 'Nasıl Oynanır?' },
-    ],
-  },
-  {
-    title: 'Topluluk',
-    icon: (
-      <path d="M16 11a3 3 0 10-3-3 3 3 0 003 3zm-8 0a3 3 0 10-3-3 3 3 0 003 3zm0 2c-2.33 0-7 1.17-7 3.5V19h8v-2.5a4.36 4.36 0 012.06-3.42A11.9 11.9 0 008 13zm8 0c-.29 0-.62.02-.97.05A5.44 5.44 0 0117 16.5V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
-    ),
-    links: [
-      { label: 'Profil', to: '/profile' },
-      { label: 'Leaderboard' },
-      { label: 'Discord Sunucusu' },
-    ],
-  },
-  {
-    title: 'Bilgi',
-    icon: (
-      <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2zm0-8h-2V7h2z" />
-    ),
-    links: [
-      { label: 'Gizlilik Politikası' },
-      { label: 'Kullanım Koşulları' },
-      { label: 'İletişim' },
-    ],
-  },
-]
+const MODAL_TERMS = 'terms'
+const MODAL_PRIVACY = 'privacy'
+const MODAL_CONTACT = 'contact'
 
 const linkStyle =
   'text-left text-faded transition hover:text-copper-soft'
 
 export default function Footer() {
+  const [openModal, setOpenModal] = useState(null)
+
+  // Bağlantı sütunları. to olanlar gerçek rotalar; olmayanlar şimdilik boş butonlar.
+  const columns = [
+    {
+      title: 'Keşfet',
+      icon: (
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.24 6.35l-2.12 5.66a1 1 0 01-.59.59l-5.66 2.12 2.12-5.66a1 1 0 01.59-.59zM12 13a1 1 0 110-2 1 1 0 010 2z" />
+      ),
+      links: [
+        { label: 'Tüm Öğeler', to: '/items' },
+        { label: 'Tier Listesi', to: '/tiers' },
+        { label: 'Trend' },
+        { label: 'Kategoriler' },
+        { label: 'En Yüksek Puanlılar' },
+      ],
+    },
+    {
+      title: 'Anketler',
+      icon: (
+        <path d="M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm3 12h2v-5H7zm4 0h2V8h-2zm4 0h2v-3h-2z" />
+      ),
+      links: [
+        { label: 'Tüm Anketler', to: '/polls' },
+        { label: 'Anket Oluştur', to: '/polls/new' },
+        { label: 'Popüler' },
+        { label: 'Nasıl Oynanır?' },
+      ],
+    },
+    {
+      title: 'Topluluk',
+      icon: (
+        <path d="M16 11a3 3 0 10-3-3 3 3 0 003 3zm-8 0a3 3 0 10-3-3 3 3 0 003 3zm0 2c-2.33 0-7 1.17-7 3.5V19h8v-2.5a4.36 4.36 0 012.06-3.42A11.9 11.9 0 008 13zm8 0c-.29 0-.62.02-.97.05A5.44 5.44 0 0117 16.5V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+      ),
+      links: [
+        { label: 'Profil', to: '/profile' },
+        { label: 'Leaderboard' },
+        { label: 'Discord Sunucusu' },
+      ],
+    },
+    {
+      title: 'Bilgi',
+      icon: (
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2zm0-8h-2V7h2z" />
+      ),
+      links: [
+        { label: 'Gizlilik Politikası', onClick: () => setOpenModal(MODAL_PRIVACY) },
+        { label: 'Kullanım Koşulları', onClick: () => setOpenModal(MODAL_TERMS) },
+        { label: 'İletişim', onClick: () => setOpenModal(MODAL_CONTACT) },
+      ],
+    },
+  ]
+
   return (
-    <footer className="mt-16 border-t border-line/60 bg-night-deep/90 backdrop-blur">
-      {/* Üst kenar: kömür üstünde kontrollü bakır detay şeridi */}
-      <div className="h-1 bg-[repeating-linear-gradient(-45deg,var(--color-copper)_0_14px,var(--color-coal)_14px_28px)]" />
+    <>
+      <footer className="mt-16 border-t border-line/60 bg-night-deep/90 backdrop-blur">
+        {/* Üst kenar: kömür üstünde kontrollü bakır detay şeridi */}
+        <div className="h-1 bg-[repeating-linear-gradient(-45deg,var(--color-copper)_0_14px,var(--color-coal)_14px_28px)]" />
 
-      <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-12 lg:grid-cols-[1.2fr_2fr]">
-        {/* Sol: marka, tanıtım, sosyal medya, dil */}
-        <div className="flex flex-col gap-5">
-          <Link to="/" className="flex items-center gap-2">
-            <Flame className="h-8 w-8" />
-            <span className="font-display text-3xl font-extrabold tracking-tight text-cream">
-              Rank<span className="text-fire">Hell</span>
-            </span>
-          </Link>
+        <div className="mx-auto grid max-w-[1600px] gap-12 px-6 py-12 lg:grid-cols-[1.2fr_2fr]">
+          {/* Sol: marka, tanıtım, sosyal medya, dil */}
+          <div className="flex flex-col gap-5">
+            <Link to="/" className="flex items-center gap-2">
+              <Flame className="h-8 w-8" />
+              <span className="font-display text-3xl font-extrabold tracking-tight text-cream">
+                Rank<span className="text-fire">Hell</span>
+              </span>
+            </Link>
 
-          <p className="max-w-xs text-sm leading-relaxed text-faded">
-            RankHell, acımasız sıralamaların dünyasıdır. Puanla, oyla, tartış —
-            burada her şey cehennem sırasına girer!
-          </p>
+            <p className="max-w-xs text-sm leading-relaxed text-faded">
+              RankHell, acımasız sıralamaların dünyasıdır. Puanla, oyla, tartış —
+              burada her şey cehennem sırasına girer!
+            </p>
 
-          <div className="flex flex-wrap gap-2">
-            {socials.map((s) => (
-              <Button
-                key={s.label}
-                variant="icon-line"
-                size="sm"
-                aria-label={s.label}
-              >
-                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
-                  <path d={s.path} />
-                </svg>
+            <div className="flex flex-wrap gap-2">
+              {socials.map((s) => (
+                <Button
+                  key={s.label}
+                  variant="icon-line"
+                  size="sm"
+                  aria-label={s.label}
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
+                    <path d={s.path} />
+                  </svg>
+                </Button>
+              ))}
+            </div>
+
+            <div>
+              <p className="mb-2 text-sm text-faded/70">Diller</p>
+              <Button variant="ghost" size="sm">
+                TR <span className="font-normal text-faded/70">(Türkçe)</span>
               </Button>
-            ))}
+            </div>
           </div>
 
-          <div>
-            <p className="mb-2 text-sm text-faded/70">Diller</p>
-            <Button variant="ghost" size="sm">
-              TR <span className="font-normal text-faded/70">(Türkçe)</span>
+          {/* Sağ: bağlantı sütunları */}
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {columns.map((col) => (
+              <div key={col.title}>
+                <div className="mb-4 flex items-center gap-2.5">
+                  <span className="rounded-lg bg-coal p-2 text-copper-soft ring-1 ring-line">
+                    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+                      {col.icon}
+                    </svg>
+                  </span>
+                  <h3 className="font-display text-base font-bold uppercase tracking-wide text-cream">
+                    {col.title}
+                  </h3>
+                </div>
+                <ul className="space-y-2.5 text-sm">
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      {link.to ? (
+                        <Link to={link.to} className={linkStyle}>
+                          {link.label}
+                        </Link>
+                      ) : link.onClick ? (
+                        <button type="button" className={linkStyle} onClick={link.onClick}>
+                          {link.label}
+                        </button>
+                      ) : (
+                        <button type="button" className={linkStyle}>
+                          {link.label}
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Alt bar: telif + yukarı çık */}
+        <div className="border-t border-line/40">
+          <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-6 py-5">
+            <p className="text-sm text-faded/70">
+              © {new Date().getFullYear()} · RankHell · Tüm hakları saklıdır
+            </p>
+            <Button
+              variant="icon"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              aria-label="Yukarı çık"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+                <path d="M12 5l-8 8 1.41 1.41L11 8.83V20h2V8.83l5.59 5.58L20 13z" />
+              </svg>
             </Button>
           </div>
         </div>
+      </footer>
 
-        {/* Sağ: bağlantı sütunları */}
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {columns.map((col) => (
-            <div key={col.title}>
-              <div className="mb-4 flex items-center gap-2.5">
-                <span className="rounded-lg bg-coal p-2 text-copper-soft ring-1 ring-line">
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
-                    {col.icon}
-                  </svg>
-                </span>
-                <h3 className="font-display text-base font-bold uppercase tracking-wide text-cream">
-                  {col.title}
-                </h3>
-              </div>
-              <ul className="space-y-2.5 text-sm">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    {link.to ? (
-                      <Link to={link.to} className={linkStyle}>
-                        {link.label}
-                      </Link>
-                    ) : (
-                      <button type="button" className={linkStyle}>
-                        {link.label}
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* ── Kullanım Koşulları Modalı ── */}
+      <LegalModal
+        open={openModal === MODAL_TERMS}
+        onClose={() => setOpenModal(null)}
+        title={TERMS_TITLE}
+      >
+        <TermsContent />
+      </LegalModal>
 
-      {/* Alt bar: telif + yukarı çık */}
-      <div className="border-t border-line/40">
-        <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-6 py-5">
-          <p className="text-sm text-faded/70">
-            © {new Date().getFullYear()} · RankHell · Tüm hakları saklıdır
-          </p>
-          <Button
-            variant="icon"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            aria-label="Yukarı çık"
+      {/* ── Gizlilik Politikası Modalı ── */}
+      <LegalModal
+        open={openModal === MODAL_PRIVACY}
+        onClose={() => setOpenModal(null)}
+        title={PRIVACY_TITLE}
+      >
+        <PrivacyContent />
+      </LegalModal>
+      {/* ── İletişim Modalı ── */}
+      <LegalModal
+        open={openModal === MODAL_CONTACT}
+        onClose={() => setOpenModal(null)}
+        title="İletişim"
+      >
+        <p>Bize ulaşmak için aşağıdaki e-posta adresini kullanabilirsiniz:</p>
+        <p>
+          <a
+            href="mailto:support@rankhell.com"
+            className="footer-contact-email"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
-              <path d="M12 5l-8 8 1.41 1.41L11 8.83V20h2V8.83l5.59 5.58L20 13z" />
-            </svg>
-          </Button>
-        </div>
-      </div>
-    </footer>
+            support@rankhell.com
+          </a>
+        </p>
+      </LegalModal>
+    </>
   )
 }
