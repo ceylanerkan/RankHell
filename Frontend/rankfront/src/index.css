@@ -500,12 +500,15 @@
   }
 
   .register-consent-label {
+    flex: 1;
     font-size: 0.8125rem;
     line-height: 1.5;
     color: var(--color-faded);
+    text-align: left;
   }
 
   .register-consent-trigger {
+    display: inline;
     background: none;
     border: none;
     padding: 0;
@@ -516,6 +519,9 @@
     color: var(--color-ember-soft);
     text-decoration: underline;
     text-underline-offset: 2px;
+    text-align: left;
+    white-space: normal;
+    word-break: break-word;
     transition: color 150ms ease;
   }
   .register-consent-trigger:hover {

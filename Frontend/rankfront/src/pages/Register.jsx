@@ -91,14 +91,13 @@ export default function Register() {
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
               />
               <label htmlFor="consent-terms" className="register-consent-label">
-                <button
-                  type="button"
+                <span
+                  role="button"
+                  tabIndex={0}
                   className="register-consent-trigger"
                   onClick={() => setOpenModal(MODAL_TERMS)}
-                >
-                  KULLANIM KOŞULLARI VE ÜYELİK SÖZLEŞMESİ
-                </button>
-                'ni okudum ve kabul ediyorum.
+                  onKeyDown={(e) => e.key === 'Enter' && setOpenModal(MODAL_TERMS)}
+                >KULLANIM KOŞULLARI VE ÜYELİK SÖZLEŞMESİ</span>{' '}'ni okudum ve kabul ediyorum.
               </label>
             </div>
 
@@ -112,14 +111,13 @@ export default function Register() {
                 onChange={(e) => setAcceptedPrivacy(e.target.checked)}
               />
               <label htmlFor="consent-privacy" className="register-consent-label">
-                <button
-                  type="button"
+                <span
+                  role="button"
+                  tabIndex={0}
                   className="register-consent-trigger"
                   onClick={() => setOpenModal(MODAL_PRIVACY)}
-                >
-                  KİŞİSEL VERİLERİN KORUNMASI VE GİZLİLİK POLİTİKASI (KVKK AYDINLATMA METNİ)
-                </button>
-                'ni okudum ve onaylıyorum.
+                  onKeyDown={(e) => e.key === 'Enter' && setOpenModal(MODAL_PRIVACY)}
+                >KİŞİSEL VERİLERİN KORUNMASI VE GİZLİLİK POLİTİKASI (KVKK AYDINLATMA METNİ)</span>{' '}'ni okudum ve onaylıyorum.
               </label>
             </div>
           </div>
