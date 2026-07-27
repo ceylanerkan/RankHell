@@ -201,7 +201,7 @@ export default function Home() {
                   <Card
                     surface="raised"
                     behavior="navigation"
-                    to="/items"
+                    to={`/items?category=${cat.categoryId}`}
                     className="group flex h-full flex-col"
                   >
                     <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">

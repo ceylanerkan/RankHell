@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { getItems, getCategories } from '../api/client'
 import ItemCard from '../components/ItemCard'
 import { Loading, ErrorState, EmptyState } from '../components/States'
@@ -6,8 +7,17 @@ import { Loading, ErrorState, EmptyState } from '../components/States'
 export default function Items() {
   const [items, setItems] = useState(null)
   const [categories, setCategories] = useState([])
-  const [selected, setSelected] = useState(null)
+  const [searchParams, setSearchParams] = useSearchParams()
   const [error, setError] = useState(null)
+
+  // Seçili kategori URL'den türetilir (kartlar ?category=<id> ile buraya yönlendirir).
+  const categoryParam = searchParams.get('category')
+  const selected = categoryParam ? Number(categoryParam) : null
+
+  // Filtre değişimini URL'e yaz: null → param'ı sil (Tümü), aksi halde ?category=<id>.
+  const selectCategory = (categoryId) => {
+    setSearchParams(categoryId == null ? {} : { category: String(categoryId) })
+  }
 
   useEffect(() => {
     getCategories().then(setCategories).catch(() => {})
@@ -30,14 +40,14 @@ export default function Items() {
       <h1 className="title-copper mb-4 font-display text-3xl font-extrabold text-cream">Keşfet</h1>
 
       <div className="mb-6 flex flex-wrap gap-2">
-        <button className={filterClass(selected === null)} onClick={() => setSelected(null)}>
+        <button className={filterClass(selected === null)} onClick={() => selectCategory(null)}>
           Tümü
         </button>
         {categories.map((c) => (
           <button
             key={c.categoryId}
             className={filterClass(selected === c.categoryId)}
-            onClick={() => setSelected(c.categoryId)}
+            onClick={() => selectCategory(c.categoryId)}
           >
             {c.name}
           </button>

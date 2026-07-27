@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -18,6 +19,15 @@ import DevCards from './pages/dev/Cards'
 // değişiminde "rise" animasyonuyla girer — key bunun için.
 function Shell() {
   const location = useLocation()
+  const navigationType = useNavigationType()
+  // Rota değişiminde sayfayı başa al: SPA geçişlerinde tarayıcı scroll
+  // pozisyonunu koruduğu için (ör. footer'dan tıklayınca) yeni sayfa aksi
+  // halde en altta açılıyordu. Geri/ileri (POP) hariç: orada kullanıcının
+  // önceki scroll pozisyonu korunsun diye başa almıyoruz.
+  useEffect(() => {
+    if (navigationType === 'POP') return
+    window.scrollTo(0, 0)
+  }, [location.pathname, navigationType])
   return (
     <div className="flex min-h-screen flex-col overflow-x-clip">
       <Navbar />
