@@ -30,6 +30,6 @@ public class ItemVote {
     @Column(name = "vote_value", nullable = false)
     private Byte voteValue;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @Column(name = "created_at", updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 }

@@ -22,4 +22,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
     @Query("SELECT ic.item FROM ItemCategory ic WHERE ic.category.categoryId = :categoryId")
     Page<Item> findByCategoryId(@Param("categoryId") Integer categoryId, Pageable pageable);
+
+    @Query("SELECT it.item FROM ItemTag it WHERE it.tag.tagId = :tagId")
+    Page<Item> findByTagId(@Param("tagId") Integer tagId, Pageable pageable);
 }
