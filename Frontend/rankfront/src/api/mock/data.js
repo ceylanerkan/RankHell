@@ -310,25 +310,74 @@ export const ratings = [
   { ratingId: 2, userId: 1, itemId: 4, score: 4, createdAt: '2026-06-12T19:05:00' },
 ]
 
+// Anket: bir soru + oynanabilir seçenek havuzu. Detay sayfası (künye) bu
+// alanları okur; oyun akışı henüz yok, o yüzden winners boş bırakıldı.
+// modes: src/lib/pollModes.js'teki anahtarlar — anketin hangi modlarda
+// oynanabildiğini söyler, sıra bilgisi taşımaz.
+// coverUrl null olabilir: kapak yoksa PollHeader nötr yer tutucu çizer.
+// globalScore items ile aynı 5'lik skalada — sitede tek puan dili var.
 export const polls = [
   {
     pollId: 1,
     creator: { userId: 2, username: 'erkan' },
     title: 'Gelmiş geçmiş en iyi film hangisi?',
+    description: 'Listeler kavga çıkarır. Bu sefer sırayı sen kur — tek bir film tepede kalacak.',
+    coverUrl: '/items/godfather.jpg',
+    category: { categoryId: 1, name: 'Film' },
+    featured: true,
+    modes: ['bracket', 'duel', 'blind', 'tier'],
+    globalScore: 4.2,
+    totalRatings: 7,
+    playCount: 819,
     createdAt: '2026-06-15T11:00:00',
     pollItems: [
       { id: 1, itemId: 1 },
       { id: 2, itemId: 6 },
     ],
+    comments: [
+      {
+        commentId: 1,
+        user: { userId: 1, username: 'batuhan' },
+        body: 'Turnuva ağacıyla oynadım, final eşleşmesi kalp kırdı. Yine de doğru sonuç çıktı.',
+        score: 5,
+        createdAt: '2026-07-26T20:14:00',
+      },
+      {
+        commentId: 2,
+        user: { userId: 2, username: 'erkan' },
+        body: 'Kör sıralama modu bu ankette çok daha zevkli, isim görmeden seçmek zorlaştırıyor.',
+        score: 4,
+        createdAt: '2026-07-28T09:02:00',
+      },
+    ],
+    winners: [],
   },
   {
     pollId: 2,
     creator: { userId: 1, username: 'arda' },
     title: 'Hangi yemek Türkiye\'nin en iyisi?',
+    description: 'Masada son söz kimin? Sofranın tartışmasız birincisini seçmek sandığından zor.',
+    coverUrl: '/items/iskender.jpg',
+    category: { categoryId: 4, name: 'Yemek' },
+    featured: false,
+    modes: ['duel', 'tier'],
+    globalScore: 3.6,
+    totalRatings: 12,
+    playCount: 2214,
     createdAt: '2026-06-20T16:45:00',
     pollItems: [
       { id: 3, itemId: 4 },
       { id: 4, itemId: 8 },
     ],
+    comments: [
+      {
+        commentId: 3,
+        user: { userId: 2, username: 'erkan' },
+        body: 'İskender ilk turda elenirse ankette bir sorun var demektir.',
+        score: 3,
+        createdAt: '2026-07-30T13:40:00',
+      },
+    ],
+    winners: [],
   },
 ]
