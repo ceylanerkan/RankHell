@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom'
+import { ChromeContext } from './lib/chrome'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -29,9 +30,17 @@ function Shell() {
     if (navigationType === 'POP') return
     window.scrollTo(0, 0)
   }, [location.pathname, navigationType])
+
+  // Oyun oynanırken navbar gizlenir: oyun ekranı kendi bandını tepeye koyar.
+  // Değer yalnızca setter taşır (tüketici okumaz), bu yüzden kimliği sabit —
+  // navHidden değişimi context tüketicilerini yeniden render etmez.
+  const [navHidden, setNavHidden] = useState(false)
+  const chrome = useMemo(() => ({ setNavHidden }), [])
+
   return (
+    <ChromeContext.Provider value={chrome}>
     <div className="flex min-h-screen flex-col overflow-x-clip">
-      <Navbar />
+      {!navHidden && <Navbar />}
       <main key={location.pathname} className="mx-auto w-full max-w-[1600px] flex-1 animate-rise px-6 py-8">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -50,6 +59,7 @@ function Shell() {
       </main>
       <Footer />
     </div>
+    </ChromeContext.Provider>
   )
 }
 

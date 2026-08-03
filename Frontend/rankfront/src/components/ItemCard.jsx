@@ -1,16 +1,6 @@
 import CategoryBadge from './CategoryBadge'
 import Card from './ui/Card'
-
-// İlk üç sıra pirinç ailesinin açık / ana / koyu derecelerini alır.
-function rankBadgeClass(rank) {
-  if (rank === 1)
-    return 'bg-brass-soft text-night shadow-[0_0_12px_rgba(185,145,63,0.25)]'
-  if (rank === 2)
-    return 'bg-brass text-night'
-  if (rank === 3)
-    return 'bg-brass-deep text-cream'
-  return 'bg-night-deep text-ash'
-}
+import { rankBadgeClass } from '../lib/rank'
 
 // Arcade bileti: koyu metal yüzey; sıralama vurgusu yalnızca rozetlerde yaşar.
 export default function ItemCard({ item, rank }) {

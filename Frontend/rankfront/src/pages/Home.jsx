@@ -4,6 +4,7 @@ import { Clapperboard, Tv, Gamepad2, Hamburger, Music2, Plus } from 'lucide-reac
 import { getTopItems, getCategories, getDailyRanking } from '../api/client'
 import Auralis from '@/components/ui/auralis'
 import ItemCard from '../components/ItemCard'
+import PodiumSpot from '../components/PodiumSpot'
 import DuelWidget from '../components/DuelWidget'
 import { Loading, ErrorState, EmptyState } from '../components/States'
 import Button, { ArrowIcon } from '../components/ui/button/Button'
@@ -27,46 +28,6 @@ function DeltaBadge({ delta }) {
   if (delta < 0)
     return <span className="text-xs font-bold tabular-nums text-danger">▼ {Math.abs(delta)}</span>
   return <span className="text-xs font-bold text-faded/70">—</span>
-}
-
-// Podyum sütunu: 2-1-3 dizilir, pirinç ailesi ödül hiyerarşisini taşır.
-function PodiumSpot({ item, rank, height, delay }) {
-  const ringClass =
-    rank === 1 ? 'ring-4 ring-brass-soft' : rank === 2 ? 'ring-4 ring-brass/75' : 'ring-4 ring-brass-deep/70'
-  return (
-    <Link
-      to={`/items/${item.itemId}`}
-      className="group flex animate-pop flex-col items-center gap-3"
-      style={{ animationDelay: delay }}
-    >
-      <div className={`relative ${rank === 1 ? 'podium-flame' : ''}`}>
-        {rank === 1 && (
-          <span className="absolute -top-7 left-1/2 -translate-x-1/2 animate-flame-dance text-3xl">
-            🔥
-          </span>
-        )}
-        <img
-          src={item.imageUrl}
-          alt={item.name}
-          className={`h-20 w-20 rounded-full object-cover transition duration-300 group-hover:scale-105 sm:h-28 sm:w-28 ${ringClass}`}
-        />
-      </div>
-      <div className="text-center">
-        <p className="font-display font-bold text-cream transition group-hover:text-brass-soft">
-          {item.name}
-        </p>
-        <span className="mt-1 inline-block rounded-md bg-brass/10 px-2 py-0.5 text-sm font-bold tabular-nums text-brass-soft">
-          ★ {Number(item.globalScore).toFixed(2)}
-        </span>
-      </div>
-      <div
-        className="stripe-neon flex w-full items-start justify-center rounded-t-xl bg-gradient-to-b from-brass-soft via-brass to-brass-deep pt-3"
-        style={{ height }}
-      >
-        <span className="font-display text-3xl font-extrabold text-night">#{rank}</span>
-      </div>
-    </Link>
-  )
 }
 
 export default function Home() {

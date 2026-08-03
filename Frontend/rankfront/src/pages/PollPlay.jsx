@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Star, EyeOff, GitFork, Swords, User, Radio, Play } from 'lucide-react'
 import { getPoll } from '../api/client'
@@ -7,12 +7,18 @@ import Button from '../components/ui/button/Button'
 import Card from '../components/ui/Card'
 import CategoryBadge from '../components/CategoryBadge'
 import PollStats from '../components/poll/PollStats'
+import ClassicPlay from '../components/poll/play/ClassicPlay'
+import PlayResult from '../components/poll/play/PlayResult'
 import { PLAY_MODES, pollModeLabel, roundOptionsFor, defaultRoundFor } from '../lib/pollModes'
 
-// Oyun kurulum ekranı: anket künyesinden "Oyna" ile gelinir, oyunun kendisi
-// henüz yok. Bu adımda seçimler yalnızca ekran state'ini değiştirir; BAŞLA
-// pasif — gerçek oyun akışı bir sonraki adımda bağlanacak.
-// Sayfanın tek primary'si BAŞLA (Damga v1: view başına tek primary).
+// Anket oynama sayfası. Üç faz tek route'ta yaşar (kurulum seçimleri elde
+// kalsın diye ayrı route açılmadı):
+//   setup   → oyuncu tipi / oyun modu / tur sayısı seçilir
+//   playing → ClassicPlay, tur tur puanlama
+//   result  → PlayResult, podyum + sıralı liste
+// Şimdilik yalnızca Klasik Puanlama oynanabilir; diğer üç modda BAŞLA pasif.
+// Damga v1 "view başına tek primary" kuralı faz başına korunur: kurulumda
+// BAŞLA, oyun ekranında primary yok, sonuçta "Tekrar oyna".
 
 // İkon ve açıklama sunum bilgisi, o yüzden sayfada yaşar; etiket ve sıra
 // src/lib/pollModes.js'ten gelir (tek sözlük).
@@ -115,10 +121,27 @@ export default function PollPlay() {
   const [playerMode, setPlayerMode] = useState('solo')
   const [mode, setMode] = useState(PLAY_MODES[0])
   const [round, setRound] = useState(null)
+  const [phase, setPhase] = useState('setup')
+  // BAŞLA'ya basıldığı andaki seçimler dondurulur: oyun sürerken kurulum
+  // state'i değişse bile (geri gelip başka mod seçmek) oynanan tur bozulmaz.
+  const [config, setConfig] = useState(null)
+  const [summary, setSummary] = useState(null)
 
   useEffect(() => {
     getPoll(id).then(setPoll).catch((e) => setError(e.message))
   }, [id])
+
+  // ClassicPlay'in effect bağımlılığı: kimliği sabit kalmalı, yoksa sonuç
+  // devri her render'da yeniden tetiklenir.
+  const handleFinish = useCallback((result) => {
+    setSummary(result)
+    setPhase('result')
+  }, [])
+
+  const backToSetup = useCallback(() => {
+    setSummary(null)
+    setPhase('setup')
+  }, [])
 
   // Havuz: getPoll çözülmüş items döner, yoksa ham pollItems sayılır.
   const itemCount = poll?.items?.length ?? poll?.pollItems?.length ?? 0
@@ -128,8 +151,34 @@ export default function PollPlay() {
     ? round
     : defaultRoundFor(mode, roundOptions)
 
+  // Yalnızca klasik puanlama oynanabilir; diğer modlarda BAŞLA pasif kalır.
+  const canStart = mode === 'classic' && roundOptions.length > 0
+
   if (error) return <ErrorState message={error} />
   if (!poll) return <Loading label="Anket yükleniyor..." />
+
+  if (phase === 'playing') {
+    return (
+      <ClassicPlay
+        poll={poll}
+        roundCount={config.round}
+        onFinish={handleFinish}
+        onQuit={backToSetup}
+      />
+    )
+  }
+
+  if (phase === 'result') {
+    return (
+      <PlayResult
+        poll={poll}
+        results={summary.results}
+        average={summary.average}
+        onReplay={() => setPhase('playing')}
+        onSetup={backToSetup}
+      />
+    )
+  }
 
   return (
     <div>
@@ -223,13 +272,24 @@ export default function PollPlay() {
           {/* Aksiyon bloğu seçimlerden bir tık daha ayrı dursun diye tek
               ekstra üst boşluk alır (space-y-5 + pt-1). */}
           <div className="pt-1">
-            <Button variant="primary" size="lg" fullWidth disabled>
+            <Button
+              variant="primary"
+              size="lg"
+              fullWidth
+              disabled={!canStart}
+              onClick={() => {
+                setConfig({ mode, playerMode, round: activeRound })
+                setPhase('playing')
+              }}
+            >
               <Play className="h-5 w-5" aria-hidden="true" />
               Başla
             </Button>
-            <p className="mt-2 text-center text-xs text-faded">
-              Oyun akışı bir sonraki adımda bağlanacak — şimdilik yalnızca kurulum ekranı.
-            </p>
+            {mode !== 'classic' && (
+              <p className="mt-2 text-center text-xs text-faded">
+                Bu mod henüz hazır değil — şimdilik Klasik Puanlama oynanabilir.
+              </p>
+            )}
           </div>
         </Card>
       </div>
