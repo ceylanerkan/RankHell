@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Play, Star, Bookmark, Share2, Flag } from 'lucide-react'
 import CategoryBadge from '../CategoryBadge'
 import Button from '../ui/button/Button'
@@ -5,7 +6,8 @@ import PollStats from './PollStats'
 import { pollModeLabel } from '../../lib/pollModes'
 
 // Anket künyesi: solda kimlik + aksiyonlar, sağda kapak.
-// Bu adımda sayfa iskelet — her buton disabled, hiçbir handler yok.
+// Oyna kurulum ekranına (/polls/:id/play) götürür; kalan aksiyonlar hâlâ
+// pasif — sırayla bağlanacaklar.
 // Sayfanın tek primary'si OYNA (Damga v1: view başına tek primary).
 
 // Mod çipleri bilgi etiketi: anketin hangi modlarda oynanabildiğini söyler,
@@ -40,7 +42,7 @@ function Cover({ src, alt }) {
 }
 
 export default function PollHeader({ poll }) {
-  const { title, description, coverUrl, category, featured, modes = [], creator } = poll
+  const { pollId, title, description, coverUrl, category, featured, modes = [], creator } = poll
 
   return (
     <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
@@ -72,9 +74,9 @@ export default function PollHeader({ poll }) {
           <PollStats poll={poll} />
         </div>
 
-        {/* Aksiyon şeridi — bu adımda hepsi pasif. */}
+        {/* Aksiyon şeridi — bu adımda yalnızca Oyna işlevli, gerisi pasif. */}
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Button variant="primary" size="lg" disabled>
+          <Button variant="primary" size="lg" as={Link} to={`/polls/${pollId}/play`}>
             <Play className="h-5 w-5" aria-hidden="true" />
             Oyna
           </Button>

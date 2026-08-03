@@ -15,6 +15,8 @@ Geçici mock veridir; backend hazır olunca item görselleri gerçek API'den gel
 | manti.jpg     | Kayseri Mantısı     | E4024           | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Manti_from_Kayseri.jpg |
 | lahmacun.jpg  | Lahmacun            | Chris Light     | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Lahmacun_8357.jpg |
 | baklava.jpg   | Baklava (Bodrum)    | Michal Osmenda  | CC BY-SA 2.0 | https://commons.wikimedia.org/wiki/File:Baklava_in_Bodrum,_Turkey_(5653812987).jpg |
+| cay.jpg       | Türk Çayı           | Timer4mirc      | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:DSC_4697_MK.jpg |
+| kahve.jpg     | Türk Kahvesi        | Hamdigumus      | CC0          | https://commons.wikimedia.org/wiki/File:Kumda_T%C3%BCrk_Kahvesi,_Safranbolu_2014.jpg |
 | chernobyl.jpg | Çernobil santrali 4. reaktör | Paweł 'pbm' Szubert | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Chernobyl_-_power_plant_-_reactor_4_02.jpg |
 
 ## Müzik (enstrüman / performans / nota — gerçek görsel)

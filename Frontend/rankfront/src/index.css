@@ -333,6 +333,78 @@
     @apply flex aspect-square w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-line bg-night-deep/50 text-lg font-bold text-faded/50 transition hover:border-ash/60 hover:text-ash sm:w-20;
   }
 
+  /* ── Mod ipucu balonu (pages/PollPlay.jsx) ──────────────────────
+     Kurulum ekranında dört mod tek sıraya sığsın diye açıklama karttan
+     çıktı; "?" işaretinin üzerine gelince (ya da kart klavyeyle
+     odaklanınca) balon açılır. Sistemde tooltip yok — bu, tek kullanımlık
+     bileşen sınıfı disipliniyle burada yaşar (.duel-side, .tier-slot gibi).
+     Blur / glow / scale / yükselme yok, yeni renk üretilmez.
+     "?" tıklanabilir değil: kart zaten <button>, iç içe tıklanabilir öğe
+     üretilmez — balon salt CSS ile açılır. */
+  .play-hint {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: inline-flex;
+    height: 18px;
+    width: 18px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-iron);
+    border-radius: 9999px;
+    color: var(--color-faded);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Kartın altına açılır: dört kartlık sırada üstte açılsa bölüm başlığını
+     örterdi. Kart position:relative olduğu için çapa karttır. */
+  .play-tip {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 20;
+    width: max-content;
+    min-width: 160px;
+    max-width: 220px;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-coal);
+    padding: 8px 10px;
+    color: var(--color-faded);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.14s ease;
+  }
+  .play-hint:hover ~ .play-tip,
+  .rh-card--b-selectable:focus-visible .play-tip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Dokunmatikte hover yok: balon akışa girer, açıklama kaybolmaz. */
+  @media (hover: none) {
+    .play-tip {
+      position: static;
+      z-index: auto;
+      width: auto;
+      min-width: 0;
+      max-width: none;
+      border: 0;
+      background: none;
+      padding: 0;
+      text-align: center;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
   /* ── Hukuki metin modalı (LegalModal.jsx) ───────────────────────
      Tasarım: coal-light yüzey · line kenarlığı · night-deep backdrop.
      Glow, blur, scale, dış gölge yok — tasarım sistemine aykırı olur.

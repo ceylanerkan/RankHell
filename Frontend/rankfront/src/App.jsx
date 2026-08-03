@@ -9,6 +9,7 @@ import TierList from './pages/TierList'
 import Polls from './pages/Polls'
 import PollNew from './pages/PollNew'
 import PollDetail from './pages/PollDetail'
+import PollPlay from './pages/PollPlay'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
@@ -40,6 +41,7 @@ function Shell() {
           <Route path="/polls" element={<Polls />} />
           <Route path="/polls/new" element={<PollNew />} />
           <Route path="/polls/:id" element={<PollDetail />} />
+          <Route path="/polls/:id/play" element={<PollPlay />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />

@@ -235,6 +235,24 @@ export const items = [
     totalVotes: 583,
     categories: [{ categoryId: 5, name: 'Müzik' }],
   },
+  {
+    itemId: 26,
+    name: 'Türk Çayı',
+    description: 'İnce belli bardakta, tavşan kanı demlenen günlük ritüel.',
+    imageUrl: '/items/cay.jpg',
+    globalScore: 4.66,
+    totalVotes: 1508,
+    categories: [{ categoryId: 4, name: 'Yemek' }],
+  },
+  {
+    itemId: 27,
+    name: 'Türk Kahvesi',
+    description: 'Kumda pişen, yanında lokumuyla servis edilen köpüklü klasik.',
+    imageUrl: '/items/kahve.jpg',
+    globalScore: 4.55,
+    totalVotes: 1194,
+    categories: [{ categoryId: 4, name: 'Yemek' }],
+  },
 ]
 
 // Günün sıralaması — bugün en çok oy toplayan item'lar (vitrin verisi).
@@ -320,10 +338,11 @@ export const polls = [
   {
     pollId: 1,
     creator: { userId: 2, username: 'erkan' },
-    title: 'Gelmiş geçmiş en iyi film hangisi?',
-    description: 'Listeler kavga çıkarır. Bu sefer sırayı sen kur — tek bir film tepede kalacak.',
+    title: 'Ekranın en iyisi hangisi?',
+    description: 'Listeler kavga çıkarır. Bu sefer sırayı sen kur — tek bir yapım tepede kalacak.',
     coverUrl: '/items/godfather.jpg',
-    category: { categoryId: 1, name: 'Film' },
+    // Karma havuz (film + dizi): tek bir kategoriye sığmıyor, rozet çizilmez.
+    category: null,
     featured: true,
     modes: ['bracket', 'duel', 'blind', 'tier'],
     globalScore: 4.2,
@@ -333,6 +352,14 @@ export const polls = [
     pollItems: [
       { id: 1, itemId: 1 },
       { id: 2, itemId: 6 },
+      { id: 3, itemId: 9 },
+      { id: 4, itemId: 10 },
+      { id: 5, itemId: 11 },
+      { id: 6, itemId: 2 },
+      { id: 7, itemId: 12 },
+      { id: 8, itemId: 13 },
+      { id: 9, itemId: 14 },
+      { id: 10, itemId: 15 },
     ],
     comments: [
       {
@@ -366,8 +393,13 @@ export const polls = [
     playCount: 2214,
     createdAt: '2026-06-20T16:45:00',
     pollItems: [
-      { id: 3, itemId: 4 },
-      { id: 4, itemId: 8 },
+      { id: 11, itemId: 4 },
+      { id: 12, itemId: 8 },
+      { id: 13, itemId: 19 },
+      { id: 14, itemId: 20 },
+      { id: 15, itemId: 21 },
+      { id: 16, itemId: 26 },
+      { id: 17, itemId: 27 },
     ],
     comments: [
       {
