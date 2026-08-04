@@ -190,12 +190,24 @@ export async function createPoll({ title, itemIds }) {
   const session = getSession()
   if (!session) throw new Error('Anket oluşturmak için giriş yapmalısın')
 
+  // Künye alanları henüz oluşturma formunda sorulmuyor; detay sayfası
+  // undefined okumasın diye boş varsayılanlarla doğuyor.
   const poll = {
     pollId: nextPollId++,
     creator: { userId: session.userId, username: session.username },
     title,
+    description: '',
+    coverUrl: null,
+    category: null,
+    featured: false,
+    modes: [],
+    globalScore: 0,
+    totalRatings: 0,
+    playCount: 0,
     createdAt: new Date().toISOString(),
     pollItems: itemIds.map((itemId) => ({ id: nextPollItemId++, itemId })),
+    comments: [],
+    winners: [],
   }
   polls.push(poll)
   return { ...poll }
