@@ -8,15 +8,24 @@ import Card from '../components/ui/Card'
 import CategoryBadge from '../components/CategoryBadge'
 import PollStats from '../components/poll/PollStats'
 import ClassicPlay from '../components/poll/play/ClassicPlay'
+import BlindPlay from '../components/poll/play/BlindPlay'
 import PlayResult from '../components/poll/play/PlayResult'
-import { PLAY_MODES, pollModeLabel, roundOptionsFor, defaultRoundFor } from '../lib/pollModes'
+import {
+  PLAY_MODES,
+  PLAYABLE_MODES,
+  isPlayableMode,
+  pollModeLabel,
+  roundOptionsFor,
+  defaultRoundFor,
+} from '../lib/pollModes'
 
 // Anket oynama sayfası. Üç faz tek route'ta yaşar (kurulum seçimleri elde
 // kalsın diye ayrı route açılmadı):
 //   setup   → oyuncu tipi / oyun modu / tur sayısı seçilir
-//   playing → ClassicPlay, tur tur puanlama
-//   result  → PlayResult, podyum + sıralı liste
-// Şimdilik yalnızca Klasik Puanlama oynanabilir; diğer üç modda BAŞLA pasif.
+//   playing → moda göre bir oyun ekranı (PLAY_SCREEN)
+//   result  → PlayResult, sıralı liste (+ puanlı modlarda podyum)
+// Oynanabilir modlar pollModes.js'teki PLAYABLE_MODES'tan gelir; gerisinde
+// BAŞLA pasif kalır.
 // Damga v1 "view başına tek primary" kuralı faz başına korunur: kurulumda
 // BAŞLA, oyun ekranında primary yok, sonuçta "Tekrar oyna".
 
@@ -40,6 +49,14 @@ const PLAYER_MODES = [
   { key: 'solo', label: 'Solo', hint: 'Tek başına oyna', icon: User },
   { key: 'stream', label: 'Yayında oyna', hint: 'İzleyicilerinle birlikte oyna', icon: Radio },
 ]
+
+// Her oyun ekranı aynı sözleşmeyi uygular: { poll, roundCount, onFinish, onQuit }
+// ve bittiğinde onFinish ile sonucunu devreder. Yeni mod eklenince buraya bir
+// satır girer, sayfanın geri kalanı değişmez.
+const PLAY_SCREEN = {
+  classic: ClassicPlay,
+  blind: BlindPlay,
+}
 
 function SectionTitle({ children }) {
   return (
@@ -151,15 +168,17 @@ export default function PollPlay() {
     ? round
     : defaultRoundFor(mode, roundOptions)
 
-  // Yalnızca klasik puanlama oynanabilir; diğer modlarda BAŞLA pasif kalır.
-  const canStart = mode === 'classic' && roundOptions.length > 0
+  // Henüz kurulmamış modlarda BAŞLA pasif kalır.
+  const canStart = isPlayableMode(mode) && roundOptions.length > 0
 
   if (error) return <ErrorState message={error} />
   if (!poll) return <Loading label="Anket yükleniyor..." />
 
   if (phase === 'playing') {
+    // Bilinmeyen bir mod dondurulmuş config'e girse bile render kırılmaz.
+    const Screen = PLAY_SCREEN[config.mode] ?? ClassicPlay
     return (
-      <ClassicPlay
+      <Screen
         poll={poll}
         roundCount={config.round}
         onFinish={handleFinish}
@@ -174,6 +193,9 @@ export default function PollPlay() {
         poll={poll}
         results={summary.results}
         average={summary.average}
+        // Puanlı mı değil mi bilgisini sonucu üreten ekran taşır (klasik hiç
+        // göndermez → varsayılan true), sayfa ikinci bir mod dallanması tutmaz.
+        scored={summary.scored !== false}
         onReplay={() => setPhase('playing')}
         onSetup={backToSetup}
       />
@@ -285,9 +307,12 @@ export default function PollPlay() {
               <Play className="h-5 w-5" aria-hidden="true" />
               Başla
             </Button>
-            {mode !== 'classic' && (
+            {/* Metin listeden türer: üçüncü mod açıldığında kendiliğinden
+                doğru kalır, bayat bir string geride kalmaz. */}
+            {!isPlayableMode(mode) && (
               <p className="mt-2 text-center text-xs text-faded">
-                Bu mod henüz hazır değil — şimdilik Klasik Puanlama oynanabilir.
+                Bu mod henüz hazır değil — şimdilik{' '}
+                {PLAYABLE_MODES.map(pollModeLabel).join(' ve ')} oynanabilir.
               </p>
             )}
           </div>

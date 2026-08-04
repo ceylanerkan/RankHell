@@ -14,6 +14,15 @@ export const POLL_MODES = {
 // kendi sayfası (/tiers) var — künye çipleri onu göstermeye devam ediyor.
 export const PLAY_MODES = ['classic', 'blind', 'bracket', 'duel']
 
+// Şu an gerçekten oynanabilen modlar. Bir mod bitince buraya bir satır eklenir;
+// kurulum ekranı kendi listesini tutmaz, hem BAŞLA butonu hem "hazır değil"
+// notu buradan türer.
+export const PLAYABLE_MODES = ['classic', 'blind']
+
+export function isPlayableMode(key) {
+  return PLAYABLE_MODES.includes(key)
+}
+
 // Bilinmeyen bir anahtar gelirse (backend yeni mod eklediğinde) render kırılmaz.
 export function pollModeLabel(key) {
   return POLL_MODES[key] ?? key

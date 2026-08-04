@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { getSession, rateItem } from '../api/client'
+import { buildQueue } from '../lib/queue'
 
 // Klasik Puanlama oyununun tek state kaynağı. ClassicPlay bu hook dışında hiçbir
 // şey bilmez — ne karıştırma, ne zamanlayıcı, ne oy kaydı. useDuel ile aynı
@@ -8,27 +9,6 @@ import { getSession, rateItem } from '../api/client'
 // Puandan sonra sıradaki seçeneğe geçiş süresi. Kartın solma geçişi (300ms)
 // bitip bir an duruyor: seçim onaylandı hissi oluşuyor ama akış yavaşlamıyor.
 const ADVANCE_MS = 700
-
-// Fisher-Yates. Tek kullanımlık olduğu için lib dosyası açılmadı.
-function shuffle(list) {
-  const next = [...list]
-  for (let i = next.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
-    const tmp = next[i]
-    next[i] = next[j]
-    next[j] = tmp
-  }
-  return next
-}
-
-// Havuz karıştırılır, tur sayısı kadarı alınır. roundCount havuzdan büyükse
-// (bozuk config) havuz sınırı kazanır — oyun yine oynanır.
-function buildQueue(items, roundCount) {
-  const pool = Array.isArray(items) ? items : []
-  const requested = Number(roundCount)
-  const size = requested > 0 ? Math.min(requested, pool.length) : pool.length
-  return shuffle(pool).slice(0, size)
-}
 
 /**
  * @param {{ items: object[], roundCount: number }} params

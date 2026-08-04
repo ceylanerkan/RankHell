@@ -59,6 +59,22 @@ kart sisteminde tek meşru yeri budur (disabled kart solid kenar alır, kesikli
 değil). `dropzone` sınıf ailesi olarak belgelenir, surface × behavior matrisine
 girmez.
 
+## 7b — Kör Sıralama sahnesi (BlindPlay ortadaki görsel + isim plaketi)
+
+`poll/play/BlindPlay.jsx`'te sıradaki seçeneği taşıyan görsel + altındaki isim
+plaketi Card'a **sarılmaz**. Bu bir içerik kartı değil, oyun sahnesi: bandın
+(§7) devamı, ekranın kahramanı. Karta sarılınca oyun ekranı bir liste satırı
+gibi okunuyordu. Kurallar yine geçerli — radius tavanı 8px (`rounded-lg`),
+blur/glow/scale yok, yeni renk yok.
+
+Sahnede **kor yoktur**: görselin 2px `iron` kenarı bir yapı öğesidir, sinyal
+değil (sahne statik; "static sinyal olarak kor göstermez" kuralı kart dışında
+da geçerli). Kor bu ekranda yalnızca yuvaların hover marker'ında ve banttaki
+ilerleme çubuğunda — yani etkileşimde ve veride — konuşur.
+
+Yuvalar bu istisnaya **girmez**: gerçek etkileşim hedefi oldukları için
+`Card` (boş → `interactive`, dolu → `static`) üzerinden geçerler.
+
 ## 7 — night-deep bantları + toast/modal (e-2)
 
 Navbar/footer `night-deep` (#0b0b0d) bantları sayfa kromudur (chrome), içerik
