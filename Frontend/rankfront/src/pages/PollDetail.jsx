@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getPoll } from '../api/client'
-import ItemCard from '../components/ItemCard'
-import { Loading, ErrorState, EmptyState } from '../components/States'
+import PollHeader from '../components/poll/PollHeader'
+import PollComments from '../components/poll/PollComments'
+import PollWinners from '../components/poll/PollWinners'
+import { Loading, ErrorState } from '../components/States'
 
+// Anket künyesi. Seçenekler bilerek gösterilmez: onlar oyunun kendisi, bu
+// sayfa karşılama ekranı. Oynama akışı (/polls/:id/play) ayrı bir iş.
 export default function PollDetail() {
   const { id } = useParams()
   const [poll, setPoll] = useState(null)
@@ -16,29 +20,14 @@ export default function PollDetail() {
   if (error) return <ErrorState message={error} />
   if (!poll) return <Loading label="Anket yükleniyor..." />
 
-  const ranked = [...poll.items].sort((a, b) => b.globalScore - a.globalScore)
-
   return (
     <div>
-      <h1 className="title-copper font-display text-3xl font-extrabold text-cream">{poll.title}</h1>
-      <p className="mt-1 mb-6 text-sm text-faded">
-        @{poll.creator.username} · {new Date(poll.createdAt).toLocaleDateString('tr-TR')}
-      </p>
+      <PollHeader poll={poll} />
 
-      {ranked.length === 0 ? (
-        <EmptyState message="Bu ankete henüz seçenek eklenmemiş." />
-      ) : (
-        <div className="grid gap-5 sm:grid-cols-2">
-          {ranked.map((item, i) => (
-            <div key={item.itemId} className="animate-rise" style={{ animationDelay: `${i * 60}ms` }}>
-              <ItemCard item={item} rank={i + 1} />
-            </div>
-          ))}
-        </div>
-      )}
-      <p className="mt-4 text-sm text-faded/70">
-        Sıralama, seçeneklerin genel puanına göredir. Oy vermek için bir seçeneğe tıkla.
-      </p>
+      <div className="mt-10 grid items-start gap-6 lg:grid-cols-3">
+        <PollComments comments={poll.comments} className="lg:col-span-2" />
+        <PollWinners />
+      </div>
     </div>
   )
 }

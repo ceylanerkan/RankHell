@@ -1,0 +1,66 @@
+// Anketin oynanabildiği modlar. Anahtar → görünen etiket eşlemesi tek yerde
+// yaşar; anket künyesi, mod seçme ekranı ve oyun sayfası aynı sözlüğü okur.
+// Anahtarlar mock/data.js'teki poll.modes değerleriyle birebir aynı.
+export const POLL_MODES = {
+  classic: 'Klasik Puanlama',
+  bracket: 'Turnuva Ağacı',
+  duel: 'O mu, Bu mu?',
+  blind: 'Kör Sıralama',
+  tier: 'Tier List',
+}
+
+// Kurulum ekranının (/polls/:id/play) mod sırası. Sıra bilgisi burada yaşar,
+// sayfa kendi listesini üretmez. Tier list burada yok: sıralama oyunu değil,
+// kendi sayfası (/tiers) var — künye çipleri onu göstermeye devam ediyor.
+export const PLAY_MODES = ['classic', 'blind', 'bracket', 'duel']
+
+// Bilinmeyen bir anahtar gelirse (backend yeni mod eklediğinde) render kırılmaz.
+export function pollModeLabel(key) {
+  return POLL_MODES[key] ?? key
+}
+
+// Tur seçenekleri: turnuva/duel/klasik 2'nin kuvvetleriyle ilerler, kör
+// sıralama 5-10 arası kısa tutulur. Havuzu aşan değerler listeye girmez.
+const POWER_ROUNDS = [8, 16, 32]
+const BLIND_ROUNDS = [5, 10]
+
+// Havuzu aşmayan en büyük 2'nin kuvveti (en az 2).
+function largestPowerOfTwo(count) {
+  let value = 2
+  while (value * 2 <= count) value *= 2
+  return value
+}
+
+/**
+ * Bir mod + seçenek havuzu için tur seçenekleri.
+ * Hiçbir standart değer sığmazsa (ör. 7 seçenekli anket) liste boş kalmaz:
+ * havuza sığan en büyük değere düşülür — kullanıcı anketleri de ekranı kırmaz.
+ * @returns {{ value: number, label: string }[]} artan sırada
+ */
+export function roundOptionsFor(mode, itemCount) {
+  const count = Number(itemCount) || 0
+  if (count < 2) return []
+
+  const base = mode === 'blind' ? BLIND_ROUNDS : POWER_ROUNDS
+  let values = base.filter((value) => value <= count)
+  if (values.length === 0) {
+    values = [mode === 'blind' ? count : largestPowerOfTwo(count)]
+  }
+
+  const options = values.map((value) => ({ value, label: String(value) }))
+  // Klasik puanlamada tüm havuzu puanlamak her zaman seçenek.
+  if (mode === 'classic' && !values.includes(count)) {
+    options.push({ value: count, label: `Tümü (${count})` })
+  }
+  return options
+}
+
+// Varsayılan tur: kör sıralamada 10, diğerlerinde sığan en büyük değer.
+export function defaultRoundFor(mode, options) {
+  if (options.length === 0) return 0
+  if (mode === 'blind') {
+    const ten = options.find((option) => option.value === 10)
+    if (ten) return ten.value
+  }
+  return options[options.length - 1].value
+}
