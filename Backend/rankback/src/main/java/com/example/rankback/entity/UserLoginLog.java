@@ -23,10 +23,18 @@ public class UserLoginLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Kullanıcı bilgisi boş olamaz")
+    /**
+     * Başarısız girişlerde null olabilir: tanınmayan bir e-posta ile denenen
+     * girişin bağlanacağı bir kullanıcı yoktur.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    /** Denenen e-posta. Başarısız girişlerde kullanıcıyı bulmanın tek yolu budur. */
+    @Size(max = 100, message = "E-posta 100 karakterden uzun olamaz")
+    @Column(name = "attempted_email", length = 100)
+    private String attemptedEmail;
 
     @NotBlank(message = "IP adresi boş olamaz")
     @Size(max = 45, message = "IP adresi 45 karakterden uzun olamaz")
@@ -36,4 +44,8 @@ public class UserLoginLog {
     @NotNull(message = "Giriş zamanı boş olamaz")
     @Column(name = "login_time", nullable = false)
     private LocalDateTime loginTime;
+
+    /** true: giriş başarılı. false: kimlik doğrulama reddedildi. */
+    @Column(name = "success", nullable = false)
+    private boolean success;
 }

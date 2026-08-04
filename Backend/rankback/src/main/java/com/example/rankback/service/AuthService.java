@@ -5,13 +5,14 @@ import com.example.rankback.dto.LoginRequest;
 import com.example.rankback.dto.RegisterRequest;
 import com.example.rankback.entity.Role;
 import com.example.rankback.entity.User;
-import com.example.rankback.entity.UserLoginLog;
 import com.example.rankback.exception.DuplicateResourceException;
-import com.example.rankback.repository.UserLoginLogRepository;
 import com.example.rankback.repository.UserRepository;
 import com.example.rankback.security.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,19 +22,21 @@ import java.time.LocalDateTime;
 @Service
 public class AuthService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+
     private final UserRepository userRepository;
-    private final UserLoginLogRepository userLoginLogRepository;
+    private final LoginAuditService loginAuditService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
     public AuthService(UserRepository userRepository,
-                        UserLoginLogRepository userLoginLogRepository,
+                        LoginAuditService loginAuditService,
                         PasswordEncoder passwordEncoder,
                         AuthenticationManager authenticationManager,
                         JwtService jwtService) {
         this.userRepository = userRepository;
-        this.userLoginLogRepository = userLoginLogRepository;
+        this.loginAuditService = loginAuditService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
@@ -61,24 +64,47 @@ public class AuthService {
         user.setRegisteredIp(ipAddress);
 
         User saved = userRepository.save(user);
+
+        // Kayıt anında token da veriliyor, yani kullanıcı giriş yapmış sayılır:
+        // audit izinde bu an da görünmeli. Aynı transaction'da yazılır, kayıt
+        // geri alınırsa log da geri alınır.
+        loginAuditService.recordSuccess(saved, ipAddress);
+
         return toAuthResponse(saved, jwtService.generateToken(saved));
     }
 
-    @Transactional
+    /**
+     * Bilinçli olarak @Transactional değil: başarısız denemenin kaydı
+     * {@link LoginAuditService#recordFailure} içinde kendi transaction'ında
+     * commit edilir, buradaki exception onu geri almasın diye.
+     */
     public AuthResponse login(LoginRequest request, String ipAddress) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+        } catch (AuthenticationException ex) {
+            recordFailureQuietly(request.email(), ipAddress);
+            throw ex;
+        }
 
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new IllegalStateException("Authenticated user vanished: " + request.email()));
 
-        userLoginLogRepository.save(UserLoginLog.builder()
-                .user(user)
-                .ipAddress(ipAddress)
-                .loginTime(LocalDateTime.now())
-                .build());
+        loginAuditService.recordSuccess(user, ipAddress);
 
         return toAuthResponse(user, jwtService.generateToken(user));
+    }
+
+    /**
+     * Audit yazımındaki bir sorun, kullanıcıya dönecek olan kimlik doğrulama
+     * hatasının yerini almasın: log'lanır ama yutulur.
+     */
+    private void recordFailureQuietly(String attemptedEmail, String ipAddress) {
+        try {
+            loginAuditService.recordFailure(attemptedEmail, ipAddress);
+        } catch (RuntimeException auditError) {
+            log.warn("Başarısız giriş denemesi kaydedilemedi (email={}): {}", attemptedEmail, auditError.toString());
+        }
     }
 
     private AuthResponse toAuthResponse(User user, String token) {

@@ -15,4 +15,8 @@ public interface UserLoginLogRepository extends JpaRepository<UserLoginLog, Long
 
     @EntityGraph(attributePaths = "user")
     Page<UserLoginLog> findAllByOrderByLoginTimeDesc(Pageable pageable);
+
+    /** Sadece başarılı (true) veya sadece başarısız (false) denemeler. */
+    @EntityGraph(attributePaths = "user")
+    Page<UserLoginLog> findBySuccessOrderByLoginTimeDesc(boolean success, Pageable pageable);
 }
