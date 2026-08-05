@@ -75,12 +75,13 @@ ilerleme çubuğunda — yani etkileşimde ve veride — konuşur.
 Yuvalar bu istisnaya **girmez**: gerçek etkileşim hedefi oldukları için
 `Card` (boş → `interactive`, dolu → `static`) üzerinden geçerler.
 
-## 7c — Turnuva şampiyon kartı (BracketResult)
+## 7c — Şampiyon sahnesi (Champion.jsx — BracketResult + DuelResult)
 
-`poll/play/BracketResult.jsx`'teki şampiyon görseli + altındaki isim plaketi
-Card'a **sarılmaz** — §7b ile aynı gerekçe: içerik kartı değil, sonuç ekranının
-ödül anı. Karta sarılınca turnuvanın tek kazananı listedeki bir satır gibi
-okunuyordu.
+`poll/play/Champion.jsx`'teki şampiyon görseli + altındaki isim plaketi Card'a
+**sarılmaz** — §7b ile aynı gerekçe: içerik kartı değil, sonuç ekranının ödül
+anı. Karta sarılınca tek kazanan listedeki bir satır gibi okunuyordu. Bileşen
+iki sonuç ekranının ortağıdır: Turnuva Ağacı (`BracketResult`) ve "O mu, Bu mu?"
+(`DuelResult`) aynı ödül anını paylaşır.
 
 **Brass istisnası:** görselin 2px `brass` kenarı, plaketin `brass-deep` kenarı ve
 "ŞAMPİYON" etiketinin `brass-soft`'u — DuelWidget (§1) ve PodiumSpot ile aynı
@@ -92,11 +93,12 @@ gibi (§3) içerik katmanındadır, sinyal katmanı değil.
 Kurallar yine geçerli: radius tavanı 8px (`rounded-lg`), blur/glow/scale yok,
 yeni renk/token yok.
 
-**Turnuva EŞLEŞME kartları bu istisnaya girmez:** `BracketPlay`'deki iki taraf
-ekranın tek etkileşim hedefidir, `Card` (`raised + interactive`) üzerinden
+**EŞLEŞME kartları bu istisnaya girmez:** `BracketPlay` ve `DuelPlay`'deki iki
+taraf ekranın tek etkileşim hedefidir, `Card` (`raised + interactive`) üzerinden
 geçerler — hover'daki sol ember marker doğru sinyaldir. Kazanan tarafta brass
-**kullanılmaz** (tıklanabilir öğe); kazanma sinyali `animate-pop`, kaybetme
-sinyali sönme (`opacity-60`).
+**kullanılmaz** (tıklanabilir öğe); kazanma sinyali `animate-swell`, kaybetme
+sinyali sönme (`opacity-60`). `animate-pop` bu ölçekte kullanılmaz: yayı kart
+boyunda zıplama gibi okunuyor, podyum rozetine ayrılmıştır.
 
 ## 7 — night-deep bantları + toast/modal (e-2)
 

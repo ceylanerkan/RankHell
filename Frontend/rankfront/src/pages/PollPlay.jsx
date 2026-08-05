@@ -10,8 +10,10 @@ import PollStats from '../components/poll/PollStats'
 import ClassicPlay from '../components/poll/play/ClassicPlay'
 import BlindPlay from '../components/poll/play/BlindPlay'
 import BracketPlay from '../components/poll/play/BracketPlay'
+import DuelPlay from '../components/poll/play/DuelPlay'
 import PlayResult from '../components/poll/play/PlayResult'
 import BracketResult from '../components/poll/play/BracketResult'
+import DuelResult from '../components/poll/play/DuelResult'
 import {
   PLAY_MODES,
   PLAYABLE_MODES,
@@ -44,7 +46,7 @@ const MODE_HINT = {
   classic: 'Her seçeneğe tek tek puan ver, sıra puanlardan çıksın.',
   blind: 'Puanları görmeden sırala; sadece kendi tercihin konuşsun.',
   bracket: 'Eşleşmeler eleye eleye ilerlesin, tek şampiyon kalsın.',
-  duel: 'İkili karşılaşmalar: her turda sadece biri devam eder.',
+  duel: 'Kazanan sahnede kalır, karşısına yeni rakip gelir; son ayakta kalan kazanır.',
 }
 
 const PLAYER_MODES = [
@@ -59,14 +61,17 @@ const PLAY_SCREEN = {
   classic: ClassicPlay,
   blind: BlindPlay,
   bracket: BracketPlay,
+  duel: DuelPlay,
 }
 
 // Sonuç ekranı da aynı desenle seçilir. Varsayılan PlayResult: puanlı ya da
 // puansız tek bir sıralama listesi. Bir mod ancak sonucun ŞEKLİ farklıysa
-// buraya satır açar — turnuvada sıra değil eleme turu var, o yüzden kendi
-// ekranı. Sayfa ikinci bir mod dallanması tutmaz.
+// buraya satır açar — turnuvada sıra değil eleme turu var, "O mu, Bu mu?"da ise
+// sıralanabilir bir sonuç hiç yok, tek şampiyon var. Sayfa ikinci bir mod
+// dallanması tutmaz.
 const RESULT_SCREEN = {
   bracket: BracketResult,
+  duel: DuelResult,
 }
 
 // "A ve B" · "A, B ve C" — oynanabilir mod listesi ikiyi geçince düz join
