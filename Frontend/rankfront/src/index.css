@@ -67,6 +67,7 @@
   --animate-float: float 6s ease-in-out infinite;
   --animate-float-slow: float 9s ease-in-out infinite;
   --animate-pop: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-swell: swell 0.45s ease-out both;
   --animate-wiggle: wiggle 0.9s ease-in-out infinite;
   --animate-flame-dance: flame-dance 1.6s ease-in-out infinite;
   --animate-rank-pulse: rank-pulse 2.2s ease-in-out infinite;
@@ -98,6 +99,15 @@
     0%   { opacity: 0; transform: scale(0.6); }
     70%  { opacity: 1; transform: scale(1.08); }
     100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Kazanma vurgusu: kart hafifçe kabarıp yerine döner. Yay YOK — pop'un
+     aksine ölçek 1'in altına hiç inmez, kalıcı ölçü değişimi bırakmaz.
+     Kart ölçeğinde (turnuva eşleşmesi) pop'un yayı zıplama gibi okunuyordu. */
+  @keyframes swell {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.035); }
+    100% { transform: scale(1); }
   }
 
   /* Dikkat çekici sallanma (emoji, CTA süsleri) */

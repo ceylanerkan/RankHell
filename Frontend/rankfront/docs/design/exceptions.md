@@ -75,6 +75,29 @@ ilerleme çubuğunda — yani etkileşimde ve veride — konuşur.
 Yuvalar bu istisnaya **girmez**: gerçek etkileşim hedefi oldukları için
 `Card` (boş → `interactive`, dolu → `static`) üzerinden geçerler.
 
+## 7c — Turnuva şampiyon kartı (BracketResult)
+
+`poll/play/BracketResult.jsx`'teki şampiyon görseli + altındaki isim plaketi
+Card'a **sarılmaz** — §7b ile aynı gerekçe: içerik kartı değil, sonuç ekranının
+ödül anı. Karta sarılınca turnuvanın tek kazananı listedeki bir satır gibi
+okunuyordu.
+
+**Brass istisnası:** görselin 2px `brass` kenarı, plaketin `brass-deep` kenarı ve
+"ŞAMPİYON" etiketinin `brass-soft`'u — DuelWidget (§1) ve PodiumSpot ile aynı
+temele dayanır: brass burada "tıklanabilir öğe rengi" değil **sonuç/ödül
+sinyali**dir. Öğe zaten tıklanabilir değil (static sahne), o yüzden "brass
+tıklanabilir öğede kullanılmaz" kuralıyla çakışmaz. 🔥 emoji ErrorState'in 💀'u
+gibi (§3) içerik katmanındadır, sinyal katmanı değil.
+
+Kurallar yine geçerli: radius tavanı 8px (`rounded-lg`), blur/glow/scale yok,
+yeni renk/token yok.
+
+**Turnuva EŞLEŞME kartları bu istisnaya girmez:** `BracketPlay`'deki iki taraf
+ekranın tek etkileşim hedefidir, `Card` (`raised + interactive`) üzerinden
+geçerler — hover'daki sol ember marker doğru sinyaldir. Kazanan tarafta brass
+**kullanılmaz** (tıklanabilir öğe); kazanma sinyali `animate-pop`, kaybetme
+sinyali sönme (`opacity-60`).
+
 ## 7 — night-deep bantları + toast/modal (e-2)
 
 Navbar/footer `night-deep` (#0b0b0d) bantları sayfa kromudur (chrome), içerik

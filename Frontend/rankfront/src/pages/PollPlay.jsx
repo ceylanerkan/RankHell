@@ -9,7 +9,9 @@ import CategoryBadge from '../components/CategoryBadge'
 import PollStats from '../components/poll/PollStats'
 import ClassicPlay from '../components/poll/play/ClassicPlay'
 import BlindPlay from '../components/poll/play/BlindPlay'
+import BracketPlay from '../components/poll/play/BracketPlay'
 import PlayResult from '../components/poll/play/PlayResult'
+import BracketResult from '../components/poll/play/BracketResult'
 import {
   PLAY_MODES,
   PLAYABLE_MODES,
@@ -56,6 +58,22 @@ const PLAYER_MODES = [
 const PLAY_SCREEN = {
   classic: ClassicPlay,
   blind: BlindPlay,
+  bracket: BracketPlay,
+}
+
+// Sonuç ekranı da aynı desenle seçilir. Varsayılan PlayResult: puanlı ya da
+// puansız tek bir sıralama listesi. Bir mod ancak sonucun ŞEKLİ farklıysa
+// buraya satır açar — turnuvada sıra değil eleme turu var, o yüzden kendi
+// ekranı. Sayfa ikinci bir mod dallanması tutmaz.
+const RESULT_SCREEN = {
+  bracket: BracketResult,
+}
+
+// "A ve B" · "A, B ve C" — oynanabilir mod listesi ikiyi geçince düz join
+// "A ve B ve C" üretiyordu.
+function joinTr(list) {
+  if (list.length < 2) return list.join('')
+  return `${list.slice(0, -1).join(', ')} ve ${list[list.length - 1]}`
 }
 
 function SectionTitle({ children }) {
@@ -188,14 +206,14 @@ export default function PollPlay() {
   }
 
   if (phase === 'result') {
+    const Result = RESULT_SCREEN[config.mode] ?? PlayResult
+    // summary'nin tamamı devredilir: PlayResult { results, average, scored },
+    // BracketResult { results } okur. Puanlı mı değil mi bilgisini sonucu
+    // üreten ekran taşır — klasik hiç göndermez, PlayResult'ta varsayılan true.
     return (
-      <PlayResult
+      <Result
         poll={poll}
-        results={summary.results}
-        average={summary.average}
-        // Puanlı mı değil mi bilgisini sonucu üreten ekran taşır (klasik hiç
-        // göndermez → varsayılan true), sayfa ikinci bir mod dallanması tutmaz.
-        scored={summary.scored !== false}
+        {...summary}
         onReplay={() => setPhase('playing')}
         onSetup={backToSetup}
       />
@@ -312,7 +330,7 @@ export default function PollPlay() {
             {!isPlayableMode(mode) && (
               <p className="mt-2 text-center text-xs text-faded">
                 Bu mod henüz hazır değil — şimdilik{' '}
-                {PLAYABLE_MODES.map(pollModeLabel).join(' ve ')} oynanabilir.
+                {joinTr(PLAYABLE_MODES.map(pollModeLabel))} oynanabilir.
               </p>
             )}
           </div>

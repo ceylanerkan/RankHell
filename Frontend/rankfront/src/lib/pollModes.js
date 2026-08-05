@@ -17,7 +17,7 @@ export const PLAY_MODES = ['classic', 'blind', 'bracket', 'duel']
 // Şu an gerçekten oynanabilen modlar. Bir mod bitince buraya bir satır eklenir;
 // kurulum ekranı kendi listesini tutmaz, hem BAŞLA butonu hem "hazır değil"
 // notu buradan türer.
-export const PLAYABLE_MODES = ['classic', 'blind']
+export const PLAYABLE_MODES = ['classic', 'blind', 'bracket']
 
 export function isPlayableMode(key) {
   return PLAYABLE_MODES.includes(key)
@@ -33,8 +33,9 @@ export function pollModeLabel(key) {
 const POWER_ROUNDS = [8, 16, 32]
 const BLIND_ROUNDS = [5, 10]
 
-// Havuzu aşmayan en büyük 2'nin kuvveti (en az 2).
-function largestPowerOfTwo(count) {
+// Havuzu aşmayan en büyük 2'nin kuvveti (en az 2). Turnuva ağacı hook'u da
+// bunu okur: bozuk bir config gelse bile ağaç 2'nin kuvvetinde kalmalı.
+export function largestPowerOfTwo(count) {
   let value = 2
   while (value * 2 <= count) value *= 2
   return value
