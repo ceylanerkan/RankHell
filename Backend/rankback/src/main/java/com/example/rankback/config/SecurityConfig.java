@@ -85,6 +85,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Spring, islenmeyen hatalari /error'a yonlendirir ve zincir bastan
+                        // calisir. Burasi acik olmazsa her 500 hatasi 403 gibi gorunur ve
+                        // gercek sebep kaybolur.
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
                         // Read-only browsing is open; the endpoints that still need a user
                         // (e.g. /votes/me) guard themselves with @PreAuthorize.
