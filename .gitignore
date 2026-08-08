@@ -3,3 +3,9 @@
 
 # Kişisel editör ayarları
 .vscode/
+
+# Yanlışlıkla proje içine açılmış JDK/SDK klasörleri (yüzlerce MB).
+# Bunlar repoya girmemeli; JDK sistem geneline kurulur.
+oracleJdk-*/
+jdk-*/
+
