@@ -3,7 +3,7 @@
 // fonksiyon gövdeleri fetch('http://localhost:8080/api/...') çağrılarına
 // çevrilecek, sayfalara ve bileşenlere dokunulmayacak.
 
-import { categories, items, users, ratings, polls, dailyRanking, duels } from './mock/data'
+import { categories, items, users, ratings, polls, dailyRanking, duels, personas } from './mock/data'
 
 // Ağ gecikmesini taklit eder — loading durumlarının gerçekçi görünmesi için.
 const delay = (ms = 400) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -218,4 +218,39 @@ export async function getMyPolls() {
   const session = getSession()
   if (!session) return []
   return polls.filter((p) => p.creator.userId === session.userId)
+}
+
+// ---------- Sektöre Hoş Geldin ----------
+// Fenomen listesi ve oylama. Backend hazır olduğunda SADECE bu iki fonksiyonun
+// gövdesi fetch'e çevrilecek; useSector hook'una ve bileşenlere dokunulmayacak.
+
+export async function getPersonas() {
+  await delay()
+  return personas.map((p) => ({ ...p }))
+}
+
+// direction: 1 (upvote) | -1 (downvote) | 0 (oyu geri al)
+//
+// Düello gibi bilerek getSession() kontrolü yok — sektör oylaması anonim,
+// amaç kayıt olmadan tek tıkla oy. Mükerrer oy engeli istemci tarafında
+// (useSector hook'u localStorage'a yazar).
+//
+// previous: kullanıcının ÖNCEKİ oyu (1 | -1 | 0). Yalnızca mock'ta gerekli —
+// burada kullanıcı kimliği olmadığı için sayaçların hangi taraftan düşeceğini
+// sunucu bilemez. Gerçek backend'de bu argüman düşer, sunucu kendi oy
+// kaydından türetir.
+export async function votePersona(personaId, direction, previous = 0) {
+  await delay(150)
+  const persona = personas.find((p) => p.personaId === Number(personaId))
+  if (!persona) throw new Error('Kişi bulunamadı')
+  if (![1, -1, 0].includes(direction)) throw new Error('Geçersiz oy')
+  if (![1, -1, 0].includes(previous)) throw new Error('Geçersiz önceki oy')
+
+  if (previous === 1) persona.upvotes -= 1
+  else if (previous === -1) persona.downvotes -= 1
+
+  if (direction === 1) persona.upvotes += 1
+  else if (direction === -1) persona.downvotes += 1
+
+  return { ...persona }
 }

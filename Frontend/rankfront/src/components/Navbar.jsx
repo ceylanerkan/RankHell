@@ -12,6 +12,8 @@ const itemClass = ({ isActive }) =>
 const navItems = [
   { to: '/', end: true, label: 'ANA SAYFA' },
   { to: '/items', label: 'KEŞFET' },
+  // Tam adı "Sektöre Hoş Geldin"; sekmeye kısaltıldı, uzunu sayfanın başlığında.
+  { to: '/sektor', label: 'SEKTÖR' },
   { to: '/tiers', label: 'TIER LIST' },
   { to: '/polls', label: 'ANKETLER' },
 ]

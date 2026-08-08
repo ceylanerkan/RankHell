@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Items from './pages/Items'
 import ItemDetail from './pages/ItemDetail'
+import Sector from './pages/Sector'
 import TierList from './pages/TierList'
 import Polls from './pages/Polls'
 import PollNew from './pages/PollNew'
@@ -46,6 +47,7 @@ function Shell() {
           <Route path="/" element={<Home />} />
           <Route path="/items" element={<Items />} />
           <Route path="/items/:id" element={<ItemDetail />} />
+          <Route path="/sektor" element={<Sector />} />
           <Route path="/tiers" element={<TierList />} />
           <Route path="/polls" element={<Polls />} />
           <Route path="/polls/new" element={<PollNew />} />
