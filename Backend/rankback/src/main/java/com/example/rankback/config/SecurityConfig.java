@@ -3,9 +3,15 @@ package com.example.rankback.config;
 import com.example.rankback.security.CustomUserDetailsService;
 import com.example.rankback.security.JwtAuthenticationFilter;
 import com.example.rankback.security.JwtService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -25,10 +31,34 @@ public class SecurityConfig {
 
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
+    private final List<String> allowedOrigins;
 
-    public SecurityConfig(JwtService jwtService, CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(JwtService jwtService,
+                          CustomUserDetailsService userDetailsService,
+                          @Value("${app.cors.allowed-origins}") List<String> allowedOrigins) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.allowedOrigins = allowedOrigins;
+    }
+
+    /**
+     * Tarayici, farkli bir origin'e (Vite :5173 -> backend :8080) giden istekleri
+     * sunucu izin vermedikce engeller. Izinli origin listesi property'den gelir ki
+     * yayina cikarken kod degistirmek gerekmesin.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(allowedOrigins);
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        // Cookie kullanmiyoruz, kimlik Authorization: Bearer basligiyla tasiniyor;
+        // bu yuzden allowCredentials acmaya gerek yok.
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", config);
+        return source;
     }
 
     @Bean
@@ -51,6 +81,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth

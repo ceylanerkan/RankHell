@@ -2,14 +2,17 @@ package com.example.rankback.service;
 
 import com.example.rankback.dto.RatingDTO;
 import com.example.rankback.dto.RatingSummaryDTO;
+import com.example.rankback.dto.UserRatingDTO;
 import com.example.rankback.entity.Item;
 import com.example.rankback.entity.Rating;
+import com.example.rankback.entity.Role;
 import com.example.rankback.entity.User;
 import com.example.rankback.exception.ResourceNotFoundException;
 import com.example.rankback.repository.ItemRepository;
 import com.example.rankback.repository.RatingRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +51,19 @@ public class RatingService {
                 .findByItem_ItemId(itemId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt")))
                 .getContent().stream()
                 .map(RatingService::toDTO)
+                .toList();
+    }
+
+    /** Bir kullanicinin verdigi tum puanlar. Sadece kendisi veya admin gorebilir. */
+    @Transactional(readOnly = true)
+    public List<UserRatingDTO> getUserRatings(Integer userId, User currentUser, int page, int size) {
+        if (!currentUser.getUserId().equals(userId) && currentUser.getRole() != Role.ADMIN) {
+            throw new AccessDeniedException("You can only access your own ratings");
+        }
+        return ratingRepository
+                .findByUser_UserId(userId, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt")))
+                .getContent().stream()
+                .map(RatingService::toUserRatingDTO)
                 .toList();
     }
 
@@ -113,6 +129,17 @@ public class RatingService {
     private Item findItemOrThrow(Integer itemId) {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Item not found: " + itemId));
+    }
+
+    private static UserRatingDTO toUserRatingDTO(Rating rating) {
+        Item item = rating.getItem();
+        return new UserRatingDTO(
+                rating.getRatingId(),
+                item.getItemId(),
+                item.getName(),
+                item.getImageUrl(),
+                rating.getScore(),
+                rating.getCreatedAt());
     }
 
     private static RatingDTO toDTO(Rating rating) {
