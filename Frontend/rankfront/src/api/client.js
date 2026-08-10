@@ -3,7 +3,17 @@
 // fonksiyon gövdeleri fetch('http://localhost:8080/api/...') çağrılarına
 // çevrilecek, sayfalara ve bileşenlere dokunulmayacak.
 
-import { categories, items, users, ratings, polls, dailyRanking, duels, personas } from './mock/data'
+import {
+  categories,
+  items,
+  users,
+  ratings,
+  polls,
+  dailyRanking,
+  duels,
+  personas,
+  rowPickGames,
+} from './mock/data'
 
 // Ağ gecikmesini taklit eder — loading durumlarının gerçekçi görünmesi için.
 const delay = (ms = 400) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -253,4 +263,25 @@ export async function votePersona(personaId, direction, previous = 0) {
   else if (direction === -1) persona.downvotes += 1
 
   return { ...persona }
+}
+
+// ---------- Her Sıradan Bir Tanesini Seç ----------
+// Modun oyun vitrini. Filtre ve sıralama bilerek burada değil: onlar saf
+// fonksiyon (lib/rowPick.js) ve durumları URL'de yaşıyor (pages/RowPick.jsx).
+
+export async function getRowPickGames() {
+  await delay()
+  return rowPickGames.map((g) => ({ ...g }))
+}
+
+export async function getRowPickGame(gameId) {
+  await delay()
+  const game = rowPickGames.find((g) => g.gameId === Number(gameId))
+  if (!game) throw new Error('Oyun bulunamadı')
+  // Satırlar ve seçenekler de kopyalanır: ekran mock diziyi referansla tutup
+  // yanlışlıkla mutasyona uğratmasın (rateItem/createPoll'daki disiplin).
+  return {
+    ...game,
+    rows: game.rows?.map((row) => ({ ...row, options: row.options.map((o) => ({ ...o })) })),
+  }
 }

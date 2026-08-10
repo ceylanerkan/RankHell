@@ -636,3 +636,156 @@ export const personas = [
     createdAt: '2026-07-07T17:15:00',
   },
 ]
+
+// "Her Sıradan Bir Tanesini Seç" modunun oyunları: her kayıt bir oyun kurgusu.
+// rowCount × optionCount = ızgaranın ölçüsü (optionCount TOPLAM seçenek sayısı,
+// satır başına değil).
+//
+// `rows` alanı satırların gerçek içeriğidir ve şimdilik yalnızca fastfood
+// oyununda (gameId 10) dolu; diğerleri hâlâ vitrin verisi, oyun ekranı onlarda
+// "yakında" bloğunu çiziyor. Seçenek görsel alanı items[] ile aynı isimle
+// (`imageUrl`) taşınır — `coverUrl` kapak, `imageUrl` içerik görselidir.
+export const rowPickGames = [
+  {
+    gameId: 10,
+    title: 'Fast Food Menünü Kur',
+    description: 'Üç satır, üç zincir. Hamburgerini, pizzanı ve tavuğunu seç; gerisi elenir.',
+    coverUrl: '/fastfood/cover.jpg',
+    categories: [{ categoryId: 4, name: 'Yemek' }],
+    rowCount: 3,
+    optionCount: 9,
+    plays: 6142,
+    createdAt: '2026-08-09T19:30:00',
+    // Satır başına 3 seçenek: ızgara geniş ekranda 3 sütun, yani bir satır tek
+    // sırada okunur. `label` ekranda YAZILMAZ (logolar zaten söylüyor), yalnızca
+    // satırın erişilebilirlik adı olarak kullanılır.
+    rows: [
+      {
+        rowId: 1,
+        label: 'Hamburger',
+        options: [
+          { optionId: 101, name: "McDonald's", imageUrl: '/fastfood/mcdonalds.svg' },
+          { optionId: 102, name: 'Burger King', imageUrl: '/fastfood/burgerking.svg' },
+          { optionId: 103, name: "Wendy's", imageUrl: '/fastfood/wendys.svg' },
+        ],
+      },
+      {
+        rowId: 2,
+        label: 'Pizza',
+        options: [
+          { optionId: 201, name: "Domino's Pizza", imageUrl: '/fastfood/dominos.svg' },
+          { optionId: 202, name: 'Pizza Hut', imageUrl: '/fastfood/pizzahut.svg' },
+          { optionId: 203, name: "Papa John's", imageUrl: '/fastfood/papajohns.svg' },
+        ],
+      },
+      {
+        rowId: 3,
+        label: 'Kızarmış Tavuk',
+        options: [
+          { optionId: 301, name: 'KFC', imageUrl: '/fastfood/kfc.svg' },
+          { optionId: 302, name: 'Popeyes', imageUrl: '/fastfood/popeyes.svg' },
+          { optionId: 303, name: 'Chick-fil-A', imageUrl: '/fastfood/chickfila.svg' },
+        ],
+      },
+    ],
+  },
+  {
+    gameId: 1,
+    title: 'Kült Filmler Merdiveni',
+    description: 'Her satırda bir dönem, her dönemden tek film. Gerisi tarihe karışır.',
+    coverUrl: '/items/godfather.jpg',
+    categories: [{ categoryId: 1, name: 'Film' }],
+    rowCount: 5,
+    optionCount: 20,
+    plays: 4820,
+    createdAt: '2026-06-14T20:10:00',
+  },
+  {
+    gameId: 2,
+    title: 'Dizi Finalleri',
+    description: 'Her satırda bir final sezonu var; yalnızca birini kurtarabilirsin.',
+    coverUrl: '/items/breakingbad.jpg',
+    categories: [{ categoryId: 2, name: 'Dizi' }],
+    rowCount: 4,
+    optionCount: 16,
+    plays: 3115,
+    createdAt: '2026-07-02T13:45:00',
+  },
+  {
+    gameId: 3,
+    title: 'Açık Dünya Kavgası',
+    description: 'Satır satır açık dünyalar. Birini seç, diğerlerini sil.',
+    coverUrl: '/items/eldenring.jpg',
+    categories: [{ categoryId: 3, name: 'Oyun' }],
+    rowCount: 5,
+    optionCount: 25,
+    plays: 2764,
+    createdAt: '2026-05-28T09:30:00',
+  },
+  {
+    gameId: 4,
+    title: 'Sofra Kurma',
+    description: 'Çorbadan tatlıya her satırdan tek seçim: sofranı sen kur.',
+    coverUrl: '/items/iskender.jpg',
+    categories: [{ categoryId: 4, name: 'Yemek' }],
+    rowCount: 5,
+    optionCount: 20,
+    plays: 5390,
+    createdAt: '2026-04-19T18:05:00',
+  },
+  {
+    gameId: 5,
+    title: 'Çalma Listesi Kurmacası',
+    description: 'Her satır bir tür, her türden tek parça. Listen bu kadar.',
+    coverUrl: '/items/darkside.jpg',
+    categories: [{ categoryId: 5, name: 'Müzik' }],
+    rowCount: 6,
+    optionCount: 24,
+    plays: 1908,
+    createdAt: '2026-07-21T11:20:00',
+  },
+  {
+    gameId: 6,
+    title: 'Bilim Kurgu Evreni',
+    description: 'Her satırda bir gelecek tasviri. Hangi evrende yaşamak istersin?',
+    coverUrl: '/items/bladerunner.jpg',
+    categories: [{ categoryId: 1, name: 'Film' }],
+    rowCount: 4,
+    optionCount: 16,
+    plays: 2233,
+    createdAt: '2026-06-30T16:40:00',
+  },
+  {
+    gameId: 7,
+    title: 'Zor Oyunlar Cehennemi',
+    description: 'Her satırda bir işkence. Yalnızca birini bitirebileceksin.',
+    coverUrl: '/items/darksouls.jpg',
+    categories: [{ categoryId: 3, name: 'Oyun' }],
+    rowCount: 4,
+    optionCount: 12,
+    plays: 1476,
+    createdAt: '2026-07-30T22:15:00',
+  },
+  {
+    gameId: 8,
+    title: 'Kahvaltı Masası',
+    description: 'Her satırdan bir tabak. Masayı doldur, gerisini geri gönder.',
+    coverUrl: '/items/cay.jpg',
+    categories: [{ categoryId: 4, name: 'Yemek' }],
+    rowCount: 6,
+    optionCount: 24,
+    plays: 3671,
+    createdAt: '2026-03-11T08:25:00',
+  },
+  {
+    gameId: 9,
+    title: 'Suç Dizileri Kadrosu',
+    description: 'Her satırda bir suç dünyası; yanına yalnızca birini alabilirsin.',
+    coverUrl: '/items/sopranos.jpg',
+    categories: [{ categoryId: 2, name: 'Dizi' }],
+    rowCount: 5,
+    optionCount: 15,
+    plays: 987,
+    createdAt: '2026-08-04T15:00:00',
+  },
+]

@@ -21,20 +21,34 @@ import { pollModeLabel } from '../../../lib/pollModes'
 // Bandın kimlik bloğu: anket adı + hangi modda kaçıncı turdayız. Masaüstünde
 // ortada, dar ekranda ikonların altındaki kendi satırında görünür — iki yerde
 // aynı görünsün diye tek bileşen.
-function BandTitle({ title, modeKey, index, total }) {
+//
+// caption: alt satırı olduğu gibi devralır. Anket modları tur tur ilerlediği
+// için varsayılan "mod · kaçıncı tur" satırını kullanır; anket dışı oyunlarda
+// (ör. Sıra Seçimi) ne mod sözlüğü ne de tur sayacı geçerli olduğu için satırı
+// çağıran yazar.
+function BandTitle({ title, modeKey, index, total, caption }) {
   return (
     <>
       <h1 className="truncate font-display text-lg font-extrabold uppercase leading-tight tracking-wide text-cream sm:text-2xl">
         {title}
       </h1>
       <p className="mt-0.5 truncate text-[11px] font-bold uppercase tracking-widest text-faded sm:text-xs">
-        {pollModeLabel(modeKey)} · {index + 1} / {total}
+        {caption ?? `${pollModeLabel(modeKey)} · ${index + 1} / ${total}`}
       </p>
     </>
   )
 }
 
-export default function PlayBand({ title, modeKey, index, total, progress, onQuit, children }) {
+export default function PlayBand({
+  title,
+  modeKey,
+  index,
+  total,
+  caption,
+  progress,
+  onQuit,
+  children,
+}) {
   // Tam ekran tarayıcının state'i: ESC ile de çıkılabildiği için ikon
   // fullscreenchange'i dinler, kendi bayrağına güvenmez.
   const [isFullscreen, setIsFullscreen] = useState(() => Boolean(document.fullscreenElement))
@@ -70,7 +84,13 @@ export default function PlayBand({ title, modeKey, index, total, progress, onQui
               çıkış + ikonlar arasında ~150px'e sıkışıp anket adı da tur sayacı
               da okunamıyordu. */}
           <div className="hidden min-w-0 text-center sm:block">
-            <BandTitle title={title} modeKey={modeKey} index={index} total={total} />
+            <BandTitle
+              title={title}
+              modeKey={modeKey}
+              index={index}
+              total={total}
+              caption={caption}
+            />
           </div>
 
           {/* icon-line: bandın koyu şeridinde çerçeveli sessiz ikon — Damga v1'in
@@ -93,7 +113,13 @@ export default function PlayBand({ title, modeKey, index, total, progress, onQui
         </div>
 
         <div className="mt-2 min-w-0 text-center sm:hidden">
-          <BandTitle title={title} modeKey={modeKey} index={index} total={total} />
+          <BandTitle
+            title={title}
+            modeKey={modeKey}
+            index={index}
+            total={total}
+            caption={caption}
+          />
         </div>
       </div>
 
