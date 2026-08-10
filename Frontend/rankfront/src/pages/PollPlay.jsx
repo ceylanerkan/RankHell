@@ -22,6 +22,7 @@ import {
   roundOptionsFor,
   defaultRoundFor,
 } from '../lib/pollModes'
+import { joinTr } from '../lib/text'
 
 // Anket oynama sayfası. Üç faz tek route'ta yaşar (kurulum seçimleri elde
 // kalsın diye ayrı route açılmadı):
@@ -72,13 +73,6 @@ const PLAY_SCREEN = {
 const RESULT_SCREEN = {
   bracket: BracketResult,
   duel: DuelResult,
-}
-
-// "A ve B" · "A, B ve C" — oynanabilir mod listesi ikiyi geçince düz join
-// "A ve B ve C" üretiyordu.
-function joinTr(list) {
-  if (list.length < 2) return list.join('')
-  return `${list.slice(0, -1).join(', ')} ve ${list[list.length - 1]}`
 }
 
 function SectionTitle({ children }) {

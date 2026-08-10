@@ -14,7 +14,9 @@ const navItems = [
   { to: '/items', label: 'KEŞFET' },
   // Tam adı "Sektöre Hoş Geldin"; sekmeye kısaltıldı, uzunu sayfanın başlığında.
   { to: '/sektor', label: 'SEKTÖR' },
-  { to: '/tiers', label: 'TIER LIST' },
+  // Tier List modların biri: sekme vitrine (/modlar) gider, alt rotalarda da
+  // aktif kalsın diye end verilmez.
+  { to: '/modlar', label: 'MODLAR' },
   { to: '/polls', label: 'ANKETLER' },
 ]
 

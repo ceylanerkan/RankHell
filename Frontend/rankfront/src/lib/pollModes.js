@@ -11,7 +11,7 @@ export const POLL_MODES = {
 
 // Kurulum ekranının (/polls/:id/play) mod sırası. Sıra bilgisi burada yaşar,
 // sayfa kendi listesini üretmez. Tier list burada yok: sıralama oyunu değil,
-// kendi sayfası (/tiers) var — künye çipleri onu göstermeye devam ediyor.
+// kendi sayfası (/modlar/tier-list) var — künye çipleri onu göstermeye devam ediyor.
 export const PLAY_MODES = ['classic', 'blind', 'bracket', 'duel']
 
 // Şu an gerçekten oynanabilen modlar. Bir mod bitince buraya bir satır eklenir;
