@@ -9,6 +9,7 @@ import ItemDetail from './pages/ItemDetail'
 import Sector from './pages/Sector'
 import Modes from './pages/Modes'
 import TierList from './pages/TierList'
+import RowPick from './pages/RowPick'
 import Polls from './pages/Polls'
 import PollNew from './pages/PollNew'
 import PollDetail from './pages/PollDetail'
@@ -51,6 +52,7 @@ function Shell() {
           <Route path="/sektor" element={<Sector />} />
           <Route path="/modlar" element={<Modes />} />
           <Route path="/modlar/tier-list" element={<TierList />} />
+          <Route path="/modlar/sira-secimi" element={<RowPick />} />
           {/* Tier list modlar altına taşındı; eski link ve yer imleri kırılmasın. */}
           <Route path="/tiers" element={<Navigate to="/modlar/tier-list" replace />} />
           <Route path="/polls" element={<Polls />} />

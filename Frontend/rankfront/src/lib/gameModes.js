@@ -20,7 +20,8 @@ export const GAME_MODES = [
     badge: 'SIRA SEÇİMİ',
     label: 'Her Sıradan Bir Tanesini Seç',
     description: 'Her satırdan yalnızca bir tane alabilirsin. Gerisi elenir.',
-    ready: false,
+    to: '/modlar/sira-secimi',
+    ready: true,
   },
   {
     key: 'colpick',
