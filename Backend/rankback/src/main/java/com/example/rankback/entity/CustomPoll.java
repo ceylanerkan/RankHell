@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.validation.constraints.NotBlank;
@@ -49,13 +50,15 @@ public class CustomPoll {
 
     /**
      * Anketin oynanabildigi modlar (classic, bracket, duel, blind, tier).
-     * Ayri bir poll_modes tablosunda tutulur; virgullu tek kolon yerine
-     * @ElementCollection secildi ki mod bazli sorgu ilerde mumkun olsun.
+     * Ayri bir poll_modes tablosunda tutulur; virgullu tek kolon yerine ayri
+     * tablo secildi ki mod bazli sorgu ilerde mumkun olsun.
+     *
+     * @ElementCollection degil gercek bir entity: element koleksiyonlari
+     * PRIMARY KEY'siz tablo uretir, Aiven MySQL de anahtarsiz tablo kabul
+     * etmez. Ayrinti icin bkz. PollMode.
      */
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "poll_modes", joinColumns = @JoinColumn(name = "poll_id"))
-    @Column(name = "mode", length = 20)
-    private Set<String> modes = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<PollMode> modeLinks = new LinkedHashSet<>();
 
     /** Anketin kendisine verilen puanlarin ortalamasi (item'lardan bagimsiz). */
     @Column(name = "global_score", precision = 3, scale = 2)
@@ -73,4 +76,25 @@ public class CustomPoll {
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PollItem> pollItems;
 
+    /** Modlari duz metin olarak verir; cagiran taraf PollMode'u hic gormez. */
+    public Set<String> getModes() {
+        return modeLinks.stream()
+                .map(PollMode::getMode)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    /**
+     * Modlari toptan degistirir. Koleksiyon referansi yenilenmez, icerigi
+     * guncellenir: orphanRemoval ancak Hibernate'in yonettigi ayni koleksiyon
+     * ornegi uzerinde calisir, referans degistirilirse silinenler tabloda kalir.
+     */
+    public void setModes(Set<String> newModes) {
+        Set<String> hedef = newModes == null ? Set.of() : newModes;
+        modeLinks.removeIf(link -> !hedef.contains(link.getMode()));
+
+        Set<String> mevcut = getModes();
+        hedef.stream()
+                .filter(mode -> !mevcut.contains(mode))
+                .forEach(mode -> modeLinks.add(new PollMode(this, mode)));
+    }
 }
