@@ -12,7 +12,11 @@ const itemClass = ({ isActive }) =>
 const navItems = [
   { to: '/', end: true, label: 'ANA SAYFA' },
   { to: '/items', label: 'KEŞFET' },
-  { to: '/tiers', label: 'TIER LIST' },
+  // Tam adı "Sektöre Hoş Geldin"; sekmeye kısaltıldı, uzunu sayfanın başlığında.
+  { to: '/sektor', label: 'SEKTÖR' },
+  // Tier List modların biri: sekme vitrine (/modlar) gider, alt rotalarda da
+  // aktif kalsın diye end verilmez.
+  { to: '/modlar', label: 'MODLAR' },
   { to: '/polls', label: 'ANKETLER' },
 ]
 
