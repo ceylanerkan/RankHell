@@ -67,6 +67,7 @@
   --animate-float: float 6s ease-in-out infinite;
   --animate-float-slow: float 9s ease-in-out infinite;
   --animate-pop: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-swell: swell 0.45s ease-out both;
   --animate-wiggle: wiggle 0.9s ease-in-out infinite;
   --animate-flame-dance: flame-dance 1.6s ease-in-out infinite;
   --animate-rank-pulse: rank-pulse 2.2s ease-in-out infinite;
@@ -77,6 +78,15 @@
   @keyframes rise {
     from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Yerinden kıpırdamadan beliren giriş — yüzen katman (modal) için.
+     `rise` orada iki kez birikiyordu: backdrop 14px + panel 14px, yani
+     pop-up 28px aşağıdan kayarak geliyordu. Tam ekran karartma katmanının
+     ötelenmesi ayrıca üstte bir an karartılmamış şerit bırakıyor. */
+  @keyframes fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   /* Alev titremesi (logo, yükleme durumu) */
@@ -98,6 +108,15 @@
     0%   { opacity: 0; transform: scale(0.6); }
     70%  { opacity: 1; transform: scale(1.08); }
     100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Kazanma vurgusu: kart hafifçe kabarıp yerine döner. Yay YOK — pop'un
+     aksine ölçek 1'in altına hiç inmez, kalıcı ölçü değişimi bırakmaz.
+     Kart ölçeğinde (turnuva eşleşmesi) pop'un yayı zıplama gibi okunuyordu. */
+  @keyframes swell {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.035); }
+    100% { transform: scale(1); }
   }
 
   /* Dikkat çekici sallanma (emoji, CTA süsleri) */
@@ -328,6 +347,205 @@
       inset 0 0 28px rgb(185 145 63 / 0.16);
   }
 
+  /* ── Açılır menü (components/ui/Menu.jsx) ───────────────────────
+     DESIGN_SYSTEM.md §8: dropdown/popover yüzeyi henüz UNDEFINED.
+     En yakın mevcut yüzen katmanın dilini izler — modal paneliyle aynı
+     coal-light yüzey + line kenar + 8px radius; ayrımı overlay gölgesi
+     yapar, çerçeve rengi değil. Blur/glow/scale yok, yeni renk yok.
+     Tetikleyici Damga'dan geçer; buradaki kurallar yalnızca panel ve
+     satırlar için (satır aksiyon butonu değil, menü öğesidir). */
+  .rh-menu {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Ok, açıkken döner — panelin durumunu buton üstünde de söyler. */
+  .rh-menu-chev {
+    transition: transform 0.14s ease;
+  }
+  .rh-menu-chev.is-open {
+    transform: rotate(180deg);
+  }
+
+  /* Seçili filtre sayısı. Kor burada veri taşır (kaç filtre açık),
+     dekorasyon değil. */
+  .rh-menu-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9999px;
+    background: var(--color-ember);
+    color: var(--color-night-deep);
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rh-menu-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    z-index: 30;
+    min-width: 208px;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background: var(--color-coal-light);
+    padding: 6px;
+    box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.9);
+    animation: rise 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .rh-menu-panel--start { left: 0; }
+  .rh-menu-panel--end { right: 0; }
+
+  .rh-menu-title {
+    padding: 6px 10px;
+    color: var(--color-faded);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Gruplar arası ayrım: ilk grup hariç ince hat. */
+  .rh-menu-group + .rh-menu-group {
+    margin-top: 6px;
+    border-top: 1px solid var(--color-line);
+    padding-top: 6px;
+  }
+
+  .rh-menu-item {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    padding: 8px 10px;
+    color: var(--color-faded);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.14s ease, color 0.14s ease;
+  }
+  .rh-menu-item:hover {
+    background: var(--color-coal);
+    color: var(--color-cream);
+  }
+  /* Satır kutunun kenarına yaslı olduğu için outline içeri alınır. */
+  .rh-menu-item:focus-visible {
+    outline: 2px solid var(--color-ember-soft);
+    outline-offset: -2px;
+  }
+
+  /* Seçili satır: kart sistemindeki sol 2px kor şeridinin aynı dili. */
+  .rh-menu-item.is-selected {
+    background: var(--color-coal);
+    color: var(--color-cream);
+  }
+  .rh-menu-item.is-selected::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--color-ember);
+  }
+
+  .rh-menu-foot {
+    margin-top: 6px;
+    border-top: 1px solid var(--color-line);
+    padding: 8px 10px 4px;
+  }
+
+  /* ── Sektör ızgarası (pages/Sector.jsx) ─────────────────────────
+     Kırılımlar utility zinciriyle (sm:/lg:/min-[1400px]:) YAZILAMADI:
+     Tailwind arbitrary ve özel named kırılımları `lg:` bloğundan ÖNCE
+     yayıyor. 1400px+ ekranda hem 1400 hem 1024 sorgusu eşleşiyor, eşit
+     specificity'de sonra gelen kazanıyor ve dördüncü sütun hiç açılmıyordu.
+     Burada sıra elle yazıldığı için garanti: her kırılım bir öncekini ezer.
+
+     Dördüncü sütun 1400px'te açılır — kapak 1:1 kaldığı için kartı
+     kısaltmanın tek yolu daraltmak, ilk sıra ekrana ancak öyle sığıyor.
+     1280'de açılmaz: orada kart 299px'e düşüp aksiyon barını sardırıyor,
+     kazandığı yüksekliği geri veriyordu. */
+  .sector-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .sector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .sector-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1400px) {
+    .sector-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  /* ── Sektör aksiyon barı (components/sector/VoteBar.jsx) ────────
+     Fenomen kartının altındaki hap sırası. Tek kullanımlık bileşen
+     sınıfı disipliniyle burada yaşar (.duel-side, .play-hint gibi).
+     Butonların kendisi Damga v1'den geçer — burada yalnızca hapların
+     kabı ve sayaç tipografisi var, buton rengine/ölçüsüne dokunulmaz.
+     Radius 8px (sistem tavanı), glow/blur/scale yok, yeni renk yok. */
+  .sector-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Hap: en koyu zemin + nötr iç hat. Butonun 3px şeffaf çerçevesi zaten
+     dokunma alanı verdiği için kabın yatay boşluğu küçük tutuldu. */
+  .sector-actions__group {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 4px;
+    border-radius: 8px;
+    background: var(--color-night-deep);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+
+  .sector-actions__count {
+    padding: 0 4px;
+    min-width: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    color: var(--color-cream);
+  }
+
+  /* Verilen oyun yönü: seçilen okun İÇİ kor'la dolar. Damga'da
+     "basılı/toggle" diye bir durum yok; sinyal burada, yalnızca bu
+     bileşenin kapsamında yaşar — buton varyantlarına ve --btn-*
+     tokenlarına dokunulmaz.
+
+     `color` DEĞİL, `fill` + `stroke`: button.css index.css'e layer'SIZ
+     import ediliyor, bu blok ise @layer components içinde. Layer'sız
+     stiller layered olanları specificity'den bağımsız ezer, yani
+     .rh-ghost'un `color: var(--btn-muted)` kuralı buradaki her `color`
+     denemesini yutar. fill/stroke'a button.css hiç dokunmadığı için
+     çakışma yok. Lucide ikonlarının fill="none" attribute'u da CSS'e
+     yenilir (sunum attribute'u en düşük öncelikli). */
+  .sector-actions .rh-btn[aria-pressed='true'] svg {
+    fill: var(--btn-accent);
+    stroke: var(--btn-accent);
+  }
+
   /* Tier listesi boş yuvası: kesikli çerçeve, hover'da metal belirginleşir */
   .tier-slot {
     @apply flex aspect-square w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-line bg-night-deep/50 text-lg font-bold text-faded/50 transition hover:border-ash/60 hover:text-ash sm:w-20;
@@ -409,6 +627,9 @@
      Tasarım: coal-light yüzey · line kenarlığı · night-deep backdrop.
      Glow, blur, scale, dış gölge yok — tasarım sistemine aykırı olur.
      Mobil: tam ekran; masaüstü: maksimum 640px genişlik, ekranın %90'ı. */
+  /* Padding simetrik, align/justify center: panel viewport'un TAM
+     ortasında durur — optik kaydırma denendi, kayma olarak okunuyordu.
+     Animasyon `rise` DEĞİL `fade`: ötelenme yok, panel yerinde belirir. */
   .legal-modal-backdrop {
     position: fixed;
     inset: 0;
@@ -418,7 +639,7 @@
     justify-content: center;
     padding: 1rem;
     background: rgb(11 11 13 / 0.82);
-    animation: rise 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: fade 0.18s ease-out both;
   }
 
   .legal-modal-panel {
@@ -426,11 +647,13 @@
     flex-direction: column;
     width: 100%;
     max-width: 640px;
-    max-height: 90dvh;
+    /* Backdrop'un 1rem padding'i kadar pay + 1rem güvenlik: uzun
+       içerikli modal taşmaz, kısa modal zaten ortada durur. */
+    max-height: calc(100dvh - 4rem);
     border-radius: 8px;
     border: 1px solid var(--color-line);
     background: var(--color-coal-light);
-    animation: rise 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: fade 0.2s ease-out both;
     overflow: hidden;
   }
 
