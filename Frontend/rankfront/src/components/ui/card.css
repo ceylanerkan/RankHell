@@ -39,6 +39,12 @@
 }
 
 /* ---------- padding ---------- */
+/* none: kenardan kenara medya taşıyan kart (içerik kendi boşluğunu yönetir).
+   İçerik radius'u kartın 8px'ini aşmasın diye taşma kırpılır. */
+.rh-card--p-none {
+  padding: 0;
+  overflow: hidden;
+}
 .rh-card--p-compact {
   padding: 12px;
 }

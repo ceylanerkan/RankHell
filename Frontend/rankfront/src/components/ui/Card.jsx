@@ -32,7 +32,10 @@ import { Link } from 'react-router-dom';
 
 const SURFACES = ['neutral', 'raised', 'ticket'];
 const BEHAVIORS = ['static', 'interactive', 'navigation', 'selectable', 'disabled'];
-const PADDINGS = ['compact', 'default', 'spacious'];
+// 'none': kenardan kenara medya taşıyan kartlar için (ör. Kör Sıralama'nın
+// dolu yuvası). İç boşluk kartın değil içeriğin sorumluluğuna geçer; kenar,
+// radius, hover ve marker kuralları aynen işler.
+const PADDINGS = ['none', 'compact', 'default', 'spacious'];
 
 const Card = forwardRef(function Card(
   {
