@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>25</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -106,6 +106,16 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-mysql</artifactId>
+		</dependency>
+		<!--
+			Spring Boot 4'te otomatik yapilandirmalar teknoloji basina ayri
+			modullere bolundu. flyway-core tek basina yeterli degil: bu modul
+			olmadan Flyway hic calismaz, uygulama sessizce migration'siz acilir
+			ve ddl-auto=validate "missing table" ile patlar.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-flyway</artifactId>
 		</dependency>
 
 		<!-- H2: testlerin canlı DB'ye bağlanmaması için in-memory DB -->

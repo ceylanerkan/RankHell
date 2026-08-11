@@ -25,6 +25,10 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     @EntityGraph(attributePaths = "user")
     Page<Rating> findByItem_ItemId(Integer itemId, Pageable pageable);
 
+    /** Profil sayfasindaki "Verdigim Oylar" listesi; item da tek sorguda gelir. */
+    @EntityGraph(attributePaths = "item")
+    Page<Rating> findByUser_UserId(Integer userId, Pageable pageable);
+
     long countByItem_ItemId(Integer itemId);
 
     @Query("SELECT AVG(r.score) FROM Rating r WHERE r.item.itemId = :itemId")
