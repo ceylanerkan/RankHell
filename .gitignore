@@ -3,3 +3,7 @@
 
 # Kişisel editör ayarları
 .vscode/
+
+# Yanlislikla acilan JDK klasorleri (yuzlerce MB, repoya girmemeli)
+oracleJdk-*/
+jdk-*/

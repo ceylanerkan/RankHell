@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -79,7 +80,7 @@ public class PollService {
         CustomPoll poll = new CustomPoll();
         poll.setCreator(creator);
         poll.setTitle(request.title());
-        poll.setCreatedAt(LocalDateTime.now());
+        poll.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
 
         CustomPoll saved = pollRepository.save(poll);
         if (request.itemIds() != null) {

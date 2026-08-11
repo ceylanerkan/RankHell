@@ -39,7 +39,9 @@ public class User {
     @Column(name = "role", nullable = false, length = 20)
     private Role role = Role.USER;
 
-    @Column(name = "created_at", insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    // insertable=false kaldırıldı: AuthService artık bu değeri LocalDateTime.now(ZoneOffset.UTC)
+    // ile açıkça set eder → created_at ve agreement_date aynı saat kaynağından (UTC) gelir.
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Column(name = "is_terms_accepted", nullable = false)

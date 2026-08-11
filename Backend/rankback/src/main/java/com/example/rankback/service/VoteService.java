@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Service
@@ -63,7 +64,7 @@ public class VoteService {
             ItemVote created = new ItemVote();
             created.setItem(item);
             created.setUser(user);
-            created.setCreatedAt(LocalDateTime.now());
+            created.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
             return created;
         });
         vote.setVoteValue(value);
