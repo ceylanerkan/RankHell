@@ -11,8 +11,17 @@ export const POLL_MODES = {
 
 // Kurulum ekranının (/polls/:id/play) mod sırası. Sıra bilgisi burada yaşar,
 // sayfa kendi listesini üretmez. Tier list burada yok: sıralama oyunu değil,
-// kendi sayfası (/tiers) var — künye çipleri onu göstermeye devam ediyor.
+// kendi sayfası (/modlar/tier-list) var — künye çipleri onu göstermeye devam ediyor.
 export const PLAY_MODES = ['classic', 'blind', 'bracket', 'duel']
+
+// Şu an gerçekten oynanabilen modlar. Bir mod bitince buraya bir satır eklenir;
+// kurulum ekranı kendi listesini tutmaz, hem BAŞLA butonu hem "hazır değil"
+// notu buradan türer.
+export const PLAYABLE_MODES = ['classic', 'blind', 'bracket', 'duel']
+
+export function isPlayableMode(key) {
+  return PLAYABLE_MODES.includes(key)
+}
 
 // Bilinmeyen bir anahtar gelirse (backend yeni mod eklediğinde) render kırılmaz.
 export function pollModeLabel(key) {
@@ -21,11 +30,16 @@ export function pollModeLabel(key) {
 
 // Tur seçenekleri: turnuva/duel/klasik 2'nin kuvvetleriyle ilerler, kör
 // sıralama 5-10 arası kısa tutulur. Havuzu aşan değerler listeye girmez.
+//
+// Duel için 2'nin kuvveti ZORUNLULUK DEĞİL, alışkanlık: "O mu, Bu mu?"da ağaç
+// yok, n seçenek n-1 seçim demektir ve her sayı oynanır. Bu yüzden klasik gibi
+// "Tümü (n)" seçeneği de alır ve largestPowerOfTwo o yola hiç girmez.
 const POWER_ROUNDS = [8, 16, 32]
 const BLIND_ROUNDS = [5, 10]
 
-// Havuzu aşmayan en büyük 2'nin kuvveti (en az 2).
-function largestPowerOfTwo(count) {
+// Havuzu aşmayan en büyük 2'nin kuvveti (en az 2). Turnuva ağacı hook'u da
+// bunu okur: bozuk bir config gelse bile ağaç 2'nin kuvvetinde kalmalı.
+export function largestPowerOfTwo(count) {
   let value = 2
   while (value * 2 <= count) value *= 2
   return value
@@ -48,8 +62,9 @@ export function roundOptionsFor(mode, itemCount) {
   }
 
   const options = values.map((value) => ({ value, label: String(value) }))
-  // Klasik puanlamada tüm havuzu puanlamak her zaman seçenek.
-  if (mode === 'classic' && !values.includes(count)) {
+  // Yapısal kısıtı olmayan modlarda tüm havuzu oynamak her zaman seçenek:
+  // klasikte hepsini puanlarsın, duel'de hepsi sırayla meydan okur.
+  if ((mode === 'classic' || mode === 'duel') && !values.includes(count)) {
     options.push({ value: count, label: `Tümü (${count})` })
   }
   return options

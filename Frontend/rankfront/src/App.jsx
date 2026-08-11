@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
-import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigationType } from 'react-router-dom'
 import { ChromeContext } from './lib/chrome'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import Items from './pages/Items'
 import ItemDetail from './pages/ItemDetail'
+import Sector from './pages/Sector'
+import Modes from './pages/Modes'
 import TierList from './pages/TierList'
+import RowPick from './pages/RowPick'
+import RowPickGame from './pages/RowPickGame'
 import Polls from './pages/Polls'
 import PollNew from './pages/PollNew'
 import PollDetail from './pages/PollDetail'
@@ -46,7 +50,13 @@ function Shell() {
           <Route path="/" element={<Home />} />
           <Route path="/items" element={<Items />} />
           <Route path="/items/:id" element={<ItemDetail />} />
-          <Route path="/tiers" element={<TierList />} />
+          <Route path="/sektor" element={<Sector />} />
+          <Route path="/modlar" element={<Modes />} />
+          <Route path="/modlar/tier-list" element={<TierList />} />
+          <Route path="/modlar/sira-secimi" element={<RowPick />} />
+          <Route path="/modlar/sira-secimi/:gameId" element={<RowPickGame />} />
+          {/* Tier list modlar altına taşındı; eski link ve yer imleri kırılmasın. */}
+          <Route path="/tiers" element={<Navigate to="/modlar/tier-list" replace />} />
           <Route path="/polls" element={<Polls />} />
           <Route path="/polls/new" element={<PollNew />} />
           <Route path="/polls/:id" element={<PollDetail />} />

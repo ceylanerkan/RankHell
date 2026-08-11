@@ -59,6 +59,70 @@ kart sisteminde tek meşru yeri budur (disabled kart solid kenar alır, kesikli
 değil). `dropzone` sınıf ailesi olarak belgelenir, surface × behavior matrisine
 girmez.
 
+## 7b — Kör Sıralama sahnesi (BlindPlay ortadaki görsel + isim plaketi)
+
+`poll/play/BlindPlay.jsx`'te sıradaki seçeneği taşıyan görsel + altındaki isim
+plaketi Card'a **sarılmaz**. Bu bir içerik kartı değil, oyun sahnesi: bandın
+(§7) devamı, ekranın kahramanı. Karta sarılınca oyun ekranı bir liste satırı
+gibi okunuyordu. Kurallar yine geçerli — radius tavanı 8px (`rounded-lg`),
+blur/glow/scale yok, yeni renk yok.
+
+Sahnede **kor yoktur**: görselin 2px `iron` kenarı bir yapı öğesidir, sinyal
+değil (sahne statik; "static sinyal olarak kor göstermez" kuralı kart dışında
+da geçerli). Kor bu ekranda yalnızca yuvaların hover marker'ında ve banttaki
+ilerleme çubuğunda — yani etkileşimde ve veride — konuşur.
+
+Yuvalar bu istisnaya **girmez**: gerçek etkileşim hedefi oldukları için
+`Card` (boş → `interactive`, dolu → `static`) üzerinden geçerler.
+
+## 7c — Şampiyon sahnesi (Champion.jsx — BracketResult + DuelResult)
+
+`poll/play/Champion.jsx`'teki şampiyon görseli + altındaki isim plaketi Card'a
+**sarılmaz** — §7b ile aynı gerekçe: içerik kartı değil, sonuç ekranının ödül
+anı. Karta sarılınca tek kazanan listedeki bir satır gibi okunuyordu. Bileşen
+iki sonuç ekranının ortağıdır: Turnuva Ağacı (`BracketResult`) ve "O mu, Bu mu?"
+(`DuelResult`) aynı ödül anını paylaşır.
+
+**Brass istisnası:** görselin 2px `brass` kenarı, plaketin `brass-deep` kenarı ve
+"ŞAMPİYON" etiketinin `brass-soft`'u — DuelWidget (§1) ve PodiumSpot ile aynı
+temele dayanır: brass burada "tıklanabilir öğe rengi" değil **sonuç/ödül
+sinyali**dir. Öğe zaten tıklanabilir değil (static sahne), o yüzden "brass
+tıklanabilir öğede kullanılmaz" kuralıyla çakışmaz. 🔥 emoji ErrorState'in 💀'u
+gibi (§3) içerik katmanındadır, sinyal katmanı değil.
+
+Kurallar yine geçerli: radius tavanı 8px (`rounded-lg`), blur/glow/scale yok,
+yeni renk/token yok.
+
+**EŞLEŞME kartları bu istisnaya girmez:** `BracketPlay` ve `DuelPlay`'deki iki
+taraf ekranın tek etkileşim hedefidir, `Card` (`raised + interactive`) üzerinden
+geçerler — hover'daki sol ember marker doğru sinyaldir. Kazanan tarafta brass
+**kullanılmaz** (tıklanabilir öğe); kazanma sinyali `animate-swell`, kaybetme
+sinyali sönme (`opacity-60`). `animate-pop` bu ölçekte kullanılmaz: yayı kart
+boyunda zıplama gibi okunuyor, podyum rozetine ayrılmıştır.
+
+## 7d — Sıra Seçimi sonuç sahnesi (RowPickPodium.jsx)
+
+`components/modes/rowpick/RowPickPodium.jsx`'teki seçim görselleri + isim
+plaketleri Card'a **sarılmaz** — §7c ile birebir aynı gerekçe: sonuç ekranının
+ödül anı, içerik kartı değil. Sahne modun ortağıdır: satır sayısı ne olursa
+olsun ("Her Sıradan Bir Tanesini Seç"in tüm oyunları) aynı ekranı paylaşır.
+
+**Brass istisnası** §7c'deki temele dayanır: görsellerin 2px `brass` kenarı,
+plaketlerin `brass-deep` kenarı ve "SENİN SEÇİMİN" etiketinin `brass-soft`'u
+sonuç/ödül sinyalidir; öğeler tıklanabilir değildir.
+
+**Şampiyon sahnesinden farkı:** burada tek kazanan YOK — seçimler birbirinin
+rakibi değil, aynı menünün parçalarıdır. Bu yüzden PodiumSpot'ın 1-2-3
+hiyerarşisi (sütun yüksekliği, sıra numarası, 🔥 alevi) kullanılmaz, hepsi eşit
+ölçüdedir. `animate-pop` burada podyum rozeti ölçeğinde kalır (§7c'nin "kart
+boyunda pop yok" sınırının altında).
+
+**Seçenek kareleri bu istisnaya girmez:** `RowPickOption` ekranın gerçek
+etkileşim hedefidir, `Card` (`raised + selectable`) üzerinden geçer; seçim
+sinyali Card'ın kendi `is-selected` kenarı + `rh-card-pick` kutucuğudur.
+Kurallar yine geçerli: radius tavanı 8px (`rounded-lg`), blur/glow/scale yok,
+yeni renk/token yok.
+
 ## 7 — night-deep bantları + toast/modal (e-2)
 
 Navbar/footer `night-deep` (#0b0b0d) bantları sayfa kromudur (chrome), içerik

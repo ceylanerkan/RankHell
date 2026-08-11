@@ -11,8 +11,13 @@ import { rankBadgeClass } from '../../../lib/rank'
 // bu yüzden Home'daki "Günün Sıralaması" satır deseni birebir takip edildi.
 // Brass yalnızca derece/ödül sinyali olarak yaşıyor; satırlar tıklanabilir
 // değil (brass tıklanabilir öğede kullanılmaz — podyum belgelenmiş istisna).
+//
+// scored: sonuçta puan var mı. Mod adı yerine bu bayrak geçiliyor — bileşenin
+// tek gerçek sorusu bu, mod sözlüğünü tanıması gerekmiyor. Kör sıralamada sıra
+// oyuncunun kendi kararıdır, puan yoktur: yıldızlar, puan sütunu, ortalama ve
+// podyum kapanır, geriye çıplak sıralama kalır.
 
-export default function PlayResult({ poll, results, average, onReplay, onSetup }) {
+export default function PlayResult({ poll, results, average, onReplay, onSetup, scored = true }) {
   const top3 = results.slice(0, 3)
 
   return (
@@ -25,13 +30,21 @@ export default function PlayResult({ poll, results, average, onReplay, onSetup }
           {poll.title}
         </h1>
         <p className="mt-2 text-sm text-faded">
-          {results.length} seçenek puanlandı · ortalaman{' '}
-          <span className="font-bold tabular-nums text-brass-soft">{average.toFixed(1)}</span>
+          {scored ? (
+            <>
+              {results.length} seçenek puanlandı · ortalaman{' '}
+              <span className="font-bold tabular-nums text-brass-soft">{average.toFixed(1)}</span>
+            </>
+          ) : (
+            `${results.length} seçeneği sıraladın`
+          )}
         </p>
       </div>
 
-      {/* Podyum üç basamak ister: daha kısa turlarda doğrudan listeye geçilir. */}
-      {top3.length === 3 && (
+      {/* Podyum üç basamak ister: daha kısa turlarda doğrudan listeye geçilir.
+          Puansız modlarda hiç çizilmez — podyum bir ödül anı, kör sıralamada
+          ödüllendirilecek bir skor yok, sıranın kendisi sonuç. */}
+      {scored && top3.length === 3 && (
         <div className="mb-10 grid grid-cols-3 items-end gap-4 sm:gap-8">
           <PodiumSpot item={top3[1].item} rank={2} height="6.5rem" delay="120ms" score={top3[1].score} digits={0} size="lg" />
           <PodiumSpot item={top3[0].item} rank={1} height="9rem" delay="0ms" score={top3[0].score} digits={0} size="lg" />
@@ -41,7 +54,13 @@ export default function PlayResult({ poll, results, average, onReplay, onSetup }
 
       {/* Her seçenek atlanmışsa sıralanacak bir şey kalmaz. */}
       {results.length === 0 ? (
-        <EmptyState message="Hiçbir seçeneği puanlamadın — sıralanacak bir şey yok." />
+        <EmptyState
+          message={
+            scored
+              ? 'Hiçbir seçeneği puanlamadın — sıralanacak bir şey yok.'
+              : 'Hiçbir seçeneği sıralamadın — gösterilecek bir sıra yok.'
+          }
+        />
       ) : (
       <Card surface="neutral" behavior="static">
         <h2 className="mb-1 text-xs font-bold uppercase tracking-widest text-faded">Senin sıralaman</h2>
@@ -63,12 +82,16 @@ export default function PlayResult({ poll, results, average, onReplay, onSetup }
               <p className="min-w-0 flex-1 truncate font-display font-bold text-cream">{item.name}</p>
               {/* Yıldızlar burada salt okunur (onRate yok): pirinç dolar,
                   butonlar disabled gelir — satır tıklanabilir olmaz. */}
-              <div className="hidden sm:block">
-                <StarRating value={score} size="text-sm" />
-              </div>
-              <span className="w-4 shrink-0 text-right font-display text-sm font-extrabold tabular-nums text-brass-soft">
-                {score}
-              </span>
+              {scored && (
+                <>
+                  <div className="hidden sm:block">
+                    <StarRating value={score} size="text-sm" />
+                  </div>
+                  <span className="w-4 shrink-0 text-right font-display text-sm font-extrabold tabular-nums text-brass-soft">
+                    {score}
+                  </span>
+                </>
+              )}
             </li>
           ))}
         </ol>

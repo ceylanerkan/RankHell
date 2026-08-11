@@ -48,7 +48,7 @@ export default function Footer() {
       ),
       links: [
         { label: 'Tüm Öğeler', to: '/items' },
-        { label: 'Tier Listesi', to: '/tiers' },
+        { label: 'Tier Listesi', to: '/modlar/tier-list' },
         { label: 'Trend' },
         { label: 'Kategoriler' },
         { label: 'En Yüksek Puanlılar' },
