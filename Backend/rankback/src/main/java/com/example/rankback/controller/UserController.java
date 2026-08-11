@@ -4,10 +4,12 @@ import com.example.rankback.dto.CommentDTO;
 import com.example.rankback.dto.RoleUpdateRequest;
 import com.example.rankback.dto.UserDTO;
 import com.example.rankback.dto.UserSummaryDTO;
+import com.example.rankback.dto.UserRatingDTO;
 import com.example.rankback.dto.UserUpdateRequest;
 import com.example.rankback.entity.Role;
 import com.example.rankback.security.UserPrincipal;
 import com.example.rankback.service.CommentService;
+import com.example.rankback.service.RatingService;
 import com.example.rankback.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +31,12 @@ public class UserController {
 
     private final UserService userService;
     private final CommentService commentService;
+    private final RatingService ratingService;
 
-    public UserController(UserService userService, CommentService commentService) {
+    public UserController(UserService userService, CommentService commentService, RatingService ratingService) {
         this.userService = userService;
         this.commentService = commentService;
+        this.ratingService = ratingService;
     }
 
     @GetMapping
@@ -91,6 +95,17 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public UserDTO updateRole(@PathVariable Integer userId, @Valid @RequestBody RoleUpdateRequest request) {
         return userService.updateRole(userId, request.role());
+    }
+
+    /** Profil sayfasindaki "Verdigim Oylar"; sahibi veya admin gorebilir. */
+    @GetMapping("/{userId}/ratings")
+    @PreAuthorize("isAuthenticated()")
+    public List<UserRatingDTO> getUserRatings(
+            @PathVariable Integer userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        return ratingService.getUserRatings(userId, principal.getUser(), page, size);
     }
 
     @GetMapping("/{userId}/comments")

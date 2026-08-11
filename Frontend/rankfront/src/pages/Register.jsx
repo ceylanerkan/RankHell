@@ -40,7 +40,15 @@ export default function Register() {
 
     setSubmitting(true)
     try {
-      await register({ username: username.trim(), email, password })
+      // Onaylar backend'e de gider: KVKK kaydı users tablosunda tutuluyor,
+      // gönderilmezse kullanıcı kutuları işaretlemiş olsa bile false yazılırdı.
+      await register({
+        username: username.trim(),
+        email,
+        password,
+        isTermsAccepted: acceptedTerms,
+        isKvkkAccepted: acceptedPrivacy,
+      })
       navigate('/')
     } catch (err) {
       setError(err.message)
