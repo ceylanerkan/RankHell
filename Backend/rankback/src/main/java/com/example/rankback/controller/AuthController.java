@@ -4,6 +4,7 @@ import com.example.rankback.dto.AuthResponse;
 import com.example.rankback.dto.LoginRequest;
 import com.example.rankback.dto.RegisterRequest;
 import com.example.rankback.entity.User;
+import com.example.rankback.security.ClientIpResolver;
 import com.example.rankback.security.UserPrincipal;
 import com.example.rankback.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,12 +29,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request, HttpServletRequest httpRequest) {
-        return ResponseEntity.ok(authService.register(request, httpRequest.getRemoteAddr()));
+        return ResponseEntity.ok(authService.register(request, ClientIpResolver.resolve(httpRequest)));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpRequest) {
-        return ResponseEntity.ok(authService.login(request, httpRequest.getRemoteAddr()));
+        return ResponseEntity.ok(authService.login(request, ClientIpResolver.resolve(httpRequest)));
     }
 
     @GetMapping("/me")

@@ -24,12 +24,14 @@ public class UserLoginLogController {
         this.userService = userService;
     }
 
+    /** success=false ile başarısız denemeler süzülebilir (brute force takibi). */
     @GetMapping("/login-logs")
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserLoginLogDTO> getAllLoginLogs(
+            @RequestParam(required = false) Boolean success,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        return userService.getAllLoginLogs(page, size);
+        return userService.getAllLoginLogs(success, page, size);
     }
 
     @GetMapping("/users/{userId}/login-logs")

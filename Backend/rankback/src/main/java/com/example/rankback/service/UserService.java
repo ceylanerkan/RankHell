@@ -11,6 +11,7 @@ import com.example.rankback.exception.DuplicateResourceException;
 import com.example.rankback.exception.ResourceNotFoundException;
 import com.example.rankback.repository.UserLoginLogRepository;
 import com.example.rankback.repository.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -84,10 +85,14 @@ public class UserService {
                 .toList();
     }
 
+    /** success null ise tüm denemeler; true/false ise sadece o sonucu verenler. */
     @Transactional(readOnly = true)
-    public List<UserLoginLogDTO> getAllLoginLogs(int page, int size) {
-        return userLoginLogRepository.findAllByOrderByLoginTimeDesc(PageRequest.of(page, size))
-                .getContent().stream()
+    public List<UserLoginLogDTO> getAllLoginLogs(Boolean success, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<UserLoginLog> logs = (success == null)
+                ? userLoginLogRepository.findAllByOrderByLoginTimeDesc(pageable)
+                : userLoginLogRepository.findBySuccessOrderByLoginTimeDesc(success, pageable);
+        return logs.getContent().stream()
                 .map(UserService::toDTO)
                 .toList();
     }
@@ -114,12 +119,16 @@ public class UserService {
                 user.isKvkkAccepted());
     }
 
+    /** user null olabilir: tanınmayan e-posta ile yapılan başarısız denemeler. */
     private static UserLoginLogDTO toDTO(UserLoginLog log) {
+        User user = log.getUser();
         return new UserLoginLogDTO(
                 log.getId(),
-                log.getUser().getUserId(),
-                log.getUser().getUsername(),
+                user == null ? null : user.getUserId(),
+                user == null ? null : user.getUsername(),
+                log.getAttemptedEmail(),
                 log.getIpAddress(),
-                log.getLoginTime());
+                log.getLoginTime(),
+                log.isSuccess());
     }
 }
