@@ -1,15 +1,9 @@
 // Veri katmanı — sayfalar veriyi SADECE bu dosyadaki fonksiyonlardan alır.
-// Artık gerçek backend'e bağlı (http.js üzerinden). Sayfaların ve bileşenlerin
-// beklediği veri şekilleri korunur; backend farklı bir şekil döndürdüğünde
-// çeviri burada yapılır, yukarıya sızmaz.
-//
-// HÂLÂ MOCK olan iki akış var, çünkü backend'de karşılığı yok:
-//   - getDuels / voteDuel  -> Duel entity'si yok
-//   - getDailyRanking      -> günlük sıralama toplaması yok
-// İkisi de aşağıda ayrıca işaretlendi.
+// Artık tamamı gerçek backend'e bağlı (http.js üzerinden). Sayfaların ve
+// bileşenlerin beklediği veri şekilleri korunur; backend farklı bir şekil
+// döndürdüğünde çeviri burada yapılır, yukarıya sızmaz.
 
 import { http, saveSession, clearSession, readUser } from './http'
-import { dailyRanking, duels } from './mock/data'
 
 // Backend sayfalı çalışıyor (varsayılan 20), arayüz ise tüm listeyi bekliyor.
 // Veri büyürse burada gerçek sayfalamaya geçilmeli.
@@ -80,16 +74,19 @@ export async function getItem(itemId) {
   return http.get(`/api/items/${itemId}`, { auth: false })
 }
 
-// MOCK — backend'de günlük sıralama toplaması yok.
-// Sıralama sabit, ama item'lar gerçek veriden geliyor ki isim/görsel tutarlı olsun.
-export async function getDailyRanking() {
-  const items = await getItems()
+export async function getDailyRanking(limit = 5) {
+  const yanit = await http.get(`/api/ranking/daily?limit=${limit}`, { auth: false })
   return {
-    date: dailyRanking.date,
-    title: dailyRanking.title,
-    entries: dailyRanking.entries
-      .map((e) => ({ ...e, item: items.find((i) => i.itemId === e.itemId) }))
-      .filter((e) => e.item),
+    date: yanit.date,
+    title: yanit.title,
+    // Backend alanları düz gönderiyor, liste ise entry.item.name okuyor.
+    // delta null = dün sıralamada yoktu; rozet bunu "yeni" diye gösteriyor.
+    entries: (yanit.entries ?? []).map((e) => ({
+      itemId: e.itemId,
+      votesToday: e.votesToday,
+      delta: e.delta ?? 'yeni',
+      item: { itemId: e.itemId, name: e.itemName, imageUrl: e.itemImageUrl },
+    })),
   }
 }
 
@@ -131,26 +128,21 @@ export async function getMyRatings() {
 }
 
 // ---------- Düellolar ----------
-// MOCK — backend'de Duel entity'si/endpoint'i yok. Oylar yalnızca bu oturumda
-// bellekte artar, sayfa yenilenince sıfırlanır.
-
-const bekle = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+// Oylama bilerek giriş istemiyor: widget anasayfa hero'sunda, ziyaretçiyi
+// yakalamak için var. Oy hakkı localStorage'da tutuluyor (bkz. useDuel).
 
 export async function getDuels() {
-  await bekle(200)
-  return duels.map((d) => ({ ...d }))
+  return http.get(`/api/duels?size=${LISTE_BOYUTU}`, { auth: false })
 }
 
 export async function voteDuel(duelId, side) {
-  await bekle(150)
-  const duel = duels.find((d) => d.duelId === Number(duelId))
-  if (!duel) throw new Error('Düello bulunamadı')
   if (side !== 'A' && side !== 'B') throw new Error('Geçersiz taraf')
+  return http.post(`/api/duels/${duelId}/votes`, { side }, { auth: false })
+}
 
-  if (side === 'A') duel.votesA += 1
-  else duel.votesB += 1
-
-  return { ...duel }
+export async function createDuel({ title, itemAId, itemBId }) {
+  if (!getSession()) throw new Error('Düello oluşturmak için giriş yapmalısın')
+  return http.post('/api/duels', { title, itemAId, itemBId })
 }
 
 // ---------- Anketler ----------

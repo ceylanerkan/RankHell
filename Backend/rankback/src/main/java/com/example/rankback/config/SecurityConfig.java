@@ -97,7 +97,13 @@ public class SecurityConfig {
                                 "/api/items/**",
                                 "/api/tags/**",
                                 "/api/comments/**",
-                                "/api/polls/**").permitAll()
+                                "/api/polls/**",
+                                "/api/duels/**",
+                                "/api/ranking/**").permitAll()
+                        // Duello oyu bilincli olarak anonim: hero widget'i ziyaretciyi
+                        // yakalamak icin var, giris duvari onu islevsiz birakirdi.
+                        // Duello OLUSTURMA (POST /api/duels) bu kaliba girmez, giris ister.
+                        .requestMatchers(HttpMethod.POST, "/api/duels/*/votes").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
