@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,9 @@ public class PollService {
     public PollDTO createPoll(PollRequest request, User creator) {
         CustomPoll poll = new CustomPoll();
         poll.setCreator(creator);
-        poll.setCreatedAt(LocalDateTime.now());
+        // UTC: zaman damgalari tek saat kaynagindan yazilir (main'den gelen duzeltme).
+        poll.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
+        // applyRequest title'i da set eder; ayrica description/coverUrl/kategori/modlar.
         applyRequest(poll, request);
 
         CustomPoll saved = pollRepository.save(poll);

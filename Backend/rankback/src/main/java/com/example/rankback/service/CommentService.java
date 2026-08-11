@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class CommentService {
         comment.setItem(item);
         comment.setUser(author);
         comment.setContent(request.content());
-        comment.setCreatedAt(LocalDateTime.now());
+        comment.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
 
         if (request.parentCommentId() != null) {
             ItemComment parent = findOrThrow(request.parentCommentId());

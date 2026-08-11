@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class AuthService {
@@ -55,8 +56,11 @@ public class AuthService {
         user.setRole(Role.USER);
         user.setTermsAccepted(request.isTermsAccepted());
         user.setKvkkAccepted(request.isKvkkAccepted());
+        // created_at UTC olarak açıkça set ediliyor (insertable=true artık).
+        // agreement_date de aynı kaynaktan (UTC) geliyor → aynı satırda saat farkı yok.
+        user.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
         if (request.isTermsAccepted() || request.isKvkkAccepted()) {
-            user.setAgreementDate(LocalDateTime.now());
+            user.setAgreementDate(LocalDateTime.now(ZoneOffset.UTC));
         }
         user.setRegisteredIp(ipAddress);
 
@@ -75,7 +79,7 @@ public class AuthService {
         userLoginLogRepository.save(UserLoginLog.builder()
                 .user(user)
                 .ipAddress(ipAddress)
-                .loginTime(LocalDateTime.now())
+                .loginTime(LocalDateTime.now(ZoneOffset.UTC))
                 .build());
 
         return toAuthResponse(user, jwtService.generateToken(user));

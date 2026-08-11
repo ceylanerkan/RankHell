@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,7 +88,7 @@ public class RatingService {
             Rating created = new Rating();
             created.setItem(item);
             created.setUser(user);
-            created.setCreatedAt(LocalDateTime.now());
+            created.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
             return created;
         });
         rating.setScore(score);
