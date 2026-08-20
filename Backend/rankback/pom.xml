@@ -139,6 +139,10 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<!-- mvn spring-boot:run → mysql profili otomatik aktif olur -->
+					<profiles>
+						<profile>mysql</profile>
+					</profiles>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -48,33 +48,8 @@ CREATE TABLE IF NOT EXISTS Item_Comments (
 
 -- =============================================================================
 -- MEVCUT TABLOLARA EKSIK KOLONLARIN EKLENMESİ
--- Her ALTER sadece kolon yoksa çalışır (prosedür koşulu).
+-- Not: Users.role ve Custom_Polls.created_at V1__baseline.sql'de zaten
+-- doğru tanımlandığı için bu bloklara gerek kalmadı.
+-- PREPARE/EXECUTE dinamik SQL blokları Flyway/JDBC ile uyumlu değildir;
+-- bu nedenle kaldırıldı.
 -- =============================================================================
-
--- Users tablosuna 'role' kolonu eksikse ekle
--- (entity'de Role enum'u var; baseline'da bazı ortamlarda oluşmamış olabilir)
-SET @col_exists = (
-    SELECT COUNT(*) FROM information_schema.COLUMNS
-    WHERE TABLE_SCHEMA = DATABASE()
-      AND TABLE_NAME   = 'Users'
-      AND COLUMN_NAME  = 'role'
-);
-SET @sql = IF(@col_exists = 0,
-    "ALTER TABLE Users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'USER' AFTER password_hash",
-    'SELECT ''role column already exists'' AS info'
-);
-PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-
--- Custom_Polls.created_at → DEFAULT CURRENT_TIMESTAMP güvencesi
--- (Baseline'da DEFAULT yoksa sıralar doğru kaydedilmez)
-SET @cp_default = (
-    SELECT COLUMN_DEFAULT FROM information_schema.COLUMNS
-    WHERE TABLE_SCHEMA = DATABASE()
-      AND TABLE_NAME   = 'Custom_Polls'
-      AND COLUMN_NAME  = 'created_at'
-);
-SET @sql2 = IF(@cp_default IS NULL,
-    'ALTER TABLE Custom_Polls MODIFY COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
-    'SELECT ''Custom_Polls.created_at default OK'' AS info'
-);
-PREPARE stmt2 FROM @sql2; EXECUTE stmt2; DEALLOCATE PREPARE stmt2;
